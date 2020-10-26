@@ -10,14 +10,14 @@ objects:
     kind: BuildConfig
     metadata:
       labels:
-        build: educ-course-achievement-api-pipeline
-      name: educ-course-achievement-api-pipeline
+        build: educ-grad-course-api-pipeline
+      name: educ-grad-course-api-pipeline
       namespace: wbmfsf-tools
     spec:
       source:
         git:
-          ref: master
-          uri: 'https://github.com/bcgov/EDUC-COURSE-ACHIEVEMENT-API'
+          ref: main
+          uri: 'https://github.com/bcgov/EDUC-GRAD-COURSE-API'
         type: Git
       strategy:
         jenkinsPipelineStrategy:
