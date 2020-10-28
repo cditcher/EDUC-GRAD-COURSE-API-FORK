@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import ca.bc.gov.educ.api.course.model.dto.Course;
@@ -25,8 +26,10 @@ public class CourseController {
     CourseService courseService;
 
     @GetMapping
-    public List<Course> getAllCourses() { 
+    public List<Course> getAllCourses(
+    		@RequestParam(value = "pageNo", required = false,defaultValue = "0") Integer pageNo, 
+            @RequestParam(value = "pageSize", required = false,defaultValue = "150") Integer pageSize) { 
     	logger.debug("getAllCourses : ");
-        return courseService.getCourseList();
+        return courseService.getCourseList(pageNo,pageSize);
     }
 }
