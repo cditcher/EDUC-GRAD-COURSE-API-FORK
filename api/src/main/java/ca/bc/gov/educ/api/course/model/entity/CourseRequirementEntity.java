@@ -19,6 +19,7 @@ import lombok.Data;
 public class CourseRequirementEntity {
    
 	@Id
+	@Column(name = "ID", nullable = false)
     private UUID courseRequirementId;
 
     @Column(name = "CRSE_CODE", nullable = false)
