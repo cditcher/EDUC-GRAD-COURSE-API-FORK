@@ -23,8 +23,6 @@ public class CourseRequirementService {
     @Autowired
     private CourseRequirementRepository courseRequirementRepository;
 
-    Iterable<CourseRequirementEntity> courseRequirementEntityList;
-
     @Autowired
     private CourseRequirementTransformer courseRequirementTransformer;
 

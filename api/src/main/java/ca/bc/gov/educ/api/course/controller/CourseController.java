@@ -48,7 +48,7 @@ public class CourseController {
     
     @GetMapping(EducCourseApiConstants.GET_COURSE_REQUIREMENT_BY_RULE_MAPPING)
     public List<CourseRequirement> getAllCoursesRequirementByRule(
-    		@RequestParam(value = "rule", required = false) String rule,
+    		@RequestParam(value = "rule", required = true) String rule,
     		@RequestParam(value = "pageNo", required = false,defaultValue = "0") Integer pageNo, 
             @RequestParam(value = "pageSize", required = false,defaultValue = "150") Integer pageSize) { 
     	logger.debug("getAllCoursesRequirementByRule : ");
