@@ -7,10 +7,13 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import ca.bc.gov.educ.api.course.model.entity.CourseEntity;
+import ca.bc.gov.educ.api.course.model.entity.CourseId;
 
 @Repository
 public interface CourseRepository extends JpaRepository<CourseEntity, UUID> {
 
     List<CourseEntity> findAll();
+
+	CourseEntity findByCourseKey(CourseId key);
 
 }
