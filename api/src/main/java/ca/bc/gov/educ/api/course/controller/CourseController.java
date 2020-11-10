@@ -40,9 +40,9 @@ public class CourseController {
     }
     
     @GetMapping(EducCourseApiConstants.GET_COURSE_BY_CODE_MAPPING)
-    public Course getCourseDetails(@PathVariable String crseCode,@PathVariable String crseLvl) { 
+    public Course getCourseDetails(@PathVariable String courseCode,@PathVariable String courseLevel) { 
     	logger.debug("getCourseDetails : ");
-        return courseService.getCourseDetails(crseCode,crseLvl);
+        return courseService.getCourseDetails(courseCode,courseLevel);
     }
     
     @GetMapping(EducCourseApiConstants.GET_COURSE_REQUIREMENT_MAPPING)
