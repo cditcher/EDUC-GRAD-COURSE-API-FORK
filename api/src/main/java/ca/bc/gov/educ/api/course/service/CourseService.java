@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import ca.bc.gov.educ.api.course.model.dto.Course;
 import ca.bc.gov.educ.api.course.model.entity.CourseEntity;
+import ca.bc.gov.educ.api.course.model.entity.CourseId;
 import ca.bc.gov.educ.api.course.model.transformer.CourseTransformer;
 import ca.bc.gov.educ.api.course.repository.CourseRepository;
 
@@ -51,4 +52,11 @@ public class CourseService {
 
         return course;
     }
+
+	public Course getCourseDetails(String crseCode, String crseLvl) {
+		CourseId key = new CourseId();
+		key.setCourseCode(crseCode);
+		key.setCourseLevel(crseLvl);
+		return courseTransformer.transformToDTO(courseRepo.findByCourseKey(key));
+	}
 }

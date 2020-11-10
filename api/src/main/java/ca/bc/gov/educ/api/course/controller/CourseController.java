@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -36,6 +37,12 @@ public class CourseController {
             @RequestParam(value = "pageSize", required = false,defaultValue = "150") Integer pageSize) { 
     	logger.debug("getAllCourses : ");
         return courseService.getCourseList(pageNo,pageSize);
+    }
+    
+    @GetMapping(EducCourseApiConstants.GET_COURSE_BY_CODE_MAPPING)
+    public Course getCourseDetails(@PathVariable String crseCode,@PathVariable String crseLvl) { 
+    	logger.debug("getCourseDetails : ");
+        return courseService.getCourseDetails(crseCode,crseLvl);
     }
     
     @GetMapping(EducCourseApiConstants.GET_COURSE_REQUIREMENT_MAPPING)

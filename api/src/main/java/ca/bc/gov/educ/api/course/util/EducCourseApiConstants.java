@@ -10,6 +10,7 @@ public class EducCourseApiConstants {
     public static final String GRAD_COURSE_API_ROOT_MAPPING = "/api/" + API_VERSION + "/course";
     
     public static final String GET_STUDENT_COURSE_BY_ID_MAPPING = "/{courseCode}";
+    public static final String GET_COURSE_BY_CODE_MAPPING="/{courseCode}/level/{courseLevel}";
     public static final String GET_COURSE_REQUIREMENT_MAPPING = "/requirement";
     public static final String GET_COURSE_REQUIREMENT_BY_RULE_MAPPING = "/requirement/rule";
 
