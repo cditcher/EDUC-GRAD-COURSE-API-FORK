@@ -5,12 +5,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 
 import ca.bc.gov.educ.api.course.model.dto.Course;
 import ca.bc.gov.educ.api.course.model.entity.CourseEntity;
 
 @SpringBootApplication
+@EnableGlobalMethodSecurity(prePostEnabled = true)
+@EnableCaching
 public class EducCourseApiApplication {
 
 	private static Logger logger = LoggerFactory.getLogger(EducCourseApiApplication.class);
