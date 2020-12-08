@@ -13,6 +13,7 @@ public class EducCourseApiConstants {
     public static final String GET_COURSE_BY_CODE_MAPPING="/{courseCode}/level/{courseLevel}";
     public static final String GET_COURSE_REQUIREMENT_MAPPING = "/requirement";
     public static final String GET_COURSE_REQUIREMENT_BY_RULE_MAPPING = "/requirement/rule";
+    public static final String GET_COURSE_REQUIREMENT_BY_CODE_AND_LEVEL_MAPPING = "/course-requirement";
 
     //Attribute Constants
     public static final String STUDENT_COURSE_ID_ATTRIBUTE = "courseID";

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import ca.bc.gov.educ.api.course.model.dto.Course;
 import ca.bc.gov.educ.api.course.model.dto.CourseRequirement;
+import ca.bc.gov.educ.api.course.model.dto.CourseRequirements;
 import ca.bc.gov.educ.api.course.service.CourseRequirementService;
 import ca.bc.gov.educ.api.course.service.CourseService;
 import ca.bc.gov.educ.api.course.util.EducCourseApiConstants;
@@ -71,5 +72,24 @@ public class CourseController {
             @RequestParam(value = "pageSize", required = false,defaultValue = "150") Integer pageSize) { 
     	logger.debug("getAllCoursesRequirementByRule : ");
         return courseRequirementService.getAllCourseRequirementListByRule(rule, pageNo, pageSize);
+    }
+    
+    @GetMapping(EducCourseApiConstants.GET_COURSE_REQUIREMENT_BY_CODE_AND_LEVEL_MAPPING)
+    @PreAuthorize("#oauth2.hasScope('READ_GRAD_COURSE_REQUIREMENT_DATA')")
+    public CourseRequirements getCourseRequirements(
+            @RequestParam(value = "courseCode", required = false) String courseCode,
+            @RequestParam(value = "courseLevel", required = false) String courseLevel) {
+
+        CourseRequirements courseRequirements = new CourseRequirements();
+
+        if ((courseCode == null || courseCode.isEmpty()) && (courseLevel == null || courseLevel.isEmpty())) {
+            logger.debug("**** CourseCode and CourseLevel Not Specified. Retreiving all CourseRequirements.");
+            courseRequirements = courseRequirementService.getCourseRequirements();
+        } else {
+            logger.debug("**** Retreiving CourseRequirements for CourseCode= " + courseCode + " and CourseLevel= " + courseLevel + ".");
+            courseRequirements = courseRequirementService.getCourseRequirements(courseCode, courseLevel);
+        }
+
+        return courseRequirements;
     }
 }

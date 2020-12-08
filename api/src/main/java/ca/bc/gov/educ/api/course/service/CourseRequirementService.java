@@ -13,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import ca.bc.gov.educ.api.course.model.dto.CourseRequirement;
+import ca.bc.gov.educ.api.course.model.dto.CourseRequirements;
 import ca.bc.gov.educ.api.course.model.entity.CourseRequirementEntity;
 import ca.bc.gov.educ.api.course.model.transformer.CourseRequirementTransformer;
 import ca.bc.gov.educ.api.course.repository.CourseRequirementRepository;
@@ -25,6 +26,9 @@ public class CourseRequirementService {
 
     @Autowired
     private CourseRequirementTransformer courseRequirementTransformer;
+    
+    @Autowired
+    CourseRequirements courseRequirements;
 
     private static Logger logger = LoggerFactory.getLogger(CourseRequirementService.class);
 
@@ -70,5 +74,18 @@ public class CourseRequirementService {
         }
 
         return courseReqList;
+    }
+
+	public CourseRequirements getCourseRequirements() {
+        courseRequirements.setCourseRequirements(
+                courseRequirementTransformer.transformToDTO(courseRequirementRepository.findAll()));
+        return courseRequirements;
+    }
+
+    public CourseRequirements getCourseRequirements(String courseCode, String courseLevel) {
+        courseRequirements.setCourseRequirements(
+                courseRequirementTransformer.transformToDTO(
+                        courseRequirementRepository.findByCourseCodeAndCourseLevel(courseCode, courseLevel)));
+        return courseRequirements;
     }
 }

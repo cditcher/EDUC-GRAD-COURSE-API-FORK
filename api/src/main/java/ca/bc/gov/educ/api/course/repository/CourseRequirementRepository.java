@@ -17,4 +17,6 @@ public interface CourseRequirementRepository extends JpaRepository<CourseRequire
 
 	Page<CourseRequirementEntity> findByRuleCode(String rule, Pageable paging);
 
+	List<CourseRequirementEntity> findByCourseCodeAndCourseLevel(String courseCode, String courseLevel);
+
 }
