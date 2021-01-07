@@ -18,7 +18,10 @@ import org.springframework.web.bind.annotation.RestController;
 import ca.bc.gov.educ.api.course.model.dto.Course;
 import ca.bc.gov.educ.api.course.model.dto.CourseRequirement;
 import ca.bc.gov.educ.api.course.model.dto.CourseRequirements;
+import ca.bc.gov.educ.api.course.model.dto.CourseRestriction;
+import ca.bc.gov.educ.api.course.model.dto.CourseRestrictions;
 import ca.bc.gov.educ.api.course.service.CourseRequirementService;
+import ca.bc.gov.educ.api.course.service.CourseRestrictionService;
 import ca.bc.gov.educ.api.course.service.CourseService;
 import ca.bc.gov.educ.api.course.util.EducCourseApiConstants;
 import ca.bc.gov.educ.api.course.util.GradValidation;
@@ -42,6 +45,9 @@ public class CourseController {
     
     @Autowired
     CourseRequirementService courseRequirementService;
+    
+    @Autowired
+    CourseRestrictionService courseRestrictionService;
     
     @Autowired
 	GradValidation validation;
@@ -101,5 +107,33 @@ public class CourseController {
         }
 
         return response.GET(courseRequirements);
+    }
+    
+    @GetMapping(EducCourseApiConstants.GET_COURSE_RESTRICTION_MAPPING)
+    @PreAuthorize(PermissionsContants.READ_GRAD_COURSE_RESTRICTION)
+    public ResponseEntity<List<CourseRestriction>> getAllCoursesRestriction(
+    		@RequestParam(value = "pageNo", required = false,defaultValue = "0") Integer pageNo, 
+            @RequestParam(value = "pageSize", required = false,defaultValue = "150") Integer pageSize) { 
+    	logger.debug("getAllCoursesRestriction : ");
+        return response.GET(courseRestrictionService.getAllCourseRestrictionList(pageNo,pageSize));
+    }
+    
+    @GetMapping(EducCourseApiConstants.GET_COURSE_RESTRICTION_BY_CODE_AND_LEVEL_MAPPING)
+    @PreAuthorize(PermissionsContants.READ_GRAD_COURSE_RESTRICTION)
+    public ResponseEntity<CourseRestrictions> getCourseRestrictions(
+            @RequestParam(value = "courseCode", required = false) String courseCode,
+            @RequestParam(value = "courseLevel", required = false) String courseLevel) {
+
+        CourseRestrictions courseRestrictions = new CourseRestrictions();
+
+        if ((courseCode == null || courseCode.isEmpty()) && (courseLevel == null || courseLevel.isEmpty())) {
+            logger.debug("**** CourseCode and CourseLevel Not Specified. Retreiving all CourseRestrictions.");
+            courseRestrictions = courseRestrictionService.getCourseRestrictions();
+        } else {
+            logger.debug("**** Retreiving CourseRestrictions for CourseCode= " + courseCode + " and CourseLevel= " + courseLevel + ".");
+            courseRestrictions = courseRestrictionService.getCourseRestrictions(courseCode, courseLevel);
+        }
+
+        return response.GET(courseRestrictions);
     }
 }

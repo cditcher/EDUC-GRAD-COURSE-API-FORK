@@ -15,6 +15,9 @@ public class EducCourseApiConstants {
     public static final String GET_COURSE_REQUIREMENT_BY_RULE_MAPPING = "/requirement/rule";
     public static final String GET_COURSE_REQUIREMENT_BY_CODE_AND_LEVEL_MAPPING = "/course-requirement";
 
+    public static final String GET_COURSE_RESTRICTION_MAPPING = "/restriction";
+    public static final String GET_COURSE_RESTRICTION_BY_CODE_AND_LEVEL_MAPPING = "/course-restriction";
+    
     //Attribute Constants
     public static final String STUDENT_COURSE_ID_ATTRIBUTE = "courseID";
 
@@ -25,7 +28,8 @@ public class EducCourseApiConstants {
     public static final Date DEFAULT_UPDATED_TIMESTAMP = new Date();
 
     //Default Date format constants
-    public static final String DEFAULT_DATE_FORMAT = "dd-MMM-yyyy";
+    public static final String DEFAULT_DATE_FORMAT = "yyyy-MM-dd";
     
     public static final String TRAX_DATE_FORMAT = "yyyyMM";
+	
 }
