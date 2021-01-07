@@ -15,7 +15,7 @@ import lombok.Data;
 @Data
 @Immutable
 @Entity
-@Table(name = "COURSE_REQUIREMENT")
+@Table(name = "GRAD_COURSE_REQUIREMENT")
 public class CourseRequirementEntity {
    
 	@Id
