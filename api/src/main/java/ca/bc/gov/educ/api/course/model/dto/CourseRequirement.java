@@ -17,19 +17,15 @@ public class CourseRequirement extends BaseModel {
     private String courseLevel;
     private String ruleCode;
 
-    public UUID getCourseRequirementId() {
-        return courseRequirementId;
-    }
-
     public String getCourseCode() {
-        return courseCode.trim();
+        if (courseCode != null)
+            courseCode = courseCode.trim();
+        return courseCode;
     }
 
     public String getCourseLevel() {
-        return courseLevel.trim();
-    }
-
-    public String getRuleCode() {
-        return ruleCode.trim();
+        if (courseLevel != null)
+            courseLevel = courseLevel.trim();
+        return courseLevel;
     }
 }
