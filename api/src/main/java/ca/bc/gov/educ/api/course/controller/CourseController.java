@@ -71,6 +71,13 @@ public class CourseController {
         return response.GET(courseService.getCourseDetails(courseCode,courseLevel));
     }
     
+    @GetMapping(EducCourseApiConstants.GET_STUDENT_COURSE_BY_ID_MAPPING)
+    @PreAuthorize(PermissionsContants.READ_GRAD_COURSE)
+    public ResponseEntity<Course> getCourseDetailsJustCode(@PathVariable String courseCode) { 
+    	logger.debug("getCourseDetails with Code : ");
+        return response.GET(courseService.getCourseDetails(courseCode," "));
+    }
+    
     @GetMapping(EducCourseApiConstants.GET_COURSE_REQUIREMENT_MAPPING)
     @PreAuthorize(PermissionsContants.READ_GRAD_COURSE_REQUIREMENT)
     public ResponseEntity<List<CourseRequirement>> getAllCoursesRequirement(
