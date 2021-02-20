@@ -9,6 +9,7 @@ public class EducCourseApiConstants {
     public static final String API_VERSION = "v1";
     public static final String GRAD_COURSE_API_ROOT_MAPPING = "/api/" + API_VERSION + "/course";
     
+    public static final String GET_COURSE_BY_SEARCH_PARAMS_MAPPING = "/coursesearch";
     public static final String GET_STUDENT_COURSE_BY_ID_MAPPING = "/{courseCode}";
     public static final String GET_COURSE_BY_CODE_MAPPING="/{courseCode}/level/{courseLevel}";
     public static final String GET_COURSE_REQUIREMENT_MAPPING = "/requirement";
@@ -16,6 +17,7 @@ public class EducCourseApiConstants {
     public static final String GET_COURSE_REQUIREMENT_BY_CODE_AND_LEVEL_MAPPING = "/course-requirement";
 
     public static final String GET_COURSE_RESTRICTION_MAPPING = "/restriction";
+    public static final String GET_COURSE_RESTRICTION_BY_SEARCH_PARAMS_MAPPING = "/courserestrictionsearch";
     public static final String GET_COURSE_RESTRICTION_BY_CODE_AND_LEVEL_MAPPING = "/course-restriction";
     
     //Attribute Constants
