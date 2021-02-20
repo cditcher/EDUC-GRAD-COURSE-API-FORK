@@ -19,6 +19,17 @@ public class Course {
     private String workExpFlag;    
     private String genericCourseType;
     
+    public String getCourseCode() {
+		return courseCode != null ? courseCode.trim(): null;
+	}
+	public String getCourseName() {
+		return courseName != null ? courseName.trim(): null; 
+	}	
+
+	public String getCourseLevel() {
+		return courseLevel != null ? courseLevel.trim(): null;
+	}
+    
 	@Override
 	public String toString() {
 		return "Course [courseCode=" + courseCode + ", courseLevel=" + courseLevel + ", courseName=" + courseName

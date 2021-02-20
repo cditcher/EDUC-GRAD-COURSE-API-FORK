@@ -2,9 +2,11 @@ package ca.bc.gov.educ.api.course.controller;
 
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
@@ -71,6 +73,29 @@ public class CourseController {
         return response.GET(courseService.getCourseDetails(courseCode,courseLevel));
     }
     
+    @GetMapping(EducCourseApiConstants.GET_COURSE_BY_SEARCH_PARAMS_MAPPING)
+    @PreAuthorize(PermissionsContants.READ_GRAD_COURSE)
+    public ResponseEntity<List<Course>> getCoursesSearch(
+            @RequestParam(value = "courseCode", required = false) String courseCode,
+            @RequestParam(value = "courseLevel", required = false) String courseLevel,
+            @RequestParam(value = "courseName", required = false) String courseName) { 
+    	logger.debug("getCoursesSearch : ");
+    	if((StringUtils.isNotBlank(courseName) && courseName.length() < 3)) {
+    		validation.addError("Course Name should be minimum 3 digits for Course Search");
+    	}
+    	if((StringUtils.isNotBlank(courseCode) && courseCode.length() < 2)) {
+    		validation.addError("Course Code should be minimum 2 digits for Course Search");
+    	}
+    	if((StringUtils.isNotBlank(courseLevel) && courseLevel.length() < 2)) {
+    		validation.addError("Course Level should be minimum 2 digits for Course Search");
+    	}
+    	if(validation.hasErrors()) {
+    		validation.stopOnErrors();
+    		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    	}
+        return response.GET(courseService.getCourseSearchList(courseCode,courseLevel,courseName));
+    }
+    
     @GetMapping(EducCourseApiConstants.GET_STUDENT_COURSE_BY_ID_MAPPING)
     @PreAuthorize(PermissionsContants.READ_GRAD_COURSE)
     public ResponseEntity<Course> getCourseDetailsJustCode(@PathVariable String courseCode) { 
@@ -123,6 +148,25 @@ public class CourseController {
             @RequestParam(value = "pageSize", required = false,defaultValue = "150") Integer pageSize) { 
     	logger.debug("getAllCoursesRestriction : ");
         return response.GET(courseRestrictionService.getAllCourseRestrictionList(pageNo,pageSize));
+    }
+    
+    @GetMapping(EducCourseApiConstants.GET_COURSE_RESTRICTION_BY_SEARCH_PARAMS_MAPPING)
+    @PreAuthorize(PermissionsContants.READ_GRAD_COURSE_RESTRICTION)
+    public ResponseEntity<List<CourseRestriction>> getCourseRestrictionsSearch(
+            @RequestParam(value = "mainCourseCode", required = false) String mainCourseCode,
+            @RequestParam(value = "mainCourseLevel", required = false) String mainCourseLevel) { 
+    	logger.debug("getCourseRestrictionsSearch : ");
+    	if((StringUtils.isNotBlank(mainCourseCode) && mainCourseCode.length() < 2)) {
+    		validation.addError("Course Code should be minimum 2 digits for Course Search");
+    	}
+    	if((StringUtils.isNotBlank(mainCourseLevel) && mainCourseLevel.length() < 2)) {
+    		validation.addError("Course Level should be minimum 2 digits for Course Search");
+    	}
+    	if(validation.hasErrors()) {
+    		validation.stopOnErrors();
+    		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    	}
+        return response.GET(courseRestrictionService.getCourseRestrictionsSearchList(mainCourseCode,mainCourseLevel));
     }
     
     @GetMapping(EducCourseApiConstants.GET_COURSE_RESTRICTION_BY_CODE_AND_LEVEL_MAPPING)

@@ -4,6 +4,7 @@ package ca.bc.gov.educ.api.course.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,5 +59,9 @@ public class CourseService {
 		key.setCourseCode(crseCode);
 		key.setCourseLevel(crseLvl);
 		return courseTransformer.transformToDTO(courseRepo.findByCourseKey(key));
+	}
+
+	public List<Course> getCourseSearchList(String courseCode, String courseLevel, String courseName) {
+		return courseTransformer.transformToDTO(courseRepo.searchForCourse(StringUtils.toRootUpperCase(StringUtils.strip(courseCode, "*")),StringUtils.toRootUpperCase(StringUtils.strip(courseLevel, "*")),StringUtils.toRootUpperCase(StringUtils.strip(courseName, "*"))));
 	}
 }
