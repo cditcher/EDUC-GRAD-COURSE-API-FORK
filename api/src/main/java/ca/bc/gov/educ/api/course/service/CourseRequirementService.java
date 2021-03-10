@@ -77,13 +77,13 @@ public class CourseRequirementService {
     }
 
 	public CourseRequirements getCourseRequirements() {
-        courseRequirements.setCourseRequirements(
+        courseRequirements.setCourseRequirementList(
                 courseRequirementTransformer.transformToDTO(courseRequirementRepository.findAll()));
         return courseRequirements;
     }
 
     public CourseRequirements getCourseRequirements(String courseCode, String courseLevel) {
-        courseRequirements.setCourseRequirements(
+        courseRequirements.setCourseRequirementList(
                 courseRequirementTransformer.transformToDTO(
                         courseRequirementRepository.findByCourseCodeAndCourseLevel(courseCode, courseLevel)));
         return courseRequirements;
