@@ -38,12 +38,12 @@ objects:
                 failureThreshold: 3
                 successThreshold: 1
               livenessProbe:
-                httpGet:
-                  path: /actuator/health
-                  port: 8080
-                periodSeconds: 30
-                failureThreshold: 3
-                successThreshold: 1
+                exec:
+                  command:
+                    - cd
+                    - ..
+                initialDelaySeconds: 15
+                timeoutSeconds: 1
               name: "${APP_NAME}-${JOB_NAME}"
               ports:
                 - containerPort: ${{CONTAINER_PORT}}
