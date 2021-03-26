@@ -19,4 +19,6 @@ public interface CourseRequirementRepository extends JpaRepository<CourseRequire
 
 	List<CourseRequirementEntity> findByCourseCodeAndCourseLevel(String courseCode, String courseLevel);
 
+	List<CourseRequirementEntity> findByCourseCodeIn(List<String> courseCodes);
+
 }
