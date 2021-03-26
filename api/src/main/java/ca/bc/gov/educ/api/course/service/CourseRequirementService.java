@@ -12,6 +12,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import ca.bc.gov.educ.api.course.model.dto.CourseList;
 import ca.bc.gov.educ.api.course.model.dto.CourseRequirement;
 import ca.bc.gov.educ.api.course.model.dto.CourseRequirements;
 import ca.bc.gov.educ.api.course.model.entity.CourseRequirementEntity;
@@ -88,4 +89,11 @@ public class CourseRequirementService {
                         courseRequirementRepository.findByCourseCodeAndCourseLevel(courseCode, courseLevel)));
         return courseRequirements;
     }
+
+	public CourseRequirements getCourseRequirementListByCourses(CourseList courseList) {
+		courseRequirements.setCourseRequirementList(
+                courseRequirementTransformer.transformToDTO(
+                        courseRequirementRepository.findByCourseCodeIn(courseList.getCourseCodes())));
+        return courseRequirements;
+	}
 }

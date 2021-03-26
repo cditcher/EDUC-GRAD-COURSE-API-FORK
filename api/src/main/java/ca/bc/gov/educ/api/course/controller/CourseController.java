@@ -13,11 +13,14 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import ca.bc.gov.educ.api.course.model.dto.Course;
+import ca.bc.gov.educ.api.course.model.dto.CourseList;
 import ca.bc.gov.educ.api.course.model.dto.CourseRequirement;
 import ca.bc.gov.educ.api.course.model.dto.CourseRequirements;
 import ca.bc.gov.educ.api.course.model.dto.CourseRestriction;
@@ -139,6 +142,13 @@ public class CourseController {
         }
 
         return response.GET(courseRequirements);
+    }
+    
+    @PostMapping(EducCourseApiConstants.GET_COURSE_REQUIREMENT_BY_COURESE_LIST_MAPPING)
+    @PreAuthorize(PermissionsContants.READ_GRAD_COURSE_REQUIREMENT)
+    public ResponseEntity<CourseRequirements> getCoursesRequirementByCourse(@RequestBody CourseList courseList) { 
+    	logger.debug("getAllCoursesRequirement : ");
+        return response.GET(courseRequirementService.getCourseRequirementListByCourses(courseList));
     }
     
     @GetMapping(EducCourseApiConstants.GET_COURSE_RESTRICTION_MAPPING)
