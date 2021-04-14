@@ -9,7 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
+import org.springframework.security.oauth2.provider.authentication.OAuth2AuthenticationDetails;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import ca.bc.gov.educ.api.course.model.dto.AllCourseRequirements;
 import ca.bc.gov.educ.api.course.model.dto.Course;
 import ca.bc.gov.educ.api.course.model.dto.CourseList;
 import ca.bc.gov.educ.api.course.model.dto.CourseRequirement;
@@ -121,11 +124,13 @@ public class CourseController {
     @PreAuthorize(PermissionsContants.READ_GRAD_COURSE_REQUIREMENT)
     @Operation(summary = "Find All Course Requirements", description = "Get All Course Requirements", tags = { "Course Requirements" })
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "OK")})
-    public ResponseEntity<List<CourseRequirement>> getAllCoursesRequirement(
+    public ResponseEntity<List<AllCourseRequirements>> getAllCoursesRequirement(
     		@RequestParam(value = "pageNo", required = false,defaultValue = "0") Integer pageNo, 
-            @RequestParam(value = "pageSize", required = false,defaultValue = "150") Integer pageSize) { 
+            @RequestParam(value = "pageSize", required = false,defaultValue = "50") Integer pageSize) { 
     	logger.debug("getAllCoursesRequirement : ");
-        return response.GET(courseRequirementService.getAllCourseRequirementList(pageNo,pageSize));
+    	OAuth2AuthenticationDetails auth = (OAuth2AuthenticationDetails) SecurityContextHolder.getContext().getAuthentication().getDetails(); 
+    	String accessToken = auth.getTokenValue();
+        return response.GET(courseRequirementService.getAllCourseRequirementList(pageNo,pageSize,accessToken));
     }
     
     @GetMapping(EducCourseApiConstants.GET_COURSE_REQUIREMENT_BY_RULE_MAPPING)
