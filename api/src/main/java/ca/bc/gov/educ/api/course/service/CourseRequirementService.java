@@ -13,13 +13,11 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import ca.bc.gov.educ.api.course.model.dto.AllCourseRequirements;
+import ca.bc.gov.educ.api.course.model.dto.Course;
 import ca.bc.gov.educ.api.course.model.dto.CourseList;
 import ca.bc.gov.educ.api.course.model.dto.CourseRequirement;
 import ca.bc.gov.educ.api.course.model.dto.CourseRequirements;
@@ -28,7 +26,6 @@ import ca.bc.gov.educ.api.course.model.entity.CourseRequirementEntity;
 import ca.bc.gov.educ.api.course.model.transformer.CourseRequirementTransformer;
 import ca.bc.gov.educ.api.course.repository.CourseRequirementRepository;
 import ca.bc.gov.educ.api.course.util.EducCourseApiConstants;
-import ca.bc.gov.educ.api.course.util.EducCourseApiUtils;
 
 @Service
 public class CourseRequirementService {
@@ -42,11 +39,15 @@ public class CourseRequirementService {
     @Autowired
     CourseRequirements courseRequirements;
     
+    @Autowired
+    CourseService courseService;
+    
     @Value(EducCourseApiConstants.ENDPOINT_RULE_DETAIL_URL)
     private String getRuleDetails;
+   
     
     @Autowired
-    private RestTemplate restTemplate;
+    WebClient webClient;
 
     private static Logger logger = LoggerFactory.getLogger(CourseRequirementService.class);
 
@@ -61,7 +62,6 @@ public class CourseRequirementService {
     public List<AllCourseRequirements> getAllCourseRequirementList(Integer pageNo, Integer pageSize,String accessToken) {
         List<CourseRequirement> courseReqList  = new ArrayList<CourseRequirement>();
         List<AllCourseRequirements> allCourseRequiremntList = new ArrayList<AllCourseRequirements>();
-        HttpHeaders httpHeaders = EducCourseApiUtils.getHeaders(accessToken);
         try {  
         	Pageable paging = PageRequest.of(pageNo, pageSize);        	 
             Page<CourseRequirementEntity> pagedResult = courseRequirementRepository.findAll(paging);        	
@@ -69,8 +69,11 @@ public class CourseRequirementService {
             courseReqList.forEach((cR) -> {
             	AllCourseRequirements obj = new AllCourseRequirements();
             	BeanUtils.copyProperties(cR, obj);
-            	List<GradRuleDetails> ruleList = restTemplate.exchange(String.format(getRuleDetails,cR.getRuleCode()), HttpMethod.GET,
-    					new HttpEntity<>(httpHeaders), new ParameterizedTypeReference<List<GradRuleDetails>>() {}).getBody();
+            	Course course = courseService.getCourseDetails(cR.getCourseCode(), cR.getCourseLevel());
+        		if(course != null) {
+        			obj.setCourseName(course.getCourseName());
+        		}
+            	List<GradRuleDetails> ruleList = webClient.get().uri(String.format(getRuleDetails,cR.getRuleCode())).headers(h -> h.setBearerAuth(accessToken)).retrieve().bodyToMono(new ParameterizedTypeReference<List<GradRuleDetails>>() {}).block();
             	String requirementProgram = "";
             	for(GradRuleDetails rL: ruleList) {
             		obj.setRequirementName(rL.getRequirementName());
@@ -116,6 +119,12 @@ public class CourseRequirementService {
         	Pageable paging = PageRequest.of(pageNo, pageSize);        	 
             Page<CourseRequirementEntity> pagedResult = courseRequirementRepository.findByRuleCode(rule,paging);        	
             courseReqList = courseRequirementTransformer.transformToDTO(pagedResult.getContent()); 
+            courseReqList.forEach(cR -> {
+            	Course course = courseService.getCourseDetails(cR.getCourseCode(), cR.getCourseLevel());
+        		if(course != null) {
+        			cR.setCourseName(course.getCourseName());
+        		}
+            });
         } catch (Exception e) {
             logger.debug("Exception:" + e);
         }

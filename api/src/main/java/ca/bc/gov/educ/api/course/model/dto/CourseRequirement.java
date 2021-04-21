@@ -16,6 +16,7 @@ public class CourseRequirement extends BaseModel {
 	private String courseCode;
     private String courseLevel;
     private String ruleCode;
+    private String courseName;
 
     public String getCourseCode() {
         if (courseCode != null)
@@ -27,5 +28,9 @@ public class CourseRequirement extends BaseModel {
         if (courseLevel != null)
             courseLevel = courseLevel.trim();
         return courseLevel;
+    }
+    
+    public String getCourseName() {
+    	return courseName != null ? courseName.trim():null;
     }
 }
