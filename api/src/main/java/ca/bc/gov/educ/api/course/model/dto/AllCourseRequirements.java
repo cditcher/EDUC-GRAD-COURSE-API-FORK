@@ -15,9 +15,14 @@ public class AllCourseRequirements extends BaseModel {
 	private UUID courseRequirementId;
 	private String courseCode;
     private String courseLevel;
+    private String courseName;
     private String ruleCode;
     private String requirementName;
     private String requirementProgram;
+    
+    public String getCourseName() {
+    	return courseName != null ? courseName.trim():null;
+    }
 
     public String getCourseCode() {
         if (courseCode != null)
