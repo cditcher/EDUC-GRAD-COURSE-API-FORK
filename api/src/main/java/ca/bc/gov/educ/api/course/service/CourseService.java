@@ -44,9 +44,9 @@ public class CourseService {
         List<Course> course  = new ArrayList<Course>();
 
         try {  
-        	Pageable paging = PageRequest.of(pageNo, pageSize);        	 
-            Page<CourseEntity> pagedResult = courseRepo.findAll(paging);        	
-        	course = courseTransformer.transformToDTO(pagedResult.getContent()); 
+        	//Pageable paging = PageRequest.of(pageNo, pageSize);        	 
+           // Page<CourseEntity> pagedResult = courseRepo.findAll(paging);        	
+        	course = courseTransformer.transformToDTO(courseRepo.findAll()); 
         } catch (Exception e) {
             logger.debug("Exception:" + e);
         }
