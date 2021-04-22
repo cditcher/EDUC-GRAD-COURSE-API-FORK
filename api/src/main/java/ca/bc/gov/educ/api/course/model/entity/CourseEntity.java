@@ -37,4 +37,7 @@ public class CourseEntity {
     
     @Column(name = "GENERIC_CRSE_TYPE", nullable = true)
     private String genericCourseType;
+    
+    @Column(name = "CRSE_REG_ID", nullable = true)
+    private String coRegID;
 }
