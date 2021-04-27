@@ -63,9 +63,9 @@ public class CourseRequirementService {
         List<CourseRequirement> courseReqList  = new ArrayList<CourseRequirement>();
         List<AllCourseRequirements> allCourseRequiremntList = new ArrayList<AllCourseRequirements>();
         try {  
-        	Pageable paging = PageRequest.of(pageNo, pageSize);        	 
-            Page<CourseRequirementEntity> pagedResult = courseRequirementRepository.findAll(paging);        	
-            courseReqList = courseRequirementTransformer.transformToDTO(pagedResult.getContent());
+        	//Pageable paging = PageRequest.of(pageNo, pageSize);        	 
+            //Page<CourseRequirementEntity> pagedResult = courseRequirementRepository.findAll(paging);        	
+            courseReqList = courseRequirementTransformer.transformToDTO(courseRequirementRepository.findAll());
             courseReqList.forEach((cR) -> {
             	AllCourseRequirements obj = new AllCourseRequirements();
             	BeanUtils.copyProperties(cR, obj);
