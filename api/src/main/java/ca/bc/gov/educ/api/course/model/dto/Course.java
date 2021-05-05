@@ -30,6 +30,14 @@ public class Course {
 	public String getCourseLevel() {
 		return courseLevel != null ? courseLevel.trim(): null;
 	}
+	
+	public String getLanguage() {
+		return language != null ? language.trim(): null;
+	}
+	
+	public String getGenericCourseType() {
+		return genericCourseType != null ? genericCourseType.trim(): null;
+	}
     
 	@Override
 	public String toString() {
