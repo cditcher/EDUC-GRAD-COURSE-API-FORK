@@ -120,7 +120,7 @@ public class CourseRequirementService {
             Page<CourseRequirementEntity> pagedResult = courseRequirementRepository.findByRuleCode(rule,paging);        	
             courseReqList = courseRequirementTransformer.transformToDTO(pagedResult.getContent()); 
             courseReqList.forEach(cR -> {
-            	Course course = courseService.getCourseDetails(cR.getCourseCode(), cR.getCourseLevel());
+            	Course course = courseService.getCourseDetails(cR.getCourseCode(), cR.getCourseLevel().equalsIgnoreCase("") ? " ":cR.getCourseLevel());
         		if(course != null) {
         			cR.setCourseName(course.getCourseName());
         		}

@@ -8,14 +8,10 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import ca.bc.gov.educ.api.course.model.dto.CourseRestriction;
 import ca.bc.gov.educ.api.course.model.dto.CourseRestrictions;
-import ca.bc.gov.educ.api.course.model.entity.CourseRestrictionsEntity;
 import ca.bc.gov.educ.api.course.model.transformer.CourseRestrictionsTransformer;
 import ca.bc.gov.educ.api.course.repository.CourseRestrictionRepository;
 
@@ -45,9 +41,9 @@ public class CourseRestrictionService {
         List<CourseRestriction> courseReqList  = new ArrayList<CourseRestriction>();
 
         try {  
-        	Pageable paging = PageRequest.of(pageNo, pageSize);        	 
-            Page<CourseRestrictionsEntity> pagedResult = courseRestrictionRepository.findAll(paging);        	
-            courseReqList = courseRestrictionTransformer.transformToDTO(pagedResult.getContent()); 
+        	//Pageable paging = PageRequest.of(pageNo, pageSize);        	 
+           // Page<CourseRestrictionsEntity> pagedResult = courseRestrictionRepository.findAll(paging);        	
+            courseReqList = courseRestrictionTransformer.transformToDTO(courseRestrictionRepository.findAll()); 
         } catch (Exception e) {
             logger.debug("Exception:" + e);
         }
