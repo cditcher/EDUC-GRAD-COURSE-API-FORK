@@ -62,6 +62,10 @@ public class CourseService {
 	}
 
 	public List<Course> getCourseSearchList(String courseCode, String courseLevel, String courseName) {
-		return courseTransformer.transformToDTO(courseRepo.searchForCourse(StringUtils.toRootUpperCase(StringUtils.strip(courseCode, "*")),StringUtils.toRootUpperCase(StringUtils.strip(courseLevel, "*")),StringUtils.toRootUpperCase(StringUtils.strip(courseName, "*"))));
+		return courseTransformer.transformToDTO(
+		        courseRepo.searchForCourse(
+		                StringUtils.toRootUpperCase(StringUtils.strip(courseCode, "*")),
+                        StringUtils.toRootUpperCase(StringUtils.strip(courseLevel, "*")),
+                        StringUtils.toRootUpperCase(StringUtils.strip(courseName, "*"))));
 	}
 }

@@ -69,6 +69,9 @@ public class CourseRestrictionService {
     }
 
 	public List<CourseRestriction> getCourseRestrictionsSearchList(String mainCourseCode, String mainCourseLevel) {
-		return courseRestrictionTransformer.transformToDTO(courseRestrictionRepository.searchForCourseRestriction(StringUtils.toRootUpperCase(StringUtils.strip(mainCourseCode, "*")),StringUtils.toRootUpperCase(StringUtils.strip(mainCourseLevel, "*"))));
+		return courseRestrictionTransformer.transformToDTO(
+		        courseRestrictionRepository.searchForCourseRestriction(
+		                StringUtils.toRootUpperCase(StringUtils.strip(mainCourseCode, "*")),
+                        StringUtils.toRootUpperCase(StringUtils.strip(mainCourseLevel, "*"))));
 	}
 }
