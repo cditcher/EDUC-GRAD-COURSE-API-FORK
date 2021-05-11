@@ -1,6 +1,9 @@
 package ca.bc.gov.educ.api.course.controller;
 
+import java.util.Date;
 import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -12,8 +15,10 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.security.oauth2.provider.authentication.OAuth2AuthenticationDetails;
+import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import ca.bc.gov.educ.api.course.config.GradDateEditor;
 import ca.bc.gov.educ.api.course.model.dto.AllCourseRequirements;
 import ca.bc.gov.educ.api.course.model.dto.Course;
 import ca.bc.gov.educ.api.course.model.dto.CourseList;
@@ -53,6 +59,11 @@ public class CourseController {
 
     private static Logger logger = LoggerFactory.getLogger(CourseController.class);
 
+    @InitBinder
+	protected void initBinder(HttpServletRequest request, ServletRequestDataBinder binder) {
+	    binder.registerCustomEditor(Date.class, null,  new GradDateEditor());
+	}
+    
     @Autowired
     CourseService courseService;
     
@@ -97,22 +108,12 @@ public class CourseController {
     public ResponseEntity<List<Course>> getCoursesSearch(
             @RequestParam(value = "courseCode", required = false) String courseCode,
             @RequestParam(value = "courseLevel", required = false) String courseLevel,
-            @RequestParam(value = "courseName", required = false) String courseName) { 
+            @RequestParam(value = "courseName", required = false) String courseName,
+            @RequestParam(value = "language", required = false) String language,
+            @RequestParam(value = "startDate", required = false) Date startDate,
+			@RequestParam(value = "endDate", required = false) Date endDate) { 
     	logger.debug("getCoursesSearch : ");
-    	if((StringUtils.isNotBlank(courseName) && courseName.length() < 3)) {
-    		validation.addError("Course Name should be minimum 3 digits for Course Search");
-    	}
-    	if((StringUtils.isNotBlank(courseCode) && courseCode.length() < 2)) {
-    		validation.addError("Course Code should be minimum 2 digits for Course Search");
-    	}
-    	if((StringUtils.isNotBlank(courseLevel) && courseLevel.length() < 2)) {
-    		validation.addError("Course Level should be minimum 2 digits for Course Search");
-    	}
-    	if(validation.hasErrors()) {
-    		validation.stopOnErrors();
-    		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-    	}
-        return response.GET(courseService.getCourseSearchList(courseCode,courseLevel,courseName));
+        return response.GET(courseService.getCourseSearchList(courseCode,courseLevel,courseName,language,startDate,endDate));
     }
     
     @GetMapping(EducCourseApiConstants.GET_STUDENT_COURSE_BY_ID_MAPPING)

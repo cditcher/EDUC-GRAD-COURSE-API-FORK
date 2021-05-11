@@ -17,8 +17,10 @@ public class CourseTransformer {
     @Autowired
     ModelMapper modelMapper;
 
-    public Course transformToDTO (CourseEntity studentCourseEntity) {
-        Course studentCourse = modelMapper.map(studentCourseEntity, Course.class);
+    public Course transformToDTO (CourseEntity courseEntity) {
+        Course studentCourse = null;
+        if(courseEntity != null)
+        	studentCourse= modelMapper.map(courseEntity, Course.class);
         return studentCourse;
     }
 
