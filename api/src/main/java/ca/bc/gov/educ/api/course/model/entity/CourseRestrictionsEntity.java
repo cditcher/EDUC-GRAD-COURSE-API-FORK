@@ -33,10 +33,10 @@ public class CourseRestrictionsEntity extends BaseEntity  {
 	@Column(name = "CRSE_RESTRICTED_LVL", nullable = false)
     private String restrictedCourseLevel;   
 	
-	@Column(name = "RESTRICTION_START_DT", nullable = true)
+	@Column(name = "START_DT", nullable = true)
     private Date restrictionStartDate; 
 	
-	@Column(name = "RESTRICTION_END_DT", nullable = true)
+	@Column(name = "END_DT", nullable = true)
     private Date restrictionEndDate; 
 	
 }
