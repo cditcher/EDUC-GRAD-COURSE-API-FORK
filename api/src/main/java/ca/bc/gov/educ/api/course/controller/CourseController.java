@@ -52,7 +52,9 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 @RestController
 @RequestMapping(EducCourseApiConstants.GRAD_COURSE_API_ROOT_MAPPING)
 @EnableResourceServer
-@OpenAPIDefinition(info = @Info(title = "API for Course Management.", description = "This API is for Managing Course data.", version = "1"), security = {@SecurityRequirement(name = "OAUTH2", scopes = {"READ_GRAD_COURSE_DATA","READ_GRAD_COURSE_REQUIREMENT_DATA"})})
+@OpenAPIDefinition(info = @Info(title = "API for Course Management.",
+        description = "This API is for Managing Course data.", version = "1"),
+        security = {@SecurityRequirement(name = "OAUTH2", scopes = {"READ_GRAD_COURSE_DATA","READ_GRAD_COURSE_REQUIREMENT_DATA"})})
 public class CourseController {
 
     private static Logger logger = LoggerFactory.getLogger(CourseController.class);
@@ -90,9 +92,10 @@ public class CourseController {
     
     @GetMapping(EducCourseApiConstants.GET_COURSE_BY_CODE_MAPPING)
     @PreAuthorize(PermissionsContants.READ_GRAD_COURSE)
-    @Operation(summary = "Find a Course by Course Code and Course Level", description = "Get a Course by Course Code and Course Level", tags = { "Courses" })
+    @Operation(summary = "Find a Course by Course Code and Course Level",
+            description = "Get a Course by Course Code and Course Level", tags = { "Courses" })
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "OK")})
-    public ResponseEntity<Course> getCourseDetails(@PathVariable String courseCode,@PathVariable String courseLevel) { 
+    public ResponseEntity<Course> getCourseDetails(@PathVariable String courseCode, @PathVariable String courseLevel) {
     	logger.debug("getCourseDetails : ");
         return response.GET(courseService.getCourseDetails(courseCode,courseLevel));
     }
@@ -100,7 +103,8 @@ public class CourseController {
     @GetMapping(EducCourseApiConstants.GET_COURSE_BY_SEARCH_PARAMS_MAPPING)
     @PreAuthorize(PermissionsContants.READ_GRAD_COURSE)
     @Operation(summary = "Search for a Course", description = "Search for a Course", tags = { "Courses" })
-    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "OK"), @ApiResponse(responseCode = "400", description = "BAD REQUEST.")})
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "OK"),
+            @ApiResponse(responseCode = "400", description = "BAD REQUEST.")})
     public ResponseEntity<List<Course>> getCoursesSearch(
             @RequestParam(value = "courseCode", required = false) String courseCode,
             @RequestParam(value = "courseLevel", required = false) String courseLevel,
@@ -123,20 +127,23 @@ public class CourseController {
     
     @GetMapping(EducCourseApiConstants.GET_COURSE_REQUIREMENT_MAPPING)
     @PreAuthorize(PermissionsContants.READ_GRAD_COURSE_REQUIREMENT)
-    @Operation(summary = "Find All Course Requirements", description = "Get All Course Requirements", tags = { "Course Requirements" })
+    @Operation(summary = "Find All Course Requirements",
+            description = "Get All Course Requirements", tags = { "Course Requirements" })
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "OK")})
     public ResponseEntity<List<AllCourseRequirements>> getAllCoursesRequirement(
     		@RequestParam(value = "pageNo", required = false,defaultValue = "0") Integer pageNo, 
             @RequestParam(value = "pageSize", required = false,defaultValue = "50") Integer pageSize) { 
     	logger.debug("getAllCoursesRequirement : ");
-    	OAuth2AuthenticationDetails auth = (OAuth2AuthenticationDetails) SecurityContextHolder.getContext().getAuthentication().getDetails(); 
+    	OAuth2AuthenticationDetails auth = (OAuth2AuthenticationDetails) SecurityContextHolder
+                .getContext().getAuthentication().getDetails();
     	String accessToken = auth.getTokenValue();
         return response.GET(courseRequirementService.getAllCourseRequirementList(pageNo,pageSize,accessToken));
     }
     
     @GetMapping(EducCourseApiConstants.GET_COURSE_REQUIREMENT_BY_RULE_MAPPING)
     @PreAuthorize(PermissionsContants.READ_GRAD_COURSE_REQUIREMENT)
-    @Operation(summary = "Find all Course Requirements by Rule", description = "Get all Course Requirements by Rule", tags = { "Course Requirements" })
+    @Operation(summary = "Find all Course Requirements by Rule",
+            description = "Get all Course Requirements by Rule", tags = { "Course Requirements" })
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "OK")})
     public ResponseEntity<List<CourseRequirement>> getAllCoursesRequirementByRule(
     		@RequestParam(value = "rule", required = true) String rule,
@@ -148,7 +155,8 @@ public class CourseController {
     
     @GetMapping(EducCourseApiConstants.GET_COURSE_REQUIREMENT_BY_CODE_AND_LEVEL_MAPPING)
     @PreAuthorize(PermissionsContants.READ_GRAD_COURSE_REQUIREMENT)
-    @Operation(summary = "Find all Course Requirements by Course Code and Level", description = "Get all Course Requirements by Course Code and Level", tags = { "Course Requirements" })
+    @Operation(summary = "Find all Course Requirements by Course Code and Level",
+            description = "Get all Course Requirements by Course Code and Level", tags = { "Course Requirements" })
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "OK")})
     public ResponseEntity<CourseRequirements> getCourseRequirements(
             @RequestParam(value = "courseCode", required = false) String courseCode,
@@ -160,7 +168,8 @@ public class CourseController {
             logger.debug("**** CourseCode and CourseLevel Not Specified. Retreiving all CourseRequirements.");
             courseRequirements = courseRequirementService.getCourseRequirements();
         } else {
-            logger.debug("**** Retreiving CourseRequirements for CourseCode= " + courseCode + " and CourseLevel= " + courseLevel + ".");
+            logger.debug("**** Retreiving CourseRequirements for CourseCode= " + courseCode
+                    + " and CourseLevel= " + courseLevel + ".");
             courseRequirements = courseRequirementService.getCourseRequirements(courseCode, courseLevel);
         }
 
@@ -169,7 +178,8 @@ public class CourseController {
     
     @PostMapping(EducCourseApiConstants.GET_COURSE_REQUIREMENT_BY_COURESE_LIST_MAPPING)
     @PreAuthorize(PermissionsContants.READ_GRAD_COURSE_REQUIREMENT)
-    @Operation(summary = "Find all Course Requirements by Course Code list", description = "Get all Course Requirements by Course Code list", tags = { "Course Requirements" })
+    @Operation(summary = "Find all Course Requirements by Course Code list",
+            description = "Get all Course Requirements by Course Code list", tags = { "Course Requirements" })
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "OK")})
     public ResponseEntity<CourseRequirements> getCoursesRequirementByCourse(@RequestBody CourseList courseList) { 
     	logger.debug("getAllCoursesRequirement : ");
@@ -178,7 +188,8 @@ public class CourseController {
     
     @GetMapping(EducCourseApiConstants.GET_COURSE_RESTRICTION_MAPPING)
     @PreAuthorize(PermissionsContants.READ_GRAD_COURSE_RESTRICTION)
-    @Operation(summary = "Find All Course Restrictions", description = "Get All Course Restrictions", tags = { "Course Restrictions" })
+    @Operation(summary = "Find All Course Restrictions",
+            description = "Get All Course Restrictions", tags = { "Course Restrictions" })
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "OK")})
     public ResponseEntity<List<CourseRestriction>> getAllCoursesRestriction(
     		@RequestParam(value = "pageNo", required = false,defaultValue = "0") Integer pageNo, 
@@ -189,8 +200,10 @@ public class CourseController {
     
     @GetMapping(EducCourseApiConstants.GET_COURSE_RESTRICTION_BY_SEARCH_PARAMS_MAPPING)
     @PreAuthorize(PermissionsContants.READ_GRAD_COURSE_RESTRICTION)
-    @Operation(summary = "Find All Course Restrictions", description = "Get All Course Restrictions", tags = { "Course Restrictions" })
-    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "OK"), @ApiResponse(responseCode = "400", description = "BAD REQUEST.")})
+    @Operation(summary = "Find All Course Restrictions",
+            description = "Get All Course Restrictions", tags = { "Course Restrictions" })
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "OK"),
+            @ApiResponse(responseCode = "400", description = "BAD REQUEST.")})
     public ResponseEntity<List<CourseRestriction>> getCourseRestrictionsSearch(
             @RequestParam(value = "mainCourseCode", required = false) String mainCourseCode,
             @RequestParam(value = "mainCourseLevel", required = false) String mainCourseLevel) { 
@@ -210,7 +223,8 @@ public class CourseController {
     
     @GetMapping(EducCourseApiConstants.GET_COURSE_RESTRICTION_BY_CODE_AND_LEVEL_MAPPING)
     @PreAuthorize(PermissionsContants.READ_GRAD_COURSE_RESTRICTION)
-    @Operation(summary = "Find All Course Restrictions by Course Code and Level", description = "Get All Course Restrictions by Course Code and Level", tags = { "Course Restrictions" })
+    @Operation(summary = "Find All Course Restrictions by Course Code and Level",
+            description = "Get All Course Restrictions by Course Code and Level", tags = { "Course Restrictions" })
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "OK")})
     public ResponseEntity<CourseRestrictions> getCourseRestrictions(
             @RequestParam(value = "courseCode", required = false) String courseCode,
@@ -222,7 +236,8 @@ public class CourseController {
             logger.debug("**** CourseCode and CourseLevel Not Specified. Retreiving all CourseRestrictions.");
             courseRestrictions = courseRestrictionService.getCourseRestrictions();
         } else {
-            logger.debug("**** Retreiving CourseRestrictions for CourseCode= " + courseCode + " and CourseLevel= " + courseLevel + ".");
+            logger.debug("**** Retreiving CourseRestrictions for CourseCode= " + courseCode
+                    + " and CourseLevel= " + courseLevel + ".");
             courseRestrictions = courseRestrictionService.getCourseRestrictions(courseCode, courseLevel);
         }
 
