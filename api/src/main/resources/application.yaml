@@ -29,10 +29,6 @@ spring:
   jackson:
     deserialization:
       fail-on-unknown-properties: false
-  security:
-    user:
-      name: ${API_USERNAME}
-      password: ${API_PASSWORD}
 
 #Logging properties
 logging:
@@ -50,7 +46,7 @@ logging:
         gov:
           educ:
             api:
-              courseapi: ${APP_LOG_LEVEL}
+              course: ${APP_LOG_LEVEL}
     org:
       springframework:
         web: ${SPRING_WEB_LOG_LEVEL}
@@ -66,9 +62,17 @@ server:
       worker: 128
       io: 16
   #port: ${HTTP_PORT}
-  
+
+#API Documentation
+springdoc:
+  api-docs:
+    path: /api/v1/api-docs
+  swagger-ui:
+    path: /api/v1/api-docs-ui.html
+    operationsSorter: alpha
+
 #Ebdpoints
-endpoint: 
-  programmanagement-api: 
-    rule-detail: 
+endpoint:
+  programmanagement-api:
+    rule-detail:
       url : https://educ-grad-program-management-api-77c02f-dev.apps.silver.devops.gov.bc.ca/api/v1/programmanagement/programrules/%s

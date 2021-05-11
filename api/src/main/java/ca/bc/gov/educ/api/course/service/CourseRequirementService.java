@@ -73,7 +73,12 @@ public class CourseRequirementService {
         		if(course != null) {
         			obj.setCourseName(course.getCourseName());
         		}
-            	List<GradRuleDetails> ruleList = webClient.get().uri(String.format(getRuleDetails,cR.getRuleCode())).headers(h -> h.setBearerAuth(accessToken)).retrieve().bodyToMono(new ParameterizedTypeReference<List<GradRuleDetails>>() {}).block();
+            	List<GradRuleDetails> ruleList = webClient.get()
+                        .uri(String.format(getRuleDetails,cR.getRuleCode()))
+                        .headers(h -> h.setBearerAuth(accessToken))
+                        .retrieve()
+                        .bodyToMono(new ParameterizedTypeReference<List<GradRuleDetails>>() {})
+                        .block();
             	String requirementProgram = "";
             	for(GradRuleDetails rL: ruleList) {
             		obj.setRequirementName(rL.getRequirementName());
@@ -120,7 +125,8 @@ public class CourseRequirementService {
             Page<CourseRequirementEntity> pagedResult = courseRequirementRepository.findByRuleCode(rule,paging);        	
             courseReqList = courseRequirementTransformer.transformToDTO(pagedResult.getContent()); 
             courseReqList.forEach(cR -> {
-            	Course course = courseService.getCourseDetails(cR.getCourseCode(), cR.getCourseLevel().equalsIgnoreCase("") ? " ":cR.getCourseLevel());
+            	Course course = courseService.getCourseDetails(cR.getCourseCode(),
+                        cR.getCourseLevel().equalsIgnoreCase("") ? " ":cR.getCourseLevel());
         		if(course != null) {
         			cR.setCourseName(course.getCourseName());
         		}
