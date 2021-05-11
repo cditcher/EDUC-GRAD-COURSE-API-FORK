@@ -195,7 +195,7 @@ public class CourseController {
     		@RequestParam(value = "pageNo", required = false,defaultValue = "0") Integer pageNo, 
             @RequestParam(value = "pageSize", required = false,defaultValue = "150") Integer pageSize) { 
     	logger.debug("getAllCoursesRestriction : ");
-        return response.GET(courseRestrictionService.getAllCourseRestrictionList(pageNo,pageSize));
+        return response.GET(courseRestrictionService.getAllCourseRestrictionList());
     }
     
     @GetMapping(EducCourseApiConstants.GET_COURSE_RESTRICTION_BY_SEARCH_PARAMS_MAPPING)
@@ -242,5 +242,14 @@ public class CourseController {
         }
 
         return response.GET(courseRestrictions);
+    }
+    
+    @PostMapping(EducCourseApiConstants.GET_COURSE_RESTRICTIONS_BY_COURESE_LIST_MAPPING)
+    @PreAuthorize(PermissionsContants.READ_GRAD_COURSE_RESTRICTION)
+    @Operation(summary = "Find all Course Restrictions by Course Code list", description = "Get all Course Restrictions by Course Code list", tags = { "Course Restrictions" })
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "OK")})
+    public ResponseEntity<CourseRestrictions> getCoursesRestrictionsByCourse(@RequestBody CourseList courseList) { 
+    	logger.debug("getCoursesRestrictionsByCourse : ");
+        return response.GET(courseRestrictionService.getCourseRestrictionsListByCourses(courseList));
     }
 }

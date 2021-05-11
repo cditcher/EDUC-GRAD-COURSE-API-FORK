@@ -8,7 +8,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -21,7 +20,6 @@ import ca.bc.gov.educ.api.course.model.dto.Course;
 import ca.bc.gov.educ.api.course.model.entity.CourseEntity;
 
 @SpringBootApplication
-@ComponentScan(basePackages = { "ca.bc.gov.educ.api.course"})
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 @EnableCaching
 public class EducCourseApiApplication {

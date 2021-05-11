@@ -21,4 +21,6 @@ public interface CourseRestrictionRepository extends JpaRepository<CourseRestric
 			+ "(:mainCourseCode is null or si.CRSE_MAIN like :mainCourseCode%) and ROWNUM <= 50",nativeQuery = true)
 	List<CourseRestrictionsEntity> searchForCourseRestriction(String mainCourseCode, String mainCourseLevel);
 
+	List<CourseRestrictionsEntity> findByMainCourseIn(List<String> courseCodes);
+
 }
