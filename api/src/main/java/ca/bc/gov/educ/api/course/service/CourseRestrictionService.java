@@ -1,7 +1,6 @@
 package ca.bc.gov.educ.api.course.service;
 
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -10,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import ca.bc.gov.educ.api.course.model.dto.CourseList;
 import ca.bc.gov.educ.api.course.model.dto.CourseRestriction;
 import ca.bc.gov.educ.api.course.model.dto.CourseRestrictions;
 import ca.bc.gov.educ.api.course.model.transformer.CourseRestrictionsTransformer;
@@ -37,18 +37,8 @@ public class CourseRestrictionService {
      * @return Course 
      * @throws java.lang.Exception
      */
-    public List<CourseRestriction> getAllCourseRestrictionList(Integer pageNo, Integer pageSize) {
-        List<CourseRestriction> courseReqList  = new ArrayList<CourseRestriction>();
-
-        try {  
-        	//Pageable paging = PageRequest.of(pageNo, pageSize);        	 
-           // Page<CourseRestrictionsEntity> pagedResult = courseRestrictionRepository.findAll(paging);        	
-            courseReqList = courseRestrictionTransformer.transformToDTO(courseRestrictionRepository.findAll()); 
-        } catch (Exception e) {
-            logger.debug("Exception:" + e);
-        }
-
-        return courseReqList;
+    public List<CourseRestriction> getAllCourseRestrictionList() {
+        return courseRestrictionTransformer.transformToDTO(courseRestrictionRepository.findAll());
     }
     
     public CourseRestrictions getCourseRestrictions() {
@@ -69,5 +59,12 @@ public class CourseRestrictionService {
 		        courseRestrictionRepository.searchForCourseRestriction(
 		                StringUtils.toRootUpperCase(StringUtils.strip(mainCourseCode, "*")),
                         StringUtils.toRootUpperCase(StringUtils.strip(mainCourseLevel, "*"))));
+	}
+
+	public CourseRestrictions getCourseRestrictionsListByCourses(CourseList courseList) {
+		courseRestrictions.setCourseRestrictions(
+				courseRestrictionTransformer.transformToDTO(
+						courseRestrictionRepository.findByMainCourseIn(courseList.getCourseCodes())));
+        return courseRestrictions;
 	}
 }
