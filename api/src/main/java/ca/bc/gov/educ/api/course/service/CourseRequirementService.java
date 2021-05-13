@@ -60,13 +60,13 @@ public class CourseRequirementService {
      * @throws java.lang.Exception
      */
     public List<AllCourseRequirements> getAllCourseRequirementList(Integer pageNo, Integer pageSize,String accessToken) {
-        List<CourseRequirement> courseReqList  = new ArrayList<CourseRequirement>();
-        List<AllCourseRequirements> allCourseRequiremntList = new ArrayList<AllCourseRequirements>();
+        List<CourseRequirement> courseReqList  = new ArrayList<>();
+        List<AllCourseRequirements> allCourseRequiremntList = new ArrayList<>();
         try {  
         	Pageable paging = PageRequest.of(pageNo, pageSize);        	 
             Page<CourseRequirementEntity> pagedResult = courseRequirementRepository.findAll(paging);        	
             courseReqList = courseRequirementTransformer.transformToDTO(pagedResult.getContent());
-            courseReqList.forEach((cR) -> {
+            courseReqList.forEach(cR -> {
             	AllCourseRequirements obj = new AllCourseRequirements();
             	BeanUtils.copyProperties(cR, obj);
             	Course course = courseService.getCourseDetails(cR.getCourseCode(), cR.getCourseLevel());
@@ -79,26 +79,9 @@ public class CourseRequirementService {
                         .retrieve()
                         .bodyToMono(new ParameterizedTypeReference<List<GradRuleDetails>>() {})
                         .block();
-            	String requirementProgram = "";
-            	for(GradRuleDetails rL: ruleList) {
-            		obj.setRequirementName(rL.getRequirementName());
-            		if(rL.getProgramCode() != null) {
-            			if("".equalsIgnoreCase(requirementProgram)) {
-            				requirementProgram = rL.getProgramCode();
-            			}else {
-            				requirementProgram = requirementProgram + "|" + rL.getProgramCode();
-            			}
-            		}
-            		if(rL.getSpecialProgramCode() != null) {
-            			if("".equalsIgnoreCase(requirementProgram)) {
-            				requirementProgram = requirementProgram + rL.getSpecialProgramCode();
-            			}else {
-            				requirementProgram = requirementProgram + "|" + rL.getSpecialProgramCode();
-            			}
-            			
-            		}
-            	}
-            	obj.setRequirementProgram(requirementProgram);
+            	StringBuilder requirementProgram = getRequirementProgram(ruleList,obj);
+            	
+            	obj.setRequirementProgram(requirementProgram.toString());
             	allCourseRequiremntList.add(obj);
             });
             
@@ -107,6 +90,31 @@ public class CourseRequirementService {
         }
 
         return allCourseRequiremntList;
+    }
+    
+    public StringBuilder getRequirementProgram(List<GradRuleDetails> ruleList, AllCourseRequirements obj) {
+    	StringBuilder requirementProgram = new StringBuilder();
+    	for(GradRuleDetails rL: ruleList) {
+    		obj.setRequirementName(rL.getRequirementName());
+    		if(rL.getProgramCode() != null) {
+    			if(requirementProgram.length() == 0) {
+    				requirementProgram.append(rL.getProgramCode());
+    			}else {
+    				requirementProgram.append("|");
+    				requirementProgram.append(rL.getProgramCode());
+    			}
+    		}
+    		if(rL.getSpecialProgramCode() != null) {
+    			if(requirementProgram.length() == 0) {
+    				requirementProgram.append(rL.getSpecialProgramCode());
+    			}else {
+    				requirementProgram.append("|");
+    				requirementProgram.append(rL.getSpecialProgramCode());
+    			}
+    			
+    		}
+    	}
+    	return requirementProgram;
     }
     
     /**
@@ -118,7 +126,7 @@ public class CourseRequirementService {
      * @throws java.lang.Exception
      */
     public List<CourseRequirement> getAllCourseRequirementListByRule(String rule,Integer pageNo, Integer pageSize) {
-        List<CourseRequirement> courseReqList  = new ArrayList<CourseRequirement>();
+        List<CourseRequirement> courseReqList  = new ArrayList<>();
 
         try {  
         	Pageable paging = PageRequest.of(pageNo, pageSize);        	 
