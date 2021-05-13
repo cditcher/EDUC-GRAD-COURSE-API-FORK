@@ -87,7 +87,7 @@ public class CourseController {
     		@RequestParam(value = "pageNo", required = false,defaultValue = "0") Integer pageNo, 
             @RequestParam(value = "pageSize", required = false,defaultValue = "150") Integer pageSize) { 
     	logger.debug("getAllCourses : ");
-        return response.GET(courseService.getCourseList(pageNo,pageSize));
+        return response.GET(courseService.getCourseList());
     }
     
     @GetMapping(EducCourseApiConstants.GET_COURSE_BY_CODE_MAPPING)
@@ -162,7 +162,7 @@ public class CourseController {
             @RequestParam(value = "courseCode", required = false) String courseCode,
             @RequestParam(value = "courseLevel", required = false) String courseLevel) {
 
-        CourseRequirements courseRequirements = new CourseRequirements();
+        CourseRequirements courseRequirements = null;
 
         if ((courseCode == null || courseCode.isEmpty()) && (courseLevel == null || courseLevel.isEmpty())) {
             logger.debug("**** CourseCode and CourseLevel Not Specified. Retreiving all CourseRequirements.");
@@ -230,7 +230,7 @@ public class CourseController {
             @RequestParam(value = "courseCode", required = false) String courseCode,
             @RequestParam(value = "courseLevel", required = false) String courseLevel) {
 
-        CourseRestrictions courseRestrictions = new CourseRestrictions();
+        CourseRestrictions courseRestrictions = null;
 
         if ((courseCode == null || courseCode.isEmpty()) && (courseLevel == null || courseLevel.isEmpty())) {
             logger.debug("**** CourseCode and CourseLevel Not Specified. Retreiving all CourseRestrictions.");

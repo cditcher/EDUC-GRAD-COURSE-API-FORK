@@ -27,7 +27,8 @@ public class CourseRestrictionService {
     @Autowired
     CourseRestrictions courseRestrictions;
 
-    private static Logger logger = LoggerFactory.getLogger(CourseRestrictionService.class);
+    @SuppressWarnings("unused")
+	private static Logger logger = LoggerFactory.getLogger(CourseRestrictionService.class);
 
      /**
      * Get all course requirements in Course Restriction DTO
