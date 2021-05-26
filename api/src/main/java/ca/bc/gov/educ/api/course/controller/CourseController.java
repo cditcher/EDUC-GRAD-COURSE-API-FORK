@@ -176,6 +176,19 @@ public class CourseController {
         return response.GET(courseRequirements);
     }
     
+    @GetMapping(EducCourseApiConstants.GET_COURSE_REQUIREMENTS_BY_SEARCH_PARAMS_MAPPING)
+    @PreAuthorize(PermissionsContants.READ_GRAD_COURSE_REQUIREMENT)
+    @Operation(summary = "Search for a Course Requirements", description = "Search for a Course Requirements", tags = { "Course Requirements" })
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "OK"),
+            @ApiResponse(responseCode = "400", description = "BAD REQUEST.")})
+    public ResponseEntity<List<CourseRequirement>> getCoursesRequirementSearch(
+            @RequestParam(value = "courseCode", required = false) String courseCode,
+            @RequestParam(value = "courseLevel", required = false) String courseLevel,
+            @RequestParam(value = "rule", required = false) String rule) { 
+    	logger.debug("getCoursesRequirementSearch : ");
+        return response.GET(courseRequirementService.getCourseRequirementSearchList(courseCode,courseLevel,rule));
+    }
+    
     @PostMapping(EducCourseApiConstants.GET_COURSE_REQUIREMENT_BY_COURESE_LIST_MAPPING)
     @PreAuthorize(PermissionsContants.READ_GRAD_COURSE_REQUIREMENT)
     @Operation(summary = "Find all Course Requirements by Course Code list",
