@@ -2,8 +2,11 @@ package ca.bc.gov.educ.api.course.service;
 
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -24,8 +27,12 @@ import ca.bc.gov.educ.api.course.model.dto.CourseRequirements;
 import ca.bc.gov.educ.api.course.model.dto.GradRuleDetails;
 import ca.bc.gov.educ.api.course.model.entity.CourseRequirementEntity;
 import ca.bc.gov.educ.api.course.model.transformer.CourseRequirementTransformer;
+import ca.bc.gov.educ.api.course.repository.CourseRequirementCriteriaQueryRepository;
 import ca.bc.gov.educ.api.course.repository.CourseRequirementRepository;
+import ca.bc.gov.educ.api.course.repository.criteria.CriteriaHelper;
+import ca.bc.gov.educ.api.course.repository.criteria.GradCriteria.OperationEnum;
 import ca.bc.gov.educ.api.course.util.EducCourseApiConstants;
+
 
 @Service
 public class CourseRequirementService {
@@ -35,6 +42,9 @@ public class CourseRequirementService {
 
     @Autowired
     private CourseRequirementTransformer courseRequirementTransformer;
+    
+    @Autowired
+    private CourseRequirementCriteriaQueryRepository courseRequirementCriteriaQueryRepository;
     
     @Autowired
     CourseRequirements courseRequirements;
@@ -165,4 +175,29 @@ public class CourseRequirementService {
                         courseRequirementRepository.findByCourseCodeIn(courseList.getCourseCodes())));
         return courseRequirements;
 	}
+
+	public List<CourseRequirement> getCourseRequirementSearchList(String courseCode, String courseLevel, String rule) {
+		CriteriaHelper criteria = new CriteriaHelper();
+        criteria = getSearchCriteria("courseCode", courseCode, criteria);
+        criteria = getSearchCriteria("courseLevel", courseLevel, criteria);
+        criteria = getSearchCriteria("ruleCode", rule, criteria);
+
+        List<CourseRequirement> courseList = courseRequirementTransformer.transformToDTO(courseRequirementCriteriaQueryRepository.findByCriteria(criteria, CourseRequirementEntity.class));
+        if (!courseList.isEmpty()) {
+            Collections.sort(courseList, Comparator.comparing(CourseRequirement::getCourseCode)
+                    .thenComparing(CourseRequirement::getCourseLevel));
+        }
+        return courseList;
+	}
+	
+	public CriteriaHelper getSearchCriteria(String roolElement, String value, CriteriaHelper criteria) {
+        if (StringUtils.isNotBlank(value)) {
+            if (StringUtils.contains(value, "*")) {
+                criteria.add(roolElement, OperationEnum.STARTS_WITH_IGNORE_CASE, StringUtils.strip(value.toUpperCase(), "*"));
+            } else {
+                criteria.add(roolElement, OperationEnum.EQUALS, value.toUpperCase());
+            }
+        }
+        return criteria;
+    }
 }

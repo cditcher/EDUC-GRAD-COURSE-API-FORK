@@ -16,7 +16,7 @@ public class EducCourseApiConstants {
     public static final String GET_COURSE_REQUIREMENT_BY_COURESE_LIST_MAPPING = "/course-requirement/course-list";
     public static final String GET_COURSE_REQUIREMENT_BY_RULE_MAPPING = "/requirement/rule";
     public static final String GET_COURSE_REQUIREMENT_BY_CODE_AND_LEVEL_MAPPING = "/course-requirement";
-
+    public static final String GET_COURSE_REQUIREMENTS_BY_SEARCH_PARAMS_MAPPING = "/courserequirementsearch";
     public static final String GET_COURSE_RESTRICTION_MAPPING = "/restriction";
     public static final String GET_COURSE_RESTRICTION_BY_SEARCH_PARAMS_MAPPING = "/courserestrictionsearch";
     public static final String GET_COURSE_RESTRICTION_BY_CODE_AND_LEVEL_MAPPING = "/course-restriction";
