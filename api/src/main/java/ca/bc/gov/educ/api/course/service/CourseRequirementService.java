@@ -182,12 +182,19 @@ public class CourseRequirementService {
         criteria = getSearchCriteria("courseLevel", courseLevel, criteria);
         criteria = getSearchCriteria("ruleCode", rule, criteria);
 
-        List<CourseRequirement> courseList = courseRequirementTransformer.transformToDTO(courseRequirementCriteriaQueryRepository.findByCriteria(criteria, CourseRequirementEntity.class));
-        if (!courseList.isEmpty()) {
-            Collections.sort(courseList, Comparator.comparing(CourseRequirement::getCourseCode)
+        List<CourseRequirement> courseReqList = courseRequirementTransformer.transformToDTO(courseRequirementCriteriaQueryRepository.findByCriteria(criteria, CourseRequirementEntity.class));
+        if (!courseReqList.isEmpty()) {
+        	courseReqList.forEach(cR -> {
+            	Course course = courseService.getCourseDetails(cR.getCourseCode(),
+                        cR.getCourseLevel().equalsIgnoreCase("") ? " ":cR.getCourseLevel());
+        		if(course != null) {
+        			cR.setCourseName(course.getCourseName());
+        		}
+            });
+            Collections.sort(courseReqList, Comparator.comparing(CourseRequirement::getCourseCode)
                     .thenComparing(CourseRequirement::getCourseLevel));
         }
-        return courseList;
+        return courseReqList;
 	}
 	
 	public CriteriaHelper getSearchCriteria(String roolElement, String value, CriteriaHelper criteria) {
