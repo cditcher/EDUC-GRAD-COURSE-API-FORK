@@ -1,6 +1,8 @@
 package ca.bc.gov.educ.api.course.service;
 
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -39,12 +41,21 @@ public class CourseRestrictionService {
      * @throws java.lang.Exception
      */
     public List<CourseRestriction> getAllCourseRestrictionList() {
-        return courseRestrictionTransformer.transformToDTO(courseRestrictionRepository.findAll());
+    	List<CourseRestriction> restrictionList = courseRestrictionTransformer.transformToDTO(courseRestrictionRepository.findAll());
+    	if(!restrictionList.isEmpty()) {
+	    	Collections.sort(restrictionList, Comparator.comparing(CourseRestriction::getMainCourse)
+	                .thenComparing(CourseRestriction::getMainCourseLevel));
+    	}
+    	return restrictionList;
     }
     
     public CourseRestrictions getCourseRestrictions() {
-        courseRestrictions.setCourseRestrictions(
-                courseRestrictionTransformer.transformToDTO(courseRestrictionRepository.findAll()));
+    	List<CourseRestriction> restrictionList = courseRestrictionTransformer.transformToDTO(courseRestrictionRepository.findAll());
+    	if(!restrictionList.isEmpty()) {
+	    	Collections.sort(restrictionList, Comparator.comparing(CourseRestriction::getMainCourse)
+	                .thenComparing(CourseRestriction::getMainCourseLevel));
+    	}
+    	courseRestrictions.setCourseRestrictions(restrictionList);
         return courseRestrictions;
     }
 
