@@ -42,9 +42,9 @@ public class CourseRestrictionService {
      */
     public List<CourseRestriction> getAllCourseRestrictionList() {
     	List<CourseRestriction> restrictionList = courseRestrictionTransformer.transformToDTO(courseRestrictionRepository.findAll());
-    	if(!restrictionList.isEmpty()) {
-	    	Collections.sort(restrictionList, Comparator.comparing(CourseRestriction::getMainCourse)
-	                .thenComparing(CourseRestriction::getMainCourseLevel));
+    	if(!restrictionList.isEmpty()) {    		
+    		Collections.sort(restrictionList, Comparator.comparing(CourseRestriction::getMainCourse)
+    				.thenComparing(CourseRestriction::getMainCourseLevel,Comparator.nullsLast(String::compareTo)));	    	
     	}
     	return restrictionList;
     }
@@ -52,8 +52,8 @@ public class CourseRestrictionService {
     public CourseRestrictions getCourseRestrictions() {
     	List<CourseRestriction> restrictionList = courseRestrictionTransformer.transformToDTO(courseRestrictionRepository.findAll());
     	if(!restrictionList.isEmpty()) {
-	    	Collections.sort(restrictionList, Comparator.comparing(CourseRestriction::getMainCourse)
-	                .thenComparing(CourseRestriction::getMainCourseLevel));
+    		Collections.sort(restrictionList, Comparator.comparing(CourseRestriction::getMainCourse)
+    				.thenComparing(CourseRestriction::getMainCourseLevel,Comparator.nullsLast(String::compareTo)));
     	}
     	courseRestrictions.setCourseRestrictions(restrictionList);
         return courseRestrictions;
