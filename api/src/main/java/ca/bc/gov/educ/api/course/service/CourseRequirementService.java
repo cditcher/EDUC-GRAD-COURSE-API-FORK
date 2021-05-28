@@ -176,25 +176,36 @@ public class CourseRequirementService {
         return courseRequirements;
 	}
 
-	public List<CourseRequirement> getCourseRequirementSearchList(String courseCode, String courseLevel, String rule) {
+	public List<AllCourseRequirements> getCourseRequirementSearchList(String courseCode, String courseLevel, String rule,String accessToken) {
 		CriteriaHelper criteria = new CriteriaHelper();
         criteria = getSearchCriteria("courseCode", courseCode, criteria);
         criteria = getSearchCriteria("courseLevel", courseLevel, criteria);
         criteria = getSearchCriteria("ruleCode", rule, criteria);
-
+        List<AllCourseRequirements> allCourseRequiremntList = new ArrayList<>();
         List<CourseRequirement> courseReqList = courseRequirementTransformer.transformToDTO(courseRequirementCriteriaQueryRepository.findByCriteria(criteria, CourseRequirementEntity.class));
         if (!courseReqList.isEmpty()) {
         	courseReqList.forEach(cR -> {
-            	Course course = courseService.getCourseDetails(cR.getCourseCode(),
-                        cR.getCourseLevel().equalsIgnoreCase("") ? " ":cR.getCourseLevel());
+        		AllCourseRequirements obj = new AllCourseRequirements();
+            	BeanUtils.copyProperties(cR, obj);
+            	Course course = courseService.getCourseDetails(cR.getCourseCode(), cR.getCourseLevel());
         		if(course != null) {
-        			cR.setCourseName(course.getCourseName());
+        			obj.setCourseName(course.getCourseName());
         		}
+            	List<GradRuleDetails> ruleList = webClient.get()
+                        .uri(String.format(getRuleDetails,cR.getRuleCode()))
+                        .headers(h -> h.setBearerAuth(accessToken))
+                        .retrieve()
+                        .bodyToMono(new ParameterizedTypeReference<List<GradRuleDetails>>() {})
+                        .block();
+            	StringBuilder requirementProgram = getRequirementProgram(ruleList,obj);
+            	
+            	obj.setRequirementProgram(requirementProgram.toString());
+            	allCourseRequiremntList.add(obj);
             });
-            Collections.sort(courseReqList, Comparator.comparing(CourseRequirement::getCourseCode)
-                    .thenComparing(CourseRequirement::getCourseLevel));
+            Collections.sort(allCourseRequiremntList, Comparator.comparing(AllCourseRequirements::getCourseCode)
+                    .thenComparing(AllCourseRequirements::getCourseLevel));
         }
-        return courseReqList;
+        return allCourseRequiremntList;
 	}
 	
 	public CriteriaHelper getSearchCriteria(String roolElement, String value, CriteriaHelper criteria) {

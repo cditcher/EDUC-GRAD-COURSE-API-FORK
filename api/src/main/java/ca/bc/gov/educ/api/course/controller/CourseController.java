@@ -181,12 +181,15 @@ public class CourseController {
     @Operation(summary = "Search for a Course Requirements", description = "Search for a Course Requirements", tags = { "Course Requirements" })
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "OK"),
             @ApiResponse(responseCode = "400", description = "BAD REQUEST.")})
-    public ResponseEntity<List<CourseRequirement>> getCoursesRequirementSearch(
+    public ResponseEntity<List<AllCourseRequirements>> getCoursesRequirementSearch(
             @RequestParam(value = "courseCode", required = false) String courseCode,
             @RequestParam(value = "courseLevel", required = false) String courseLevel,
             @RequestParam(value = "rule", required = false) String rule) { 
     	logger.debug("getCoursesRequirementSearch : ");
-        return response.GET(courseRequirementService.getCourseRequirementSearchList(courseCode,courseLevel,rule));
+    	OAuth2AuthenticationDetails auth = (OAuth2AuthenticationDetails) SecurityContextHolder
+                .getContext().getAuthentication().getDetails();
+    	String accessToken = auth.getTokenValue();
+        return response.GET(courseRequirementService.getCourseRequirementSearchList(courseCode,courseLevel,rule,accessToken));
     }
     
     @PostMapping(EducCourseApiConstants.GET_COURSE_REQUIREMENT_BY_COURESE_LIST_MAPPING)
