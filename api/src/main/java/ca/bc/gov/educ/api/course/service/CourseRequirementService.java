@@ -1,6 +1,5 @@
 package ca.bc.gov.educ.api.course.service;
 
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -11,7 +10,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -33,7 +31,6 @@ import ca.bc.gov.educ.api.course.repository.criteria.CriteriaHelper;
 import ca.bc.gov.educ.api.course.repository.criteria.GradCriteria.OperationEnum;
 import ca.bc.gov.educ.api.course.util.EducCourseApiConstants;
 
-
 @Service
 public class CourseRequirementService {
 
@@ -51,10 +48,9 @@ public class CourseRequirementService {
     
     @Autowired
     CourseService courseService;
-    
-    @Value(EducCourseApiConstants.ENDPOINT_RULE_DETAIL_URL)
-    private String getRuleDetails;
-   
+
+    @Autowired
+    EducCourseApiConstants constants;
     
     @Autowired
     WebClient webClient;
@@ -84,7 +80,7 @@ public class CourseRequirementService {
         			obj.setCourseName(course.getCourseName());
         		}
             	List<GradRuleDetails> ruleList = webClient.get()
-                        .uri(String.format(getRuleDetails,cR.getRuleCode()))
+                        .uri(String.format(constants.getRuleDetailProgramManagementApiUrl(),cR.getRuleCode()))
                         .headers(h -> h.setBearerAuth(accessToken))
                         .retrieve()
                         .bodyToMono(new ParameterizedTypeReference<List<GradRuleDetails>>() {})
@@ -192,7 +188,7 @@ public class CourseRequirementService {
         			obj.setCourseName(course.getCourseName());
         		}
             	List<GradRuleDetails> ruleList = webClient.get()
-                        .uri(String.format(getRuleDetails,cR.getRuleCode()))
+                        .uri(String.format(constants.getRuleDetailProgramManagementApiUrl(),cR.getRuleCode()))
                         .headers(h -> h.setBearerAuth(accessToken))
                         .retrieve()
                         .bodyToMono(new ParameterizedTypeReference<List<GradRuleDetails>>() {})
