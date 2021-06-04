@@ -34,8 +34,6 @@ public class CourseRestrictionService {
 
      /**
      * Get all course requirements in Course Restriction DTO
-     * @param pageSize 
-     * @param pageNo 
      *
      * @return Course 
      * @throws java.lang.Exception
