@@ -26,6 +26,7 @@ public class CourseService {
 	private static final String START_DATE = "startDate";
 	private static final String END_DATE = "endDate";
 	private static final String LANGUAGE= "language";
+	private static final String COURSE_NAME= "courseName";
 	
     @Autowired
     private CourseRepository courseRepo;
@@ -91,24 +92,35 @@ public class CourseService {
     }
 
     public CriteriaHelper getSearchCriteria(String roolElement, String value, String paramterType, CriteriaHelper criteria) {
-        if (paramterType.equalsIgnoreCase(LANGUAGE)) {
-            if (StringUtils.isNotBlank(value)) {
+        switch(paramterType) {
+        case LANGUAGE:
+        	if (StringUtils.isNotBlank(value)) {
                 if (StringUtils.equals("F", value)) {
                     criteria.add(roolElement, OperationEnum.EQUALS, value.toUpperCase());
                 } else {
                     criteria.add(roolElement, OperationEnum.NOT_EQUALS, "F");
                 }
             }
-        } else {
-            if (StringUtils.isNotBlank(value)) {
+        	break;
+        case COURSE_NAME:
+        	if (StringUtils.isNotBlank(value)) {
+                if (StringUtils.contains(value, "*")) {
+                    criteria.add(roolElement, OperationEnum.LIKE, StringUtils.strip(value.toUpperCase(), "*"));
+                } else {
+                    criteria.add(roolElement, OperationEnum.EQUALS, value.toUpperCase());
+                }
+            }
+        	break;
+        default:
+        	if (StringUtils.isNotBlank(value)) {
                 if (StringUtils.contains(value, "*")) {
                     criteria.add(roolElement, OperationEnum.STARTS_WITH_IGNORE_CASE, StringUtils.strip(value.toUpperCase(), "*"));
                 } else {
                     criteria.add(roolElement, OperationEnum.EQUALS, value.toUpperCase());
                 }
             }
+        	break;
         }
-
         return criteria;
     }
 }
