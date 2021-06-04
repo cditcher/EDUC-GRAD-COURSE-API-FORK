@@ -120,7 +120,7 @@ public class CourseController {
     @PreAuthorize(PermissionsContants.READ_GRAD_COURSE)
     @Operation(summary = "Find a Course by Course Code", description = "Get a Course by Course Code", tags = { "Courses" })
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "OK")})
-    public ResponseEntity<Course> getCourseDetailsJustCode(@PathVariable String courseCode) { 
+    public ResponseEntity<Course> getCourseDetailsByCourse(@PathVariable String courseCode) {
     	logger.debug("getCourseDetails with Code : ");
         return response.GET(courseService.getCourseDetails(courseCode," "));
     }

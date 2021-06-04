@@ -1,6 +1,5 @@
 package ca.bc.gov.educ.api.course.service;
 
-
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -45,8 +44,6 @@ public class CourseService {
     /**
      * Get all courses in Course DTO
      *
-     * @param pageSize
-     * @param pageNo
      * @return Course
      * @throws java.lang.Exception
      */
