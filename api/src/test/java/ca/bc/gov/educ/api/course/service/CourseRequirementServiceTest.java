@@ -4,7 +4,7 @@ import ca.bc.gov.educ.api.course.model.dto.*;
 import ca.bc.gov.educ.api.course.model.entity.CourseRequirementEntity;
 import ca.bc.gov.educ.api.course.repository.CourseRequirementCriteriaQueryRepository;
 import ca.bc.gov.educ.api.course.repository.CourseRequirementRepository;
-import ca.bc.gov.educ.api.course.repository.criteria.CriteriaHelper;
+import ca.bc.gov.educ.api.course.util.criteria.CriteriaHelper;
 import ca.bc.gov.educ.api.course.util.EducCourseApiConstants;
 import org.junit.After;
 import org.junit.Before;

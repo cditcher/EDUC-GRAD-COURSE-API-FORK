@@ -17,8 +17,8 @@ import ca.bc.gov.educ.api.course.model.entity.CourseId;
 import ca.bc.gov.educ.api.course.model.transformer.CourseTransformer;
 import ca.bc.gov.educ.api.course.repository.CourseCriteriaQueryRepository;
 import ca.bc.gov.educ.api.course.repository.CourseRepository;
-import ca.bc.gov.educ.api.course.repository.criteria.CriteriaHelper;
-import ca.bc.gov.educ.api.course.repository.criteria.GradCriteria.OperationEnum;
+import ca.bc.gov.educ.api.course.util.criteria.CriteriaHelper;
+import ca.bc.gov.educ.api.course.util.criteria.GradCriteria.OperationEnum;
 
 @Service
 public class CourseService {
