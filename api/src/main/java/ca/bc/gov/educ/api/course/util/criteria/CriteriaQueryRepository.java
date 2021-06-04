@@ -1,4 +1,4 @@
-package ca.bc.gov.educ.api.course.repository.criteria;
+package ca.bc.gov.educ.api.course.util.criteria;
 
 import java.util.List;
 
