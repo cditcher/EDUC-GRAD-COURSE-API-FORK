@@ -85,7 +85,7 @@ public class CourseRequirementServiceTest {
         courseRequirementEntity.setCourseRequirementId(UUID.randomUUID());
         courseRequirementEntity.setCourseCode("MAIN");
         courseRequirementEntity.setCourseLevel("12");
-        courseRequirementEntity.setRuleCode("RuleCd");
+        courseRequirementEntity.setCourseRequirementCode("RuleCd");
 
         Course course = new Course();
         course.setCourseCode("MAIN");
@@ -107,7 +107,7 @@ public class CourseRequirementServiceTest {
         };
 
         when(this.webClient.get()).thenReturn(this.requestHeadersUriMock);
-        when(this.requestHeadersUriMock.uri(String.format(constants.getRuleDetailProgramManagementApiUrl(), courseRequirementEntity.getRuleCode()))).thenReturn(this.requestHeadersMock);
+        when(this.requestHeadersUriMock.uri(String.format(constants.getRuleDetailProgramManagementApiUrl(), courseRequirementEntity.getCourseRequirementCode()))).thenReturn(this.requestHeadersMock);
         when(this.requestHeadersMock.headers(any(Consumer.class))).thenReturn(this.requestHeadersMock);
         when(this.requestHeadersMock.retrieve()).thenReturn(this.responseMock);
         when(this.responseMock.bodyToMono(responseType)).thenReturn(Mono.just(Arrays.asList(ruleDetails)));
@@ -129,7 +129,7 @@ public class CourseRequirementServiceTest {
         courseRequirementEntity.setCourseRequirementId(UUID.randomUUID());
         courseRequirementEntity.setCourseCode("MAIN");
         courseRequirementEntity.setCourseLevel("12");
-        courseRequirementEntity.setRuleCode(ruleCode);
+        courseRequirementEntity.setCourseRequirementCode(ruleCode);
 
         Course course = new Course();
         course.setCourseCode("MAIN");
@@ -144,7 +144,7 @@ public class CourseRequirementServiceTest {
         Pageable paging = PageRequest.of(1, 5);
         Page<CourseRequirementEntity> pagedResult = new PageImpl<>(Arrays.asList(courseRequirementEntity));
 
-        when(courseRequirementRepository.findByRuleCode(eq(ruleCode), any(Pageable.class))).thenReturn(pagedResult);
+        when(courseRequirementRepository.findByCourseRequirementCode(eq(ruleCode), any(Pageable.class))).thenReturn(pagedResult);
         when(courseService.getCourseDetails(eq("MAIN"), eq("12"))).thenReturn(course);
 
         var result = courseRequirementService.getAllCourseRequirementListByRule(ruleCode, 1, 5);
@@ -163,7 +163,7 @@ public class CourseRequirementServiceTest {
         courseRequirementEntity.setCourseRequirementId(UUID.randomUUID());
         courseRequirementEntity.setCourseCode("MAIN");
         courseRequirementEntity.setCourseLevel("12");
-        courseRequirementEntity.setRuleCode("RuleCd");
+        courseRequirementEntity.setCourseRequirementCode("RuleCd");
 
         when(courseRequirementRepository.findAll()).thenReturn(Arrays.asList(courseRequirementEntity));
         var result = courseRequirementService.getCourseRequirements();
@@ -179,7 +179,7 @@ public class CourseRequirementServiceTest {
         courseRequirementEntity.setCourseRequirementId(UUID.randomUUID());
         courseRequirementEntity.setCourseCode("MAIN");
         courseRequirementEntity.setCourseLevel("12");
-        courseRequirementEntity.setRuleCode("RuleCd");
+        courseRequirementEntity.setCourseRequirementCode("RuleCd");
 
         when(courseRequirementRepository.findByCourseCodeAndCourseLevel(eq("MAIN"), eq("12"))).thenReturn(Arrays.asList(courseRequirementEntity));
         var result = courseRequirementService.getCourseRequirements("MAIN", "12");
@@ -195,7 +195,7 @@ public class CourseRequirementServiceTest {
         courseRequirementEntity.setCourseRequirementId(UUID.randomUUID());
         courseRequirementEntity.setCourseCode("MAIN");
         courseRequirementEntity.setCourseLevel("12");
-        courseRequirementEntity.setRuleCode("RuleCd");
+        courseRequirementEntity.setCourseRequirementCode("RuleCd");
 
         CourseList courseList = new CourseList();
         courseList.setCourseCodes(Arrays.asList("MAIN"));
@@ -214,7 +214,7 @@ public class CourseRequirementServiceTest {
         courseRequirementEntity.setCourseRequirementId(UUID.randomUUID());
         courseRequirementEntity.setCourseCode("MAIN");
         courseRequirementEntity.setCourseLevel("12");
-        courseRequirementEntity.setRuleCode("RuleCd");
+        courseRequirementEntity.setCourseRequirementCode("RuleCd");
 
         Course course = new Course();
         course.setCourseCode("MAIN");
@@ -233,7 +233,7 @@ public class CourseRequirementServiceTest {
         };
 
         when(this.webClient.get()).thenReturn(this.requestHeadersUriMock);
-        when(this.requestHeadersUriMock.uri(String.format(constants.getRuleDetailProgramManagementApiUrl(), courseRequirementEntity.getRuleCode()))).thenReturn(this.requestHeadersMock);
+        when(this.requestHeadersUriMock.uri(String.format(constants.getRuleDetailProgramManagementApiUrl(), courseRequirementEntity.getCourseRequirementCode()))).thenReturn(this.requestHeadersMock);
         when(this.requestHeadersMock.headers(any(Consumer.class))).thenReturn(this.requestHeadersMock);
         when(this.requestHeadersMock.retrieve()).thenReturn(this.responseMock);
         when(this.responseMock.bodyToMono(responseType)).thenReturn(Mono.just(Arrays.asList(ruleDetails)));

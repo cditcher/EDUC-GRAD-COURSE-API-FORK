@@ -33,20 +33,20 @@ public class CourseRequirementTransformerTest {
         courseRequirementEntity.setCourseRequirementId(UUID.randomUUID());
         courseRequirementEntity.setCourseCode("main");
         courseRequirementEntity.setCourseLevel("12");
-        courseRequirementEntity.setRuleCode("RuleCd");
+        courseRequirementEntity.setCourseRequirementCode("RuleCd");
 
         CourseRequirement courseRequirement = new CourseRequirement();
         courseRequirement.setCourseRequirementId(courseRequirementEntity.getCourseRequirementId());
         courseRequirement.setCourseCode(courseRequirementEntity.getCourseCode());
         courseRequirement.setCourseLevel(courseRequirementEntity.getCourseLevel());
-        courseRequirement.setRuleCode(courseRequirementEntity.getRuleCode());
+        courseRequirement.setCourseRequirementCode(courseRequirementEntity.getCourseRequirementCode());
 
         Mockito.when(modelMapper.map(courseRequirementEntity, CourseRequirement.class)).thenReturn(courseRequirement);
         var result = courseRequirementTransformer.transformToDTO(courseRequirementEntity);
         assertThat(result).isNotNull();
         assertThat(result.getCourseCode()).isEqualTo(courseRequirementEntity.getCourseCode());
         assertThat(result.getCourseLevel()).isEqualTo(courseRequirementEntity.getCourseLevel());
-        assertThat(result.getRuleCode()).isEqualTo(courseRequirementEntity.getRuleCode());
+        assertThat(result.getCourseRequirementCode()).isEqualTo(courseRequirementEntity.getCourseRequirementCode());
     }
 
     @Test
@@ -55,20 +55,20 @@ public class CourseRequirementTransformerTest {
         courseRequirementEntity.setCourseRequirementId(UUID.randomUUID());
         courseRequirementEntity.setCourseCode("main");
         courseRequirementEntity.setCourseLevel("12");
-        courseRequirementEntity.setRuleCode("RuleCd");
+        courseRequirementEntity.setCourseRequirementCode("RuleCd");
 
         CourseRequirement courseRequirement = new CourseRequirement();
         courseRequirement.setCourseRequirementId(courseRequirementEntity.getCourseRequirementId());
         courseRequirement.setCourseCode(courseRequirementEntity.getCourseCode());
         courseRequirement.setCourseLevel(courseRequirementEntity.getCourseLevel());
-        courseRequirement.setRuleCode(courseRequirementEntity.getRuleCode());
+        courseRequirement.setCourseRequirementCode(courseRequirementEntity.getCourseRequirementCode());
 
         Mockito.when(modelMapper.map(courseRequirementEntity, CourseRequirement.class)).thenReturn(courseRequirement);
         var result = courseRequirementTransformer.transformToDTO(Optional.of(courseRequirementEntity));
         assertThat(result).isNotNull();
         assertThat(result.getCourseCode()).isEqualTo(courseRequirementEntity.getCourseCode());
         assertThat(result.getCourseLevel()).isEqualTo(courseRequirementEntity.getCourseLevel());
-        assertThat(result.getRuleCode()).isEqualTo(courseRequirementEntity.getRuleCode());
+        assertThat(result.getCourseRequirementCode()).isEqualTo(courseRequirementEntity.getCourseRequirementCode());
     }
 
     @Test
@@ -77,19 +77,19 @@ public class CourseRequirementTransformerTest {
         courseRequirementEntity.setCourseRequirementId(UUID.randomUUID());
         courseRequirementEntity.setCourseCode("main");
         courseRequirementEntity.setCourseLevel("12");
-        courseRequirementEntity.setRuleCode("RuleCd");
+        courseRequirementEntity.setCourseRequirementCode("RuleCd");
 
         CourseRequirement courseRequirement = new CourseRequirement();
         courseRequirement.setCourseRequirementId(courseRequirementEntity.getCourseRequirementId());
         courseRequirement.setCourseCode(courseRequirementEntity.getCourseCode());
         courseRequirement.setCourseLevel(courseRequirementEntity.getCourseLevel());
-        courseRequirement.setRuleCode(courseRequirementEntity.getRuleCode());
+        courseRequirement.setCourseRequirementCode(courseRequirementEntity.getCourseRequirementCode());
 
         Mockito.when(modelMapper.map(courseRequirement, CourseRequirementEntity.class)).thenReturn(courseRequirementEntity);
         var result = courseRequirementTransformer.transformToEntity(courseRequirement);
         assertThat(result).isNotNull();
         assertThat(result.getCourseCode()).isEqualTo(courseRequirement.getCourseCode());
         assertThat(result.getCourseLevel()).isEqualTo(courseRequirement.getCourseLevel());
-        assertThat(result.getRuleCode()).isEqualTo(courseRequirement.getRuleCode());
+        assertThat(result.getCourseRequirementCode()).isEqualTo(courseRequirement.getCourseRequirementCode());
     }
 }

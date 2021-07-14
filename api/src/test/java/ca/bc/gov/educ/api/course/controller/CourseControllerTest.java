@@ -134,7 +134,7 @@ public class CourseControllerTest {
         courseRequirement.setCourseRequirementId(UUID.randomUUID());
         courseRequirement.setCourseCode("MAIN");
         courseRequirement.setCourseLevel("12");
-        courseRequirement.setRuleCode("RuleCd");
+        courseRequirement.setCourseRequirementCode("RuleCd");
 
         Mockito.when(courseRequirementService.getAllCourseRequirementListByRule("RuleCd", 1, 5)).thenReturn(Arrays.asList(courseRequirement));
         courseController.getAllCoursesRequirementByRule("RuleCd", 1,5);
@@ -148,7 +148,7 @@ public class CourseControllerTest {
         courseRequirement.setCourseRequirementId(UUID.randomUUID());
         courseRequirement.setCourseCode("MAIN");
         courseRequirement.setCourseLevel("12");
-        courseRequirement.setRuleCode("RuleCd");
+        courseRequirement.setCourseRequirementCode("RuleCd");
 
         CourseRequirements courseRequirements = new CourseRequirements();
         courseRequirements.setCourseRequirementList(Arrays.asList(courseRequirement));
@@ -165,7 +165,7 @@ public class CourseControllerTest {
         courseRequirement.setCourseRequirementId(UUID.randomUUID());
         courseRequirement.setCourseCode("MAIN");
         courseRequirement.setCourseLevel("12");
-        courseRequirement.setRuleCode("RuleCd");
+        courseRequirement.setCourseRequirementCode("RuleCd");
 
         CourseRequirements courseRequirements = new CourseRequirements();
         courseRequirements.setCourseRequirementList(Arrays.asList(courseRequirement));
@@ -206,7 +206,7 @@ public class CourseControllerTest {
         courseRequirement.setCourseRequirementId(UUID.randomUUID());
         courseRequirement.setCourseCode("MAIN");
         courseRequirement.setCourseLevel("12");
-        courseRequirement.setRuleCode("RuleCd");
+        courseRequirement.setCourseRequirementCode("RuleCd");
 
         CourseRequirements courseRequirements = new CourseRequirements();
         courseRequirements.setCourseRequirementList(Arrays.asList(courseRequirement));

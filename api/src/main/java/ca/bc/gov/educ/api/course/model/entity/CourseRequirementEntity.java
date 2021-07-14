@@ -13,19 +13,19 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Entity
-@Table(name = "GRAD_COURSE_REQUIREMENT")
+@Table(name = "COURSE_REQUIREMENT")
 public class CourseRequirementEntity extends BaseEntity {
    
 	@Id
-	@Column(name = "ID", nullable = false)
+	@Column(name = "COURSE_REQUIREMENT_ID", nullable = false)
     private UUID courseRequirementId;
 
-    @Column(name = "CRSE_CODE", nullable = false)
+    @Column(name = "COURSE_CODE", nullable = false)
     private String courseCode;   
 
-    @Column(name = "CRSE_LVL", nullable = false)
+    @Column(name = "COURSE_LEVEL", nullable = true)
     private String courseLevel;   
     
-    @Column(name = "RULE_CODE", nullable = true)
-    private String ruleCode;
+    @Column(name = "COURSE_REQUIREMENT_CODE", nullable = false)
+    private String courseRequirementCode;
 }

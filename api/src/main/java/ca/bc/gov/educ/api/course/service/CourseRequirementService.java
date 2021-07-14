@@ -80,7 +80,7 @@ public class CourseRequirementService {
         			obj.setCourseName(course.getCourseName());
         		}
             	List<GradRuleDetails> ruleList = webClient.get()
-                        .uri(String.format(constants.getRuleDetailProgramManagementApiUrl(),cR.getRuleCode()))
+                        .uri(String.format(constants.getRuleDetailProgramManagementApiUrl(),cR.getCourseRequirementCode()))
                         .headers(h -> h.setBearerAuth(accessToken))
                         .retrieve()
                         .bodyToMono(new ParameterizedTypeReference<List<GradRuleDetails>>() {})
@@ -136,7 +136,7 @@ public class CourseRequirementService {
 
         try {  
         	Pageable paging = PageRequest.of(pageNo, pageSize);        	 
-            Page<CourseRequirementEntity> pagedResult = courseRequirementRepository.findByRuleCode(rule,paging);        	
+            Page<CourseRequirementEntity> pagedResult = courseRequirementRepository.findByCourseRequirementCode(rule,paging);
             courseReqList = courseRequirementTransformer.transformToDTO(pagedResult.getContent()); 
             courseReqList.forEach(cR -> {
             	Course course = courseService.getCourseDetails(cR.getCourseCode(),
@@ -188,7 +188,7 @@ public class CourseRequirementService {
         			obj.setCourseName(course.getCourseName());
         		}
             	List<GradRuleDetails> ruleList = webClient.get()
-                        .uri(String.format(constants.getRuleDetailProgramManagementApiUrl(),cR.getRuleCode()))
+                        .uri(String.format(constants.getRuleDetailProgramManagementApiUrl(),cR.getCourseRequirementCode()))
                         .headers(h -> h.setBearerAuth(accessToken))
                         .retrieve()
                         .bodyToMono(new ParameterizedTypeReference<List<GradRuleDetails>>() {})

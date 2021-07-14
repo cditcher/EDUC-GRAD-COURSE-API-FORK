@@ -50,7 +50,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 
 @CrossOrigin
 @RestController
-@RequestMapping(EducCourseApiConstants.GRAD_COURSE_API_ROOT_MAPPING)
+@RequestMapping(EducCourseApiConstants.GRAD_COURSE_URL_MAPPING)
 @EnableResourceServer
 @OpenAPIDefinition(info = @Info(title = "API for Course Management.",
         description = "This API is for Managing Course data.", version = "1"),
@@ -116,7 +116,7 @@ public class CourseController {
         return response.GET(courseService.getCourseSearchList(courseCode,courseLevel,courseName,language,startDate,endDate));
     }
     
-    @GetMapping(EducCourseApiConstants.GET_STUDENT_COURSE_BY_ID_MAPPING)
+    @GetMapping(EducCourseApiConstants.GET_COURSE_DETAILS_BY_CODE_MAPPING)
     @PreAuthorize(PermissionsContants.READ_GRAD_COURSE)
     @Operation(summary = "Find a Course by Course Code", description = "Get a Course by Course Code", tags = { "Courses" })
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "OK")})
@@ -192,7 +192,7 @@ public class CourseController {
         return response.GET(courseRequirementService.getCourseRequirementSearchList(courseCode,courseLevel,rule,accessToken));
     }
     
-    @PostMapping(EducCourseApiConstants.GET_COURSE_REQUIREMENT_BY_COURESE_LIST_MAPPING)
+    @PostMapping(EducCourseApiConstants.GET_COURSE_REQUIREMENT_BY_COURSE_LIST_MAPPING)
     @PreAuthorize(PermissionsContants.READ_GRAD_COURSE_REQUIREMENT)
     @Operation(summary = "Find all Course Requirements by Course Code list",
             description = "Get all Course Requirements by Course Code list", tags = { "Course Requirements" })
@@ -260,7 +260,7 @@ public class CourseController {
         return response.GET(courseRestrictions);
     }
     
-    @PostMapping(EducCourseApiConstants.GET_COURSE_RESTRICTIONS_BY_COURESE_LIST_MAPPING)
+    @PostMapping(EducCourseApiConstants.GET_COURSE_RESTRICTIONS_BY_COURSE_LIST_MAPPING)
     @PreAuthorize(PermissionsContants.READ_GRAD_COURSE_RESTRICTION)
     @Operation(summary = "Find all Course Restrictions by Course Code list", description = "Get all Course Restrictions by Course Code list", tags = { "Course Restrictions" })
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "OK")})
