@@ -111,7 +111,7 @@ public class CourseControllerTest {
         allCourseRequirements.setCourseLevel("12");
         allCourseRequirements.setRequirementName("REQ");
         allCourseRequirements.setRequirementProgram("2018-EN");
-        allCourseRequirements.setRuleCode("RuleCd");
+        allCourseRequirements.setCourseRequirementCode("RuleCd");
 
         Authentication authentication = Mockito.mock(Authentication.class);
         OAuth2AuthenticationDetails details = Mockito.mock(OAuth2AuthenticationDetails.class);
@@ -184,7 +184,7 @@ public class CourseControllerTest {
         allCourseRequirements.setCourseLevel("12");
         allCourseRequirements.setRequirementName("REQ");
         allCourseRequirements.setRequirementProgram("2018-EN");
-        allCourseRequirements.setRuleCode("RuleCd");
+        allCourseRequirements.setCourseRequirementCode("RuleCd");
 
         Authentication authentication = Mockito.mock(Authentication.class);
         OAuth2AuthenticationDetails details = Mockito.mock(OAuth2AuthenticationDetails.class);

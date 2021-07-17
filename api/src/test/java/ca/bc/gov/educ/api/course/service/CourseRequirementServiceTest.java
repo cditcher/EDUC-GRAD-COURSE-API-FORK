@@ -93,7 +93,7 @@ public class CourseRequirementServiceTest {
         course.setCourseName("MAIN Course");
 
         GradRuleDetails ruleDetails = new GradRuleDetails();
-        ruleDetails.setRuleCode("RuleCd");
+        ruleDetails.setCourseRequirementCode("RuleCd");
         ruleDetails.setProgramCode("2018-EN");
         ruleDetails.setRequirementName("Test");
 
@@ -137,7 +137,7 @@ public class CourseRequirementServiceTest {
         course.setCourseName("MAIN Course");
 
         GradRuleDetails ruleDetails = new GradRuleDetails();
-        ruleDetails.setRuleCode(ruleCode);
+        ruleDetails.setCourseRequirementCode(ruleCode);
         ruleDetails.setProgramCode("2018-EN");
         ruleDetails.setRequirementName("Test");
 
@@ -222,7 +222,7 @@ public class CourseRequirementServiceTest {
         course.setCourseName("MAIN Course");
 
         GradRuleDetails ruleDetails = new GradRuleDetails();
-        ruleDetails.setRuleCode("RuleCd");
+        ruleDetails.setCourseRequirementCode("RuleCd");
         ruleDetails.setProgramCode("2018-EN");
         ruleDetails.setRequirementName("Test");
 

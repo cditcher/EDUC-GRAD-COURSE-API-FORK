@@ -16,7 +16,7 @@ public class AllCourseRequirements extends BaseModel {
 	private String courseCode;
     private String courseLevel;
     private String courseName;
-    private String ruleCode;
+    private String courseRequirementCode;
     private String requirementName;
     private String requirementProgram;
     
