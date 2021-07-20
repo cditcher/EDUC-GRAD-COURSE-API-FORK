@@ -22,6 +22,7 @@ public class EducCourseApiConstants {
     // Controller Mappings
     public static final String GRAD_COURSE_URL_MAPPING = GRAD_COURSE_API_ROOT_MAPPING + "/course";
     public static final String STUDENT_COURSE_URL_MAPPING = GRAD_COURSE_API_ROOT_MAPPING + "/studentcourse";
+    public static final String COURSE_ALGORITHM_URL_MAPPING = GRAD_COURSE_API_ROOT_MAPPING + "/course-algorithm";
 
     // Service Method Mappings
     public static final String GET_STUDENT_COURSE_BY_PEN_MAPPING = "/pen/{pen}";
@@ -38,6 +39,8 @@ public class EducCourseApiConstants {
     public static final String GET_COURSE_RESTRICTION_BY_SEARCH_PARAMS_MAPPING = "/courserestrictionsearch";
     public static final String GET_COURSE_RESTRICTION_BY_CODE_AND_LEVEL_MAPPING = "/course-restriction";
     public static final String GET_COURSE_RESTRICTIONS_BY_COURSE_LIST_MAPPING = "/course-restriction/course-list";
+
+    public static final String GET_COURSE_ALGORITHM_DATA_BY_PEN_MAPPING = "/pen/{pen}";
 
     //Attribute Constants
     public static final String COURSE_ID_ATTRIBUTE = "courseID";
