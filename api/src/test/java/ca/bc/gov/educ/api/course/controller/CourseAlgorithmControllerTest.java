@@ -2,7 +2,6 @@ package ca.bc.gov.educ.api.course.controller;
 
 import ca.bc.gov.educ.api.course.model.dto.*;
 import ca.bc.gov.educ.api.course.service.CourseAlgorithmService;
-import ca.bc.gov.educ.api.course.util.EducCourseApiUtils;
 import ca.bc.gov.educ.api.course.util.GradValidation;
 import ca.bc.gov.educ.api.course.util.ResponseHelper;
 import org.junit.Test;
@@ -47,8 +46,8 @@ public class CourseAlgorithmControllerTest {
         CourseRequirementCode courseRequirementCode = new CourseRequirementCode();
         courseRequirementCode.setCourseRequirementCode("RuleCd");
         courseRequirementCode.setDescription("RuleCd Description");
-        courseRequirementCode.setEffectiveDate(EducCourseApiUtils.parseTraxDate(new Date(System.currentTimeMillis() - 10000L).toString()));
-        courseRequirementCode.setExpiryDate(EducCourseApiUtils.parseTraxDate(new Date(System.currentTimeMillis() + 10000L).toString()));
+        courseRequirementCode.setEffectiveDate(new Date(System.currentTimeMillis() - 10000L));
+        courseRequirementCode.setExpiryDate(new Date(System.currentTimeMillis() + 10000L));
 
         // Course Requirement
         CourseRequirement courseRequirement = new CourseRequirement();

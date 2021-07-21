@@ -77,6 +77,7 @@ public class CourseRequirementService {
             courseReqList.forEach(cR -> {
             	AllCourseRequirements obj = new AllCourseRequirements();
             	BeanUtils.copyProperties(cR, obj);
+                obj.setRuleCode(cR.getRuleCode().getCourseRequirementCode());
             	Course course = courseService.getCourseDetails(cR.getCourseCode(), cR.getCourseLevel());
         		if(course != null) {
         			obj.setCourseName(course.getCourseName());
@@ -181,13 +182,14 @@ public class CourseRequirementService {
 		CriteriaHelper criteria = new CriteriaHelper();
         criteria = getSearchCriteria("courseCode", courseCode, criteria);
         criteria = getSearchCriteria("courseLevel", courseLevel, criteria);
-        criteria = getSearchCriteria("ruleCode", rule, criteria);
+        criteria = getSearchCriteria("ruleCode.courseRequirementCode", rule, criteria);
         List<AllCourseRequirements> allCourseRequiremntList = new ArrayList<>();
         List<CourseRequirement> courseReqList = courseRequirementTransformer.transformToDTO(courseRequirementCriteriaQueryRepository.findByCriteria(criteria, CourseRequirementEntity.class));
         if (!courseReqList.isEmpty()) {
         	courseReqList.forEach(cR -> {
         		AllCourseRequirements obj = new AllCourseRequirements();
             	BeanUtils.copyProperties(cR, obj);
+                obj.setRuleCode(cR.getRuleCode().getCourseRequirementCode());
             	Course course = courseService.getCourseDetails(cR.getCourseCode(), cR.getCourseLevel());
         		if(course != null) {
         			obj.setCourseName(course.getCourseName());

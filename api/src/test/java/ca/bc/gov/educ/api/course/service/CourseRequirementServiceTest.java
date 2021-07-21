@@ -6,7 +6,6 @@ import ca.bc.gov.educ.api.course.model.entity.CourseRequirementEntity;
 import ca.bc.gov.educ.api.course.repository.CourseRequirementCodeRepository;
 import ca.bc.gov.educ.api.course.repository.CourseRequirementCriteriaQueryRepository;
 import ca.bc.gov.educ.api.course.repository.CourseRequirementRepository;
-import ca.bc.gov.educ.api.course.util.EducCourseApiUtils;
 import ca.bc.gov.educ.api.course.util.criteria.CriteriaHelper;
 import ca.bc.gov.educ.api.course.util.EducCourseApiConstants;
 import org.junit.After;
@@ -142,8 +141,8 @@ public class CourseRequirementServiceTest {
         CourseRequirementCode ruleCode = new CourseRequirementCode();
         ruleCode.setCourseRequirementCode(ruleCodeValue);
         ruleCode.setDescription("RuleCd Description");
-        ruleCode.setEffectiveDate(EducCourseApiUtils.parseTraxDate(new Date(System.currentTimeMillis() - 10000L).toString()));
-        ruleCode.setExpiryDate(EducCourseApiUtils.parseTraxDate(new Date(System.currentTimeMillis() + 10000L).toString()));
+        ruleCode.setEffectiveDate(new Date(System.currentTimeMillis() - 10000L));
+        ruleCode.setExpiryDate(new Date(System.currentTimeMillis() + 10000L));
 
         CourseRequirementCodeEntity courseRequirementCodeEntity = new CourseRequirementCodeEntity();
         courseRequirementCodeEntity.setCourseRequirementCode(ruleCodeValue);

@@ -1,7 +1,6 @@
 package ca.bc.gov.educ.api.course.service;
 
 import ca.bc.gov.educ.api.course.model.dto.*;
-import ca.bc.gov.educ.api.course.util.EducCourseApiUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,8 +48,8 @@ public class CourseAlgorithmServiceTest {
         CourseRequirementCode ruleCode = new CourseRequirementCode();
         ruleCode.setCourseRequirementCode("RuleCd");
         ruleCode.setDescription("RuleCd Description");
-        ruleCode.setEffectiveDate(EducCourseApiUtils.parseTraxDate(new Date(System.currentTimeMillis() - 10000L).toString()));
-        ruleCode.setExpiryDate(EducCourseApiUtils.parseTraxDate(new Date(System.currentTimeMillis() + 10000L).toString()));
+        ruleCode.setEffectiveDate(new Date(System.currentTimeMillis() - 10000L));
+        ruleCode.setExpiryDate(new Date(System.currentTimeMillis() + 10000L));
 
         // Course Requirement
         CourseRequirement courseRequirement = new CourseRequirement();

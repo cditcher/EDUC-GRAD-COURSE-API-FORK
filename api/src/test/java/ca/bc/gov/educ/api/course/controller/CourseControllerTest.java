@@ -4,7 +4,6 @@ import ca.bc.gov.educ.api.course.model.dto.*;
 import ca.bc.gov.educ.api.course.service.CourseRequirementService;
 import ca.bc.gov.educ.api.course.service.CourseRestrictionService;
 import ca.bc.gov.educ.api.course.service.CourseService;
-import ca.bc.gov.educ.api.course.util.EducCourseApiUtils;
 import ca.bc.gov.educ.api.course.util.GradValidation;
 import ca.bc.gov.educ.api.course.util.ResponseHelper;
 import org.junit.Test;
@@ -134,8 +133,8 @@ public class CourseControllerTest {
         CourseRequirementCode courseRequirementCode = new CourseRequirementCode();
         courseRequirementCode.setCourseRequirementCode("RuleCd");
         courseRequirementCode.setDescription("RuleCd Description");
-        courseRequirementCode.setEffectiveDate(EducCourseApiUtils.parseTraxDate(new Date(System.currentTimeMillis() - 10000L).toString()));
-        courseRequirementCode.setExpiryDate(EducCourseApiUtils.parseTraxDate(new Date(System.currentTimeMillis() + 10000L).toString()));
+        courseRequirementCode.setEffectiveDate(new Date(System.currentTimeMillis() - 10000L));
+        courseRequirementCode.setExpiryDate(new Date(System.currentTimeMillis() + 10000L));
 
         // Course Requirement
         CourseRequirement courseRequirement = new CourseRequirement();
@@ -155,8 +154,8 @@ public class CourseControllerTest {
         CourseRequirementCode courseRequirementCode = new CourseRequirementCode();
         courseRequirementCode.setCourseRequirementCode("RuleCd");
         courseRequirementCode.setDescription("RuleCd Description");
-        courseRequirementCode.setEffectiveDate(EducCourseApiUtils.parseTraxDate(new Date(System.currentTimeMillis() - 10000L).toString()));
-        courseRequirementCode.setExpiryDate(EducCourseApiUtils.parseTraxDate(new Date(System.currentTimeMillis() + 10000L).toString()));
+        courseRequirementCode.setEffectiveDate(new Date(System.currentTimeMillis() - 10000L));
+        courseRequirementCode.setExpiryDate(new Date(System.currentTimeMillis() + 10000L));
 
         // Course Requirement
         CourseRequirement courseRequirement = new CourseRequirement();
@@ -179,8 +178,8 @@ public class CourseControllerTest {
         CourseRequirementCode courseRequirementCode = new CourseRequirementCode();
         courseRequirementCode.setCourseRequirementCode("RuleCd");
         courseRequirementCode.setDescription("RuleCd Description");
-        courseRequirementCode.setEffectiveDate(EducCourseApiUtils.parseTraxDate(new Date(System.currentTimeMillis() - 10000L).toString()));
-        courseRequirementCode.setExpiryDate(EducCourseApiUtils.parseTraxDate(new Date(System.currentTimeMillis() + 10000L).toString()));
+        courseRequirementCode.setEffectiveDate(new Date(System.currentTimeMillis() - 10000L));
+        courseRequirementCode.setExpiryDate(new Date(System.currentTimeMillis() + 10000L));
 
         // Course Requirement
         CourseRequirement courseRequirement = new CourseRequirement();
@@ -227,8 +226,8 @@ public class CourseControllerTest {
         CourseRequirementCode courseRequirementCode = new CourseRequirementCode();
         courseRequirementCode.setCourseRequirementCode("RuleCd");
         courseRequirementCode.setDescription("RuleCd Description");
-        courseRequirementCode.setEffectiveDate(EducCourseApiUtils.parseTraxDate(new Date(System.currentTimeMillis() - 10000L).toString()));
-        courseRequirementCode.setExpiryDate(EducCourseApiUtils.parseTraxDate(new Date(System.currentTimeMillis() + 10000L).toString()));
+        courseRequirementCode.setEffectiveDate(new Date(System.currentTimeMillis() - 10000L));
+        courseRequirementCode.setExpiryDate(new Date(System.currentTimeMillis() + 10000L));
 
         // Course Requirement
         CourseRequirement courseRequirement = new CourseRequirement();

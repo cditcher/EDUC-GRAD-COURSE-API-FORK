@@ -4,7 +4,6 @@ import ca.bc.gov.educ.api.course.model.dto.CourseRequirement;
 import ca.bc.gov.educ.api.course.model.dto.CourseRequirementCode;
 import ca.bc.gov.educ.api.course.model.entity.CourseRequirementCodeEntity;
 import ca.bc.gov.educ.api.course.model.entity.CourseRequirementEntity;
-import ca.bc.gov.educ.api.course.util.EducCourseApiUtils;
 import org.junit.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.runner.RunWith;
@@ -48,8 +47,8 @@ public class CourseRequirementTransformerTest {
         CourseRequirementCode courseRequirementCode = new CourseRequirementCode();
         courseRequirementCode.setCourseRequirementCode("RuleCd");
         courseRequirementCode.setDescription("RuleCd Description");
-        courseRequirementCode.setEffectiveDate(EducCourseApiUtils.parseTraxDate(new Date(System.currentTimeMillis() - 10000L).toString()));
-        courseRequirementCode.setExpiryDate(EducCourseApiUtils.parseTraxDate(new Date(System.currentTimeMillis() + 10000L).toString()));
+        courseRequirementCode.setEffectiveDate(new Date(System.currentTimeMillis() - 10000L));
+        courseRequirementCode.setExpiryDate(new Date(System.currentTimeMillis() + 10000L));
 
         CourseRequirement courseRequirement = new CourseRequirement();
         courseRequirement.setCourseRequirementId(courseRequirementEntity.getCourseRequirementId());
@@ -82,8 +81,8 @@ public class CourseRequirementTransformerTest {
         CourseRequirementCode courseRequirementCode = new CourseRequirementCode();
         courseRequirementCode.setCourseRequirementCode("RuleCd");
         courseRequirementCode.setDescription("RuleCd Description");
-        courseRequirementCode.setEffectiveDate(EducCourseApiUtils.parseTraxDate(new Date(System.currentTimeMillis() - 10000L).toString()));
-        courseRequirementCode.setExpiryDate(EducCourseApiUtils.parseTraxDate(new Date(System.currentTimeMillis() + 10000L).toString()));
+        courseRequirementCode.setEffectiveDate(new Date(System.currentTimeMillis() - 10000L));
+        courseRequirementCode.setExpiryDate(new Date(System.currentTimeMillis() + 10000L));
 
         CourseRequirement courseRequirement = new CourseRequirement();
         courseRequirement.setCourseRequirementId(courseRequirementEntity.getCourseRequirementId());
@@ -116,8 +115,8 @@ public class CourseRequirementTransformerTest {
         CourseRequirementCode courseRequirementCode = new CourseRequirementCode();
         courseRequirementCode.setCourseRequirementCode("RuleCd");
         courseRequirementCode.setDescription("RuleCd Description");
-        courseRequirementCode.setEffectiveDate(EducCourseApiUtils.parseTraxDate(new Date(System.currentTimeMillis() - 10000L).toString()));
-        courseRequirementCode.setExpiryDate(EducCourseApiUtils.parseTraxDate(new Date(System.currentTimeMillis() + 10000L).toString()));
+        courseRequirementCode.setEffectiveDate(new Date(System.currentTimeMillis() - 10000L));
+        courseRequirementCode.setExpiryDate(new Date(System.currentTimeMillis() + 10000L));
 
         CourseRequirement courseRequirement = new CourseRequirement();
         courseRequirement.setCourseRequirementId(courseRequirementEntity.getCourseRequirementId());
