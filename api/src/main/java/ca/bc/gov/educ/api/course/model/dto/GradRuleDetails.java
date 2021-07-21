@@ -10,14 +10,14 @@ import lombok.EqualsAndHashCode;
 @Component
 public class GradRuleDetails {
 
-	private String courseRequirementCode;
+	private String ruleCode;
 	private String requirementName;
 	private String programCode;	
 	private String specialProgramCode;
 	
 	@Override
 	public String toString() {
-		return "GradRuleDetails [courseRequirementCode=" + courseRequirementCode + ", requirementName=" + requirementName + ", programCode="
+		return "GradRuleDetails [ruleCode=" + ruleCode + ", requirementName=" + requirementName + ", programCode="
 				+ programCode + "]";
 	}
 	

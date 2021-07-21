@@ -1,10 +1,9 @@
 package ca.bc.gov.educ.api.course.service;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
+import ca.bc.gov.educ.api.course.model.entity.CourseRequirementCodeEntity;
+import ca.bc.gov.educ.api.course.repository.CourseRequirementCodeRepository;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,10 +41,13 @@ public class CourseRequirementService {
     
     @Autowired
     private CourseRequirementCriteriaQueryRepository courseRequirementCriteriaQueryRepository;
+
+    @Autowired
+    private CourseRequirementCodeRepository courseRequirementCodeRepository;
     
     @Autowired
     CourseRequirements courseRequirements;
-    
+
     @Autowired
     CourseService courseService;
 
@@ -80,7 +82,7 @@ public class CourseRequirementService {
         			obj.setCourseName(course.getCourseName());
         		}
             	List<GradRuleDetails> ruleList = webClient.get()
-                        .uri(String.format(constants.getRuleDetailProgramManagementApiUrl(),cR.getCourseRequirementCode()))
+                        .uri(String.format(constants.getRuleDetailProgramManagementApiUrl(),cR.getRuleCode().getCourseRequirementCode()))
                         .headers(h -> h.setBearerAuth(accessToken))
                         .retrieve()
                         .bodyToMono(new ParameterizedTypeReference<List<GradRuleDetails>>() {})
@@ -135,16 +137,19 @@ public class CourseRequirementService {
         List<CourseRequirement> courseReqList  = new ArrayList<>();
 
         try {  
-        	Pageable paging = PageRequest.of(pageNo, pageSize);        	 
-            Page<CourseRequirementEntity> pagedResult = courseRequirementRepository.findByCourseRequirementCode(rule,paging);
-            courseReqList = courseRequirementTransformer.transformToDTO(pagedResult.getContent()); 
-            courseReqList.forEach(cR -> {
-            	Course course = courseService.getCourseDetails(cR.getCourseCode(),
-                        cR.getCourseLevel().equalsIgnoreCase("") ? " ":cR.getCourseLevel());
-        		if(course != null) {
-        			cR.setCourseName(course.getCourseName());
-        		}
-            });
+        	Pageable paging = PageRequest.of(pageNo, pageSize);
+        	Optional<CourseRequirementCodeEntity> ruleOptional = courseRequirementCodeRepository.findById(rule);
+        	if (ruleOptional.isPresent()) {
+                Page<CourseRequirementEntity> pagedResult = courseRequirementRepository.findByRuleCode(ruleOptional.get(), paging);
+                courseReqList = courseRequirementTransformer.transformToDTO(pagedResult.getContent());
+                courseReqList.forEach(cR -> {
+                    Course course = courseService.getCourseDetails(cR.getCourseCode(),
+                            cR.getCourseLevel().equalsIgnoreCase("") ? " " : cR.getCourseLevel());
+                    if (course != null) {
+                        cR.setCourseName(course.getCourseName());
+                    }
+                });
+            }
         } catch (Exception e) {
             logger.debug("Exception:" + e);
         }
@@ -188,7 +193,7 @@ public class CourseRequirementService {
         			obj.setCourseName(course.getCourseName());
         		}
             	List<GradRuleDetails> ruleList = webClient.get()
-                        .uri(String.format(constants.getRuleDetailProgramManagementApiUrl(),cR.getCourseRequirementCode()))
+                        .uri(String.format(constants.getRuleDetailProgramManagementApiUrl(),cR.getRuleCode().getCourseRequirementCode()))
                         .headers(h -> h.setBearerAuth(accessToken))
                         .retrieve()
                         .bodyToMono(new ParameterizedTypeReference<List<GradRuleDetails>>() {})

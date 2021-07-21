@@ -1,10 +1,8 @@
 package ca.bc.gov.educ.api.course.controller;
 
-import ca.bc.gov.educ.api.course.model.dto.CourseAlgorithmData;
-import ca.bc.gov.educ.api.course.model.dto.CourseRequirement;
-import ca.bc.gov.educ.api.course.model.dto.CourseRestriction;
-import ca.bc.gov.educ.api.course.model.dto.StudentCourse;
+import ca.bc.gov.educ.api.course.model.dto.*;
 import ca.bc.gov.educ.api.course.service.CourseAlgorithmService;
+import ca.bc.gov.educ.api.course.util.EducCourseApiUtils;
 import ca.bc.gov.educ.api.course.util.GradValidation;
 import ca.bc.gov.educ.api.course.util.ResponseHelper;
 import org.junit.Test;
@@ -16,6 +14,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.sql.Date;
 import java.util.Arrays;
 import java.util.UUID;
 
@@ -44,12 +43,19 @@ public class CourseAlgorithmControllerTest {
         studentCourse.setCourseName("main test course");
         studentCourse.setLanguage("en");
 
+        // Course Requirement Code
+        CourseRequirementCode courseRequirementCode = new CourseRequirementCode();
+        courseRequirementCode.setCourseRequirementCode("RuleCd");
+        courseRequirementCode.setDescription("RuleCd Description");
+        courseRequirementCode.setEffectiveDate(EducCourseApiUtils.parseTraxDate(new Date(System.currentTimeMillis() - 10000L).toString()));
+        courseRequirementCode.setExpiryDate(EducCourseApiUtils.parseTraxDate(new Date(System.currentTimeMillis() + 10000L).toString()));
+
         // Course Requirement
         CourseRequirement courseRequirement = new CourseRequirement();
         courseRequirement.setCourseRequirementId(UUID.randomUUID());
         courseRequirement.setCourseCode("MAIN");
         courseRequirement.setCourseLevel("12");
-        courseRequirement.setCourseRequirementCode("RuleCd");
+        courseRequirement.setRuleCode(courseRequirementCode);
 
         // Course Restriction
         CourseRestriction courseRestriction = new CourseRestriction();

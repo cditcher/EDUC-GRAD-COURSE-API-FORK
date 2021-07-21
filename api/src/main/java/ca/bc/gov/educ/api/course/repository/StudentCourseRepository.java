@@ -10,7 +10,7 @@ import java.util.UUID;
 @Repository
 public interface StudentCourseRepository extends JpaRepository<StudentCourseEntity, UUID> {
 
-     @Query("select c from StudentCourseEntity c where c.courseKey.pen=:pen")
+    @Query("select c from StudentCourseEntity c where c.courseKey.pen=:pen")
     Iterable<StudentCourseEntity> findByPen(String pen);
 
 }

@@ -1,9 +1,12 @@
 package ca.bc.gov.educ.api.course.service;
 
 import ca.bc.gov.educ.api.course.model.dto.*;
+import ca.bc.gov.educ.api.course.model.entity.CourseRequirementCodeEntity;
 import ca.bc.gov.educ.api.course.model.entity.CourseRequirementEntity;
+import ca.bc.gov.educ.api.course.repository.CourseRequirementCodeRepository;
 import ca.bc.gov.educ.api.course.repository.CourseRequirementCriteriaQueryRepository;
 import ca.bc.gov.educ.api.course.repository.CourseRequirementRepository;
+import ca.bc.gov.educ.api.course.util.EducCourseApiUtils;
 import ca.bc.gov.educ.api.course.util.criteria.CriteriaHelper;
 import ca.bc.gov.educ.api.course.util.EducCourseApiConstants;
 import org.junit.After;
@@ -24,8 +27,10 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
+import java.sql.Date;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Consumer;
 
@@ -51,6 +56,9 @@ public class CourseRequirementServiceTest {
 
     @MockBean
     private CourseRequirementCriteriaQueryRepository courseRequirementCriteriaQueryRepository;
+
+    @MockBean
+    private CourseRequirementCodeRepository courseRequirementCodeRepository;
 
     @MockBean
     private CourseService courseService;
@@ -81,11 +89,17 @@ public class CourseRequirementServiceTest {
 
     @Test
     public void testGetAllCourseRequirementList() {
+        CourseRequirementCodeEntity courseRequirementCodeEntity = new CourseRequirementCodeEntity();
+        courseRequirementCodeEntity.setCourseRequirementCode("RuleCd");
+        courseRequirementCodeEntity.setDescription("RuleCd Description");
+        courseRequirementCodeEntity.setEffectiveDate(new Date(System.currentTimeMillis() - 10000L));
+        courseRequirementCodeEntity.setExpiryDate(new Date(System.currentTimeMillis() + 10000L));
+
         CourseRequirementEntity courseRequirementEntity = new CourseRequirementEntity();
         courseRequirementEntity.setCourseRequirementId(UUID.randomUUID());
         courseRequirementEntity.setCourseCode("MAIN");
         courseRequirementEntity.setCourseLevel("12");
-        courseRequirementEntity.setCourseRequirementCode("RuleCd");
+        courseRequirementEntity.setRuleCode(courseRequirementCodeEntity);
 
         Course course = new Course();
         course.setCourseCode("MAIN");
@@ -93,7 +107,7 @@ public class CourseRequirementServiceTest {
         course.setCourseName("MAIN Course");
 
         GradRuleDetails ruleDetails = new GradRuleDetails();
-        ruleDetails.setCourseRequirementCode("RuleCd");
+        ruleDetails.setRuleCode("RuleCd");
         ruleDetails.setProgramCode("2018-EN");
         ruleDetails.setRequirementName("Test");
 
@@ -107,7 +121,7 @@ public class CourseRequirementServiceTest {
         };
 
         when(this.webClient.get()).thenReturn(this.requestHeadersUriMock);
-        when(this.requestHeadersUriMock.uri(String.format(constants.getRuleDetailProgramManagementApiUrl(), courseRequirementEntity.getCourseRequirementCode()))).thenReturn(this.requestHeadersMock);
+        when(this.requestHeadersUriMock.uri(String.format(constants.getRuleDetailProgramManagementApiUrl(), courseRequirementEntity.getRuleCode().getCourseRequirementCode()))).thenReturn(this.requestHeadersMock);
         when(this.requestHeadersMock.headers(any(Consumer.class))).thenReturn(this.requestHeadersMock);
         when(this.requestHeadersMock.retrieve()).thenReturn(this.responseMock);
         when(this.responseMock.bodyToMono(responseType)).thenReturn(Mono.just(Arrays.asList(ruleDetails)));
@@ -123,13 +137,25 @@ public class CourseRequirementServiceTest {
 
     @Test
     public void testGetAllCourseRequirementListByRule() {
-        String ruleCode = "RuleCd";
+        String ruleCodeValue = "RuleCd";
+
+        CourseRequirementCode ruleCode = new CourseRequirementCode();
+        ruleCode.setCourseRequirementCode(ruleCodeValue);
+        ruleCode.setDescription("RuleCd Description");
+        ruleCode.setEffectiveDate(EducCourseApiUtils.parseTraxDate(new Date(System.currentTimeMillis() - 10000L).toString()));
+        ruleCode.setExpiryDate(EducCourseApiUtils.parseTraxDate(new Date(System.currentTimeMillis() + 10000L).toString()));
+
+        CourseRequirementCodeEntity courseRequirementCodeEntity = new CourseRequirementCodeEntity();
+        courseRequirementCodeEntity.setCourseRequirementCode(ruleCodeValue);
+        courseRequirementCodeEntity.setDescription("RuleCd Description");
+        courseRequirementCodeEntity.setEffectiveDate(new Date(System.currentTimeMillis() - 10000L));
+        courseRequirementCodeEntity.setExpiryDate(new Date(System.currentTimeMillis() + 10000L));
 
         CourseRequirementEntity courseRequirementEntity = new CourseRequirementEntity();
         courseRequirementEntity.setCourseRequirementId(UUID.randomUUID());
         courseRequirementEntity.setCourseCode("MAIN");
         courseRequirementEntity.setCourseLevel("12");
-        courseRequirementEntity.setCourseRequirementCode(ruleCode);
+        courseRequirementEntity.setRuleCode(courseRequirementCodeEntity);
 
         Course course = new Course();
         course.setCourseCode("MAIN");
@@ -137,17 +163,18 @@ public class CourseRequirementServiceTest {
         course.setCourseName("MAIN Course");
 
         GradRuleDetails ruleDetails = new GradRuleDetails();
-        ruleDetails.setCourseRequirementCode(ruleCode);
+        ruleDetails.setRuleCode(ruleCodeValue);
         ruleDetails.setProgramCode("2018-EN");
         ruleDetails.setRequirementName("Test");
 
         Pageable paging = PageRequest.of(1, 5);
         Page<CourseRequirementEntity> pagedResult = new PageImpl<>(Arrays.asList(courseRequirementEntity));
 
-        when(courseRequirementRepository.findByCourseRequirementCode(eq(ruleCode), any(Pageable.class))).thenReturn(pagedResult);
+        when(courseRequirementCodeRepository.findById(eq(ruleCodeValue))).thenReturn(Optional.of(courseRequirementCodeEntity));
+        when(courseRequirementRepository.findByRuleCode(eq(courseRequirementCodeEntity), any(Pageable.class))).thenReturn(pagedResult);
         when(courseService.getCourseDetails(eq("MAIN"), eq("12"))).thenReturn(course);
 
-        var result = courseRequirementService.getAllCourseRequirementListByRule(ruleCode, 1, 5);
+        var result = courseRequirementService.getAllCourseRequirementListByRule(ruleCodeValue, 1, 5);
 
         assertThat(result).isNotNull();
         assertThat(result.size()).isEqualTo(1);
@@ -159,11 +186,17 @@ public class CourseRequirementServiceTest {
 
     @Test
     public void testGetCourseRequirements() {
+        CourseRequirementCodeEntity courseRequirementCodeEntity = new CourseRequirementCodeEntity();
+        courseRequirementCodeEntity.setCourseRequirementCode("RuleCd");
+        courseRequirementCodeEntity.setDescription("RuleCd Description");
+        courseRequirementCodeEntity.setEffectiveDate(new Date(System.currentTimeMillis() - 10000L));
+        courseRequirementCodeEntity.setExpiryDate(new Date(System.currentTimeMillis() + 10000L));
+
         CourseRequirementEntity courseRequirementEntity = new CourseRequirementEntity();
         courseRequirementEntity.setCourseRequirementId(UUID.randomUUID());
         courseRequirementEntity.setCourseCode("MAIN");
         courseRequirementEntity.setCourseLevel("12");
-        courseRequirementEntity.setCourseRequirementCode("RuleCd");
+        courseRequirementEntity.setRuleCode(courseRequirementCodeEntity);
 
         when(courseRequirementRepository.findAll()).thenReturn(Arrays.asList(courseRequirementEntity));
         var result = courseRequirementService.getCourseRequirements();
@@ -175,11 +208,17 @@ public class CourseRequirementServiceTest {
 
     @Test
     public void testGetCourseRequirementsByCourseAndLevel() {
+        CourseRequirementCodeEntity courseRequirementCodeEntity = new CourseRequirementCodeEntity();
+        courseRequirementCodeEntity.setCourseRequirementCode("RuleCd");
+        courseRequirementCodeEntity.setDescription("RuleCd Description");
+        courseRequirementCodeEntity.setEffectiveDate(new Date(System.currentTimeMillis() - 10000L));
+        courseRequirementCodeEntity.setExpiryDate(new Date(System.currentTimeMillis() + 10000L));
+
         CourseRequirementEntity courseRequirementEntity = new CourseRequirementEntity();
         courseRequirementEntity.setCourseRequirementId(UUID.randomUUID());
         courseRequirementEntity.setCourseCode("MAIN");
         courseRequirementEntity.setCourseLevel("12");
-        courseRequirementEntity.setCourseRequirementCode("RuleCd");
+        courseRequirementEntity.setRuleCode(courseRequirementCodeEntity);
 
         when(courseRequirementRepository.findByCourseCodeAndCourseLevel(eq("MAIN"), eq("12"))).thenReturn(Arrays.asList(courseRequirementEntity));
         var result = courseRequirementService.getCourseRequirements("MAIN", "12");
@@ -191,11 +230,17 @@ public class CourseRequirementServiceTest {
 
     @Test
     public void testGetCourseRequirementListByCourses() {
+        CourseRequirementCodeEntity courseRequirementCodeEntity = new CourseRequirementCodeEntity();
+        courseRequirementCodeEntity.setCourseRequirementCode("RuleCd");
+        courseRequirementCodeEntity.setDescription("RuleCd Description");
+        courseRequirementCodeEntity.setEffectiveDate(new Date(System.currentTimeMillis() - 10000L));
+        courseRequirementCodeEntity.setExpiryDate(new Date(System.currentTimeMillis() + 10000L));
+
         CourseRequirementEntity courseRequirementEntity = new CourseRequirementEntity();
         courseRequirementEntity.setCourseRequirementId(UUID.randomUUID());
         courseRequirementEntity.setCourseCode("MAIN");
         courseRequirementEntity.setCourseLevel("12");
-        courseRequirementEntity.setCourseRequirementCode("RuleCd");
+        courseRequirementEntity.setRuleCode(courseRequirementCodeEntity);
 
         CourseList courseList = new CourseList();
         courseList.setCourseCodes(Arrays.asList("MAIN"));
@@ -210,11 +255,17 @@ public class CourseRequirementServiceTest {
 
     @Test
     public void testGetCourseRequirementSearchList() {
+        CourseRequirementCodeEntity courseRequirementCodeEntity = new CourseRequirementCodeEntity();
+        courseRequirementCodeEntity.setCourseRequirementCode("RuleCd");
+        courseRequirementCodeEntity.setDescription("RuleCd Description");
+        courseRequirementCodeEntity.setEffectiveDate(new Date(System.currentTimeMillis() - 10000L));
+        courseRequirementCodeEntity.setExpiryDate(new Date(System.currentTimeMillis() + 10000L));
+
         CourseRequirementEntity courseRequirementEntity = new CourseRequirementEntity();
         courseRequirementEntity.setCourseRequirementId(UUID.randomUUID());
         courseRequirementEntity.setCourseCode("MAIN");
         courseRequirementEntity.setCourseLevel("12");
-        courseRequirementEntity.setCourseRequirementCode("RuleCd");
+        courseRequirementEntity.setRuleCode(courseRequirementCodeEntity);
 
         Course course = new Course();
         course.setCourseCode("MAIN");
@@ -222,7 +273,7 @@ public class CourseRequirementServiceTest {
         course.setCourseName("MAIN Course");
 
         GradRuleDetails ruleDetails = new GradRuleDetails();
-        ruleDetails.setCourseRequirementCode("RuleCd");
+        ruleDetails.setRuleCode("RuleCd");
         ruleDetails.setProgramCode("2018-EN");
         ruleDetails.setRequirementName("Test");
 
@@ -233,7 +284,7 @@ public class CourseRequirementServiceTest {
         };
 
         when(this.webClient.get()).thenReturn(this.requestHeadersUriMock);
-        when(this.requestHeadersUriMock.uri(String.format(constants.getRuleDetailProgramManagementApiUrl(), courseRequirementEntity.getCourseRequirementCode()))).thenReturn(this.requestHeadersMock);
+        when(this.requestHeadersUriMock.uri(String.format(constants.getRuleDetailProgramManagementApiUrl(), courseRequirementEntity.getRuleCode().getCourseRequirementCode()))).thenReturn(this.requestHeadersMock);
         when(this.requestHeadersMock.headers(any(Consumer.class))).thenReturn(this.requestHeadersMock);
         when(this.requestHeadersMock.retrieve()).thenReturn(this.responseMock);
         when(this.responseMock.bodyToMono(responseType)).thenReturn(Mono.just(Arrays.asList(ruleDetails)));

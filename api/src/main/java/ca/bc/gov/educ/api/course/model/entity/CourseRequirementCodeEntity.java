@@ -26,9 +26,9 @@ public class CourseRequirementCodeEntity extends BaseEntity {
     @Column(name = "DESCRIPTION", nullable = false)
     private String description;
 
-    @Column(name = "RESTRICTION_EFFECTIVE_DATE", nullable = false)
-    private Date restrictionStartDate;
+    @Column(name = "EFFECTIVE_DATE", nullable = false)
+    private Date effectiveDate;
 
-    @Column(name = "RESTRICTION_EXPIRY_DATE", nullable = false)
-    private Date restrictionEndDate;
+    @Column(name = "EXPIRY_DATE", nullable = false)
+    private Date expiryDate;
 }

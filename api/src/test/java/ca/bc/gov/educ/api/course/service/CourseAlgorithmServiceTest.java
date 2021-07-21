@@ -1,6 +1,7 @@
 package ca.bc.gov.educ.api.course.service;
 
 import ca.bc.gov.educ.api.course.model.dto.*;
+import ca.bc.gov.educ.api.course.util.EducCourseApiUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.sql.Date;
 import java.util.Arrays;
 import java.util.UUID;
 
@@ -43,12 +45,19 @@ public class CourseAlgorithmServiceTest {
         studentCourse.setCourseName("main test course");
         studentCourse.setLanguage("en");
 
+        // Course Requirement Code
+        CourseRequirementCode ruleCode = new CourseRequirementCode();
+        ruleCode.setCourseRequirementCode("RuleCd");
+        ruleCode.setDescription("RuleCd Description");
+        ruleCode.setEffectiveDate(EducCourseApiUtils.parseTraxDate(new Date(System.currentTimeMillis() - 10000L).toString()));
+        ruleCode.setExpiryDate(EducCourseApiUtils.parseTraxDate(new Date(System.currentTimeMillis() + 10000L).toString()));
+
         // Course Requirement
         CourseRequirement courseRequirement = new CourseRequirement();
         courseRequirement.setCourseRequirementId(UUID.randomUUID());
         courseRequirement.setCourseCode("MAIN");
         courseRequirement.setCourseLevel("12");
-        courseRequirement.setCourseRequirementCode("RuleCd");
+        courseRequirement.setRuleCode(ruleCode);
 
         // Course Restriction
         CourseRestriction courseRestriction = new CourseRestriction();

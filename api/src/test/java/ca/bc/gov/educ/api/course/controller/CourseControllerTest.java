@@ -4,6 +4,7 @@ import ca.bc.gov.educ.api.course.model.dto.*;
 import ca.bc.gov.educ.api.course.service.CourseRequirementService;
 import ca.bc.gov.educ.api.course.service.CourseRestrictionService;
 import ca.bc.gov.educ.api.course.service.CourseService;
+import ca.bc.gov.educ.api.course.util.EducCourseApiUtils;
 import ca.bc.gov.educ.api.course.util.GradValidation;
 import ca.bc.gov.educ.api.course.util.ResponseHelper;
 import org.junit.Test;
@@ -111,7 +112,7 @@ public class CourseControllerTest {
         allCourseRequirements.setCourseLevel("12");
         allCourseRequirements.setRequirementName("REQ");
         allCourseRequirements.setRequirementProgram("2018-EN");
-        allCourseRequirements.setCourseRequirementCode("RuleCd");
+        allCourseRequirements.setRuleCode("RuleCd");
 
         Authentication authentication = Mockito.mock(Authentication.class);
         OAuth2AuthenticationDetails details = Mockito.mock(OAuth2AuthenticationDetails.class);
@@ -129,12 +130,19 @@ public class CourseControllerTest {
 
     @Test
     public void testGetAllCoursesRequirementByRule() {
+        // Course Requirement Code
+        CourseRequirementCode courseRequirementCode = new CourseRequirementCode();
+        courseRequirementCode.setCourseRequirementCode("RuleCd");
+        courseRequirementCode.setDescription("RuleCd Description");
+        courseRequirementCode.setEffectiveDate(EducCourseApiUtils.parseTraxDate(new Date(System.currentTimeMillis() - 10000L).toString()));
+        courseRequirementCode.setExpiryDate(EducCourseApiUtils.parseTraxDate(new Date(System.currentTimeMillis() + 10000L).toString()));
+
         // Course Requirement
         CourseRequirement courseRequirement = new CourseRequirement();
         courseRequirement.setCourseRequirementId(UUID.randomUUID());
         courseRequirement.setCourseCode("MAIN");
         courseRequirement.setCourseLevel("12");
-        courseRequirement.setCourseRequirementCode("RuleCd");
+        courseRequirement.setRuleCode(courseRequirementCode);
 
         Mockito.when(courseRequirementService.getAllCourseRequirementListByRule("RuleCd", 1, 5)).thenReturn(Arrays.asList(courseRequirement));
         courseController.getAllCoursesRequirementByRule("RuleCd", 1,5);
@@ -143,12 +151,19 @@ public class CourseControllerTest {
 
     @Test
     public void testGetCourseRequirements() {
+        // Course Requirement Code
+        CourseRequirementCode courseRequirementCode = new CourseRequirementCode();
+        courseRequirementCode.setCourseRequirementCode("RuleCd");
+        courseRequirementCode.setDescription("RuleCd Description");
+        courseRequirementCode.setEffectiveDate(EducCourseApiUtils.parseTraxDate(new Date(System.currentTimeMillis() - 10000L).toString()));
+        courseRequirementCode.setExpiryDate(EducCourseApiUtils.parseTraxDate(new Date(System.currentTimeMillis() + 10000L).toString()));
+
         // Course Requirement
         CourseRequirement courseRequirement = new CourseRequirement();
         courseRequirement.setCourseRequirementId(UUID.randomUUID());
         courseRequirement.setCourseCode("MAIN");
         courseRequirement.setCourseLevel("12");
-        courseRequirement.setCourseRequirementCode("RuleCd");
+        courseRequirement.setRuleCode(courseRequirementCode);
 
         CourseRequirements courseRequirements = new CourseRequirements();
         courseRequirements.setCourseRequirementList(Arrays.asList(courseRequirement));
@@ -160,12 +175,19 @@ public class CourseControllerTest {
 
     @Test
     public void testGetCourseRequirementsByCourseAndLevel() {
+        // Course Requirement Code
+        CourseRequirementCode courseRequirementCode = new CourseRequirementCode();
+        courseRequirementCode.setCourseRequirementCode("RuleCd");
+        courseRequirementCode.setDescription("RuleCd Description");
+        courseRequirementCode.setEffectiveDate(EducCourseApiUtils.parseTraxDate(new Date(System.currentTimeMillis() - 10000L).toString()));
+        courseRequirementCode.setExpiryDate(EducCourseApiUtils.parseTraxDate(new Date(System.currentTimeMillis() + 10000L).toString()));
+
         // Course Requirement
         CourseRequirement courseRequirement = new CourseRequirement();
         courseRequirement.setCourseRequirementId(UUID.randomUUID());
         courseRequirement.setCourseCode("MAIN");
         courseRequirement.setCourseLevel("12");
-        courseRequirement.setCourseRequirementCode("RuleCd");
+        courseRequirement.setRuleCode(courseRequirementCode);
 
         CourseRequirements courseRequirements = new CourseRequirements();
         courseRequirements.setCourseRequirementList(Arrays.asList(courseRequirement));
@@ -184,7 +206,7 @@ public class CourseControllerTest {
         allCourseRequirements.setCourseLevel("12");
         allCourseRequirements.setRequirementName("REQ");
         allCourseRequirements.setRequirementProgram("2018-EN");
-        allCourseRequirements.setCourseRequirementCode("RuleCd");
+        allCourseRequirements.setRuleCode("RuleCd");
 
         Authentication authentication = Mockito.mock(Authentication.class);
         OAuth2AuthenticationDetails details = Mockito.mock(OAuth2AuthenticationDetails.class);
@@ -201,12 +223,19 @@ public class CourseControllerTest {
 
     @Test
     public void testGetCoursesRequirementByCourse() {
+        // Course Requirement Code
+        CourseRequirementCode courseRequirementCode = new CourseRequirementCode();
+        courseRequirementCode.setCourseRequirementCode("RuleCd");
+        courseRequirementCode.setDescription("RuleCd Description");
+        courseRequirementCode.setEffectiveDate(EducCourseApiUtils.parseTraxDate(new Date(System.currentTimeMillis() - 10000L).toString()));
+        courseRequirementCode.setExpiryDate(EducCourseApiUtils.parseTraxDate(new Date(System.currentTimeMillis() + 10000L).toString()));
+
         // Course Requirement
         CourseRequirement courseRequirement = new CourseRequirement();
         courseRequirement.setCourseRequirementId(UUID.randomUUID());
         courseRequirement.setCourseCode("MAIN");
         courseRequirement.setCourseLevel("12");
-        courseRequirement.setCourseRequirementCode("RuleCd");
+        courseRequirement.setRuleCode(courseRequirementCode);
 
         CourseRequirements courseRequirements = new CourseRequirements();
         courseRequirements.setCourseRequirementList(Arrays.asList(courseRequirement));
