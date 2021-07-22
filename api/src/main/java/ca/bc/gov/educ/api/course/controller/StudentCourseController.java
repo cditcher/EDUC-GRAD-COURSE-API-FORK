@@ -4,6 +4,7 @@ import ca.bc.gov.educ.api.course.model.dto.StudentCourse;
 import ca.bc.gov.educ.api.course.service.StudentCourseService;
 import ca.bc.gov.educ.api.course.util.EducCourseApiConstants;
 import ca.bc.gov.educ.api.course.util.GradValidation;
+import ca.bc.gov.educ.api.course.util.PermissionsConstants;
 import ca.bc.gov.educ.api.course.util.ResponseHelper;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.Operation;
@@ -42,7 +43,7 @@ public class StudentCourseController {
     ResponseHelper response;
 
     @GetMapping(EducCourseApiConstants.GET_STUDENT_COURSE_BY_PEN_MAPPING)
-    @PreAuthorize("#oauth2.hasScope('READ_GRAD_STUDENT_COURSE_DATA')")
+    @PreAuthorize(PermissionsConstants.READ_GRAD_COURSE)
     @Operation(summary = "Find All Student Courses by PEN", description = "Get All Student Courses by PEN", tags = {"Student Courses"})
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "OK"), @ApiResponse(responseCode = "204", description = "NO CONTENT")})
     public ResponseEntity<List<StudentCourse>> getStudentCourseByPEN(
