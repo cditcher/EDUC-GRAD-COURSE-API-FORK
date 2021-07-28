@@ -44,8 +44,8 @@ public class StudentCourseEntity {
     @Column(name = "RELATED_LEVEL", nullable = true)
     private String relatedLevel;  
     
-    @Column(name = "ALTERNATE_CRSE_NAME", nullable = true)
-    private String alternateCourseName; 
+    @Column(name = "CUSTOMIZED_CRSE_NAME", nullable = true)
+    private String customizedCourseName; 
     
     @Column(name = "BEST_SCHOOL_PCT", nullable = true)
     private Double bestSchoolPercent; 
@@ -54,5 +54,11 @@ public class StudentCourseEntity {
     private Double bestExamPercent;  
     
     @Column(name = "MET_LIT_NUM_REQT", nullable = true)
-    private String metLitNumRequirement; 
+    private String metLitNumRequirement;
+    
+    @Column(name = "SPECIAL_CASE", nullable = true)
+    private String specialCase; 
+    
+    @Column(name = "TO_WRITE_FLAG", nullable = true)
+    private String toWriteFlag; 
 }

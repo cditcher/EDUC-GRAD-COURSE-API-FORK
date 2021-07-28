@@ -12,7 +12,7 @@ public class StudentCourse {
     private String courseName;
     private String courseLevel;
     private String sessionDate;
-	private String alternateCourseName;
+    private String customizedCourseName;
 	private String gradReqMet;
 	private Double completedCoursePercentage;
 	private String completedCourseLetterGrade;
@@ -32,6 +32,8 @@ public class StudentCourse {
 	private String genericCourseType;
 	private String language;
 	private String workExpFlag;
+	private String specialCase; 
+    private String toWriteFlag; 
 	private boolean isNotCompleted;
 	private boolean isFailed;
 	private boolean isDuplicate;
@@ -52,8 +54,8 @@ public class StudentCourse {
 		return courseLevel != null ? courseLevel.trim(): null;
 	}
 	
-	public String getAlternateCourseName() {
-		return alternateCourseName != null ? alternateCourseName.trim(): null;
+	public String getCustomizedCourseName() {
+		return customizedCourseName != null ? customizedCourseName.trim(): null;
 	}
 
 	public String getCompletedCourseLetterGrade() {
@@ -94,18 +96,21 @@ public class StudentCourse {
     public String getMetLitNumRequirement() {
     	return metLitNumRequirement != null ? metLitNumRequirement.trim() : null;
     }
-	
+
 	@Override
 	public String toString() {
 		return "StudentCourse [pen=" + pen + ", courseCode=" + courseCode + ", courseName=" + courseName
-				+ ", courseLevel=" + courseLevel + ", sessionDate=" + sessionDate + ", alternateCourseName="
-				+ alternateCourseName + ", gradReqMet=" + gradReqMet + ", completedCoursePercentage="
+				+ ", courseLevel=" + courseLevel + ", sessionDate=" + sessionDate + ", customizedCourseName="
+				+ customizedCourseName + ", gradReqMet=" + gradReqMet + ", completedCoursePercentage="
 				+ completedCoursePercentage + ", completedCourseLetterGrade=" + completedCourseLetterGrade
-				+ ", interimPercent=" + interimPercent + ", interimLetterGrade=" + interimLetterGrade + ", credits="
-				+ credits + ", creditsUsedForGrad=" + creditsUsedForGrad + ", relatedCourse=" + relatedCourse
-				+ ", relatedLevel=" + relatedLevel + ", hasRelatedCourse=" + hasRelatedCourse + ", genericCourseType="+genericCourseType + "]";
-	}
-	
-	
-		
+				+ ", interimPercent=" + interimPercent + ", interimLetterGrade=" + interimLetterGrade
+				+ ", bestSchoolPercent=" + bestSchoolPercent + ", bestExamPercent=" + bestExamPercent
+				+ ", equivOrChallenge=" + equivOrChallenge + ", fineArtsAppliedSkills=" + fineArtsAppliedSkills
+				+ ", metLitNumRequirement=" + metLitNumRequirement + ", credits=" + credits + ", creditsUsedForGrad="
+				+ creditsUsedForGrad + ", relatedCourse=" + relatedCourse + ", relatedCourseName=" + relatedCourseName
+				+ ", relatedLevel=" + relatedLevel + ", hasRelatedCourse=" + hasRelatedCourse + ", genericCourseType="
+				+ genericCourseType + ", language=" + language + ", workExpFlag=" + workExpFlag + ", specialCase="
+				+ specialCase + ", toWriteFlag=" + toWriteFlag + ", isNotCompleted=" + isNotCompleted + ", isFailed="
+				+ isFailed + ", isDuplicate=" + isDuplicate + ", courseDetails=" + courseDetails + "]";
+	}		
 }
