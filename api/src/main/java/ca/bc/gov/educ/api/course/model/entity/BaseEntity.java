@@ -14,36 +14,35 @@ import lombok.Data;
 @Data
 @MappedSuperclass
 public class BaseEntity {
-	@Column(name = "CREATED_BY", nullable = true)
-    private String createdBy;
+	@Column(name = "CREATE_USER", nullable = false)
+    private String createUser;
 	
-	@Column(name = "CREATED_TIMESTAMP", nullable = true)
-    private Date createdTimestamp;
+	@Column(name = "CREATE_DATE", nullable = false)
+    private Date createDate;
 	
-	@Column(name = "UPDATED_BY", nullable = true)
-    private String updatedBy;
+	@Column(name = "UPDATE_USER", nullable = false)
+    private String updateUser;
 	
-	@Column(name = "UPDATED_TIMESTAMP", nullable = true)
-    private Date updatedTimestamp;
+	@Column(name = "UPDATE_DATE", nullable = false)
+    private Date updateDate;
 	
 	@PrePersist
 	protected void onCreate() {
-		this.updatedBy = "GRADUATION";
-		this.createdBy = "GRADUATION";
-		this.createdTimestamp = new Date(System.currentTimeMillis());
-		this.updatedTimestamp = new Date(System.currentTimeMillis());
-
+		this.updateUser = "API_COURSE";
+		this.createUser = "API_COURSE";
+		this.createDate = new Date(System.currentTimeMillis());
+		this.updateDate = new Date(System.currentTimeMillis());
 	}
 
 	@PreUpdate
 	protected void onPersist() {
-		this.updatedTimestamp = new Date(System.currentTimeMillis());
-		this.updatedBy = "GRADUATION";
-		if (StringUtils.isBlank(createdBy)) {
-			createdBy = "GRADUATION";
+		this.updateDate = new Date(System.currentTimeMillis());
+		this.updateUser = "API_COURSE";
+		if (StringUtils.isBlank(createUser)) {
+			createUser = "API_COURSE";
 		}
-		if (this.createdTimestamp == null) {
-			this.createdTimestamp = new Date(System.currentTimeMillis());
+		if (this.createDate == null) {
+			this.createDate = new Date(System.currentTimeMillis());
 		}
 	}
 }
