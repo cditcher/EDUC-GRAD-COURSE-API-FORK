@@ -58,7 +58,7 @@ public class EducCourseApiConstants {
     public static final String TRAX_DATE_FORMAT = "yyyyMM";
 
     //Endpoints
-    @Value("${endpoint.programmanagement-api.rule-detail.url}")
+    @Value("${endpoint.grad-program-api.rule-detail.url}")
     private String ruleDetailProgramManagementApiUrl;
 
 }
