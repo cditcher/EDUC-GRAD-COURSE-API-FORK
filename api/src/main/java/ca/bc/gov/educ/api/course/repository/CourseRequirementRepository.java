@@ -3,6 +3,7 @@ package ca.bc.gov.educ.api.course.repository;
 import java.util.List;
 import java.util.UUID;
 
+import ca.bc.gov.educ.api.course.model.entity.CourseRequirementCodeEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -15,7 +16,7 @@ public interface CourseRequirementRepository extends JpaRepository<CourseRequire
 
     List<CourseRequirementEntity> findAll();
 
-	Page<CourseRequirementEntity> findByRuleCode(String rule, Pageable paging);
+	Page<CourseRequirementEntity> findByRuleCode(CourseRequirementCodeEntity ruleCode, Pageable paging);
 
 	List<CourseRequirementEntity> findByCourseCodeAndCourseLevel(String courseCode, String courseLevel);
 

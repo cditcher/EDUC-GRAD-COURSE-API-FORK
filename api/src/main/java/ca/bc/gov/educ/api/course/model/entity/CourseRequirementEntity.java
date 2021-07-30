@@ -2,10 +2,7 @@ package ca.bc.gov.educ.api.course.model.entity;
 
 import java.util.UUID;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -13,19 +10,20 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Entity
-@Table(name = "GRAD_COURSE_REQUIREMENT")
+@Table(name = "COURSE_REQUIREMENT")
 public class CourseRequirementEntity extends BaseEntity {
    
 	@Id
-	@Column(name = "ID", nullable = false)
+	@Column(name = "COURSE_REQUIREMENT_ID", nullable = false)
     private UUID courseRequirementId;
 
-    @Column(name = "CRSE_CODE", nullable = false)
+    @Column(name = "COURSE_CODE", nullable = false)
     private String courseCode;   
 
-    @Column(name = "CRSE_LVL", nullable = false)
+    @Column(name = "COURSE_LEVEL", nullable = true)
     private String courseLevel;   
-    
-    @Column(name = "RULE_CODE", nullable = true)
-    private String ruleCode;
+
+    @OneToOne(cascade = CascadeType.DETACH)
+    @JoinColumn(name = "COURSE_REQUIREMENT_CODE", referencedColumnName = "COURSE_REQUIREMENT_CODE")
+    private CourseRequirementCodeEntity ruleCode;
 }

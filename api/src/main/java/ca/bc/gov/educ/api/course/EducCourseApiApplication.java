@@ -1,5 +1,7 @@
 package ca.bc.gov.educ.api.course;
 
+import ca.bc.gov.educ.api.course.model.dto.StudentCourse;
+import ca.bc.gov.educ.api.course.model.entity.StudentCourseEntity;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,6 +40,9 @@ public class EducCourseApiApplication {
 		ModelMapper modelMapper = new ModelMapper();
 		modelMapper.typeMap(CourseEntity.class, Course.class);
 		modelMapper.typeMap(Course.class, CourseEntity.class);
+
+		modelMapper.typeMap(StudentCourseEntity.class, StudentCourse.class);
+		modelMapper.typeMap(StudentCourse.class, StudentCourseEntity.class);
 		return modelMapper;
 	}
 	
