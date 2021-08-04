@@ -221,4 +221,8 @@ public class CourseRequirementService {
         }
         return criteria;
     }
+
+    public boolean checkFrenchImmersionCourse(String pen) {
+        return courseRequirementRepository.countFrenchImmersionCourses(pen) > 0;
+    }
 }
