@@ -39,6 +39,9 @@ public class EducCourseApiConstants {
     public static final String GET_COURSE_RESTRICTION_BY_SEARCH_PARAMS_MAPPING = "/courserestrictionsearch";
     public static final String GET_COURSE_RESTRICTION_BY_CODE_AND_LEVEL_MAPPING = "/course-restriction";
     public static final String GET_COURSE_RESTRICTIONS_BY_COURSE_LIST_MAPPING = "/course-restriction/course-list";
+    public static final String GET_COURSE_RESTRICTION_BY_CODE_AND_LEVEL_AND_RESTRICTED_CODE_AND_LEVEL_MAPPING = "/course-restriction/{courseCode}/{courseLevel}/{restrictedCourseCode}/{restrictedCourseLevel}";
+    public static final String SAVE_COURSE_RESTRICTION = "/save-course-restriction";
+    public static final String CHECK_FRENCH_IMMERSION_COURSE = "/check-french-immersion-course/pen/{pen}";
 
     public static final String GET_COURSE_ALGORITHM_DATA_BY_PEN_MAPPING = "/pen/{pen}";
 

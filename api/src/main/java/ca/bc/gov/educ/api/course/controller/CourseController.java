@@ -268,4 +268,42 @@ public class CourseController {
     	logger.debug("getCoursesRestrictionsByCourse : ");
         return response.GET(courseRestrictionService.getCourseRestrictionsListByCourses(courseList));
     }
+
+    @GetMapping(EducCourseApiConstants.GET_COURSE_RESTRICTION_BY_CODE_AND_LEVEL_AND_RESTRICTED_CODE_AND_LEVEL_MAPPING)
+    @PreAuthorize(PermissionsConstants.READ_GRAD_COURSE_RESTRICTION)
+    @Operation(summary = "Find Course Restriction by Course Code, Course Level, Restricted Course Code, and Restricted Course Level",
+            description = "Get Course Restriction by Course Code, Course Level, Restricted Course Code, and Restricted Course Level", tags = { "Course Restrictions" })
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "OK"),
+            @ApiResponse(responseCode = "204", description = "NO CONTENT.")})
+    public ResponseEntity<CourseRestriction> getCourseRestriction(
+            @PathVariable String courseCode,
+            @PathVariable String courseLevel,
+            @PathVariable String restrictedCourseCode,
+            @PathVariable String restrictedCourseLevel) {
+
+        CourseRestriction courseRestriction = courseRestrictionService.getCourseRestriction(
+                courseCode, courseLevel, restrictedCourseCode, restrictedCourseLevel);
+        if (courseRestriction != null) {
+            return response.GET(courseRestriction);
+        }
+        return response.NO_CONTENT();
+    }
+
+    @PostMapping (EducCourseApiConstants.SAVE_COURSE_RESTRICTION)
+    @PreAuthorize(PermissionsConstants.UPDATE_GRAD_COURSE_RESTRICTION)
+    @Operation(summary = "Save Course Restriction", description = "Save Course Restriction", tags = { "Course Restrictions" })
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "OK")})
+    public ResponseEntity<CourseRestriction> saveCourseRestriction(@RequestBody CourseRestriction courseRestriction) {
+        logger.debug("Save Course Restriction");
+        return response.GET(courseRestrictionService.saveCourseRestriction(courseRestriction));
+    }
+
+    @GetMapping(EducCourseApiConstants.CHECK_FRENCH_IMMERSION_COURSE)
+    @PreAuthorize(PermissionsConstants.READ_GRAD_COURSE_REQUIREMENT)
+    @Operation(summary = "Check if student is taking any of french immersion courses", description = "Check if student is taking any of french immersion courses", tags = { "Course Requirements" })
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "OK")})
+    public ResponseEntity<Boolean> checkFrenchImmersionCourse(@PathVariable String pen) {
+        logger.debug("Check French Immersion Course : pen = " + pen);
+        return response.GET(courseRequirementService.checkFrenchImmersionCourse(pen));
+    }
 }
