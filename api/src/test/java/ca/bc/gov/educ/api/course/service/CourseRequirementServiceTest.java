@@ -297,4 +297,13 @@ public class CourseRequirementServiceTest {
         assertThat(allCourseRequirements.getRequirementProgram()).isEqualTo(courseRequirementService.getRequirementProgram(Arrays.asList(ruleDetails), allCourseRequirements).toString());
     }
 
+    @Test
+    public void checkFrenchImmersionCourse() {
+        String pen = "123456789";
+        when(courseRequirementRepository.countFrenchImmersionCourses(pen)).thenReturn(1L);
+
+        var result = courseRequirementService.checkFrenchImmersionCourse(pen);
+        assertThat(result).isTrue();
+    }
+
 }

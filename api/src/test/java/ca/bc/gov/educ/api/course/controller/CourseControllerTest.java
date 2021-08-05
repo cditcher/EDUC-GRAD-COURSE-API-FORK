@@ -252,7 +252,7 @@ public class CourseControllerTest {
         // Course Restriction
         CourseRestriction courseRestriction = new CourseRestriction();
         courseRestriction.setCourseRestrictionId(UUID.randomUUID());
-        courseRestriction.setMainCourseLevel("MAIN");
+        courseRestriction.setMainCourse("MAIN");
         courseRestriction.setMainCourseLevel("12");
         courseRestriction.setRestrictedCourse("REST");
         courseRestriction.setRestrictedCourseLevel("12");
@@ -267,7 +267,7 @@ public class CourseControllerTest {
         // Course Restriction
         CourseRestriction courseRestriction = new CourseRestriction();
         courseRestriction.setCourseRestrictionId(UUID.randomUUID());
-        courseRestriction.setMainCourseLevel("MAIN");
+        courseRestriction.setMainCourse("MAIN");
         courseRestriction.setMainCourseLevel("12");
         courseRestriction.setRestrictedCourse("REST");
         courseRestriction.setRestrictedCourseLevel("12");
@@ -290,7 +290,7 @@ public class CourseControllerTest {
         // Course Restriction
         CourseRestriction courseRestriction = new CourseRestriction();
         courseRestriction.setCourseRestrictionId(UUID.randomUUID());
-        courseRestriction.setMainCourseLevel("MAIN");
+        courseRestriction.setMainCourse("MAIN");
         courseRestriction.setMainCourseLevel("12");
         courseRestriction.setRestrictedCourse("REST");
         courseRestriction.setRestrictedCourseLevel("12");
@@ -308,7 +308,7 @@ public class CourseControllerTest {
         // Course Restriction
         CourseRestriction courseRestriction = new CourseRestriction();
         courseRestriction.setCourseRestrictionId(UUID.randomUUID());
-        courseRestriction.setMainCourseLevel("MAIN");
+        courseRestriction.setMainCourse("MAIN");
         courseRestriction.setMainCourseLevel("12");
         courseRestriction.setRestrictedCourse("REST");
         courseRestriction.setRestrictedCourseLevel("12");
@@ -326,7 +326,7 @@ public class CourseControllerTest {
         // Course Restriction
         CourseRestriction courseRestriction = new CourseRestriction();
         courseRestriction.setCourseRestrictionId(UUID.randomUUID());
-        courseRestriction.setMainCourseLevel("MAIN");
+        courseRestriction.setMainCourse("MAIN");
         courseRestriction.setMainCourseLevel("12");
         courseRestriction.setRestrictedCourse("REST");
         courseRestriction.setRestrictedCourseLevel("12");
@@ -340,5 +340,48 @@ public class CourseControllerTest {
         Mockito.when(courseRestrictionService.getCourseRestrictionsListByCourses(courseList)).thenReturn(courseRestrictions);
         courseController.getCoursesRestrictionsByCourse(courseList);
         Mockito.verify(courseRestrictionService).getCourseRestrictionsListByCourses(courseList);
+    }
+
+    @Test
+    public void testGetCourseRestriction() {
+        // Course Restriction
+        CourseRestriction courseRestriction = new CourseRestriction();
+        courseRestriction.setCourseRestrictionId(UUID.randomUUID());
+        courseRestriction.setMainCourse("MAIN");
+        courseRestriction.setMainCourseLevel("12");
+        courseRestriction.setRestrictedCourse("REST");
+        courseRestriction.setRestrictedCourseLevel("12");
+
+        CourseRestrictions courseRestrictions = new CourseRestrictions();
+        courseRestrictions.setCourseRestrictions(Arrays.asList(courseRestriction));
+
+        Mockito.when(courseRestrictionService.getCourseRestriction("MAIN", "12", "REST", "12")).thenReturn(courseRestriction);
+        courseController.getCourseRestriction("MAIN", "12", "REST", "12");
+        Mockito.verify(courseRestrictionService).getCourseRestriction("MAIN", "12", "REST", "12");
+    }
+
+    @Test
+    public void testSaveCourseRestriction() {
+        // Course Restriction
+        CourseRestriction courseRestriction = new CourseRestriction();
+        courseRestriction.setMainCourse("MAIN");
+        courseRestriction.setMainCourseLevel("12");
+        courseRestriction.setRestrictedCourse("REST");
+        courseRestriction.setRestrictedCourseLevel("12");
+
+        CourseRestrictions courseRestrictions = new CourseRestrictions();
+        courseRestrictions.setCourseRestrictions(Arrays.asList(courseRestriction));
+
+        Mockito.when(courseRestrictionService.saveCourseRestriction(courseRestriction)).thenReturn(courseRestriction);
+        courseController.saveCourseRestriction(courseRestriction);
+        Mockito.verify(courseRestrictionService).saveCourseRestriction(courseRestriction);
+    }
+
+    @Test
+    public void checkFrenchImmersionCourse() {
+        String pen = "123456789";
+        Mockito.when(courseRequirementService.checkFrenchImmersionCourse(pen)).thenReturn(true);
+        courseController.checkFrenchImmersionCourse(pen);
+        Mockito.verify(courseRequirementService).checkFrenchImmersionCourse(pen);
     }
 }
