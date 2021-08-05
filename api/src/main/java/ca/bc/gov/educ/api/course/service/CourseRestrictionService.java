@@ -1,10 +1,7 @@
 package ca.bc.gov.educ.api.course.service;
 
 
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import ca.bc.gov.educ.api.course.model.dto.Course;
 import ca.bc.gov.educ.api.course.model.entity.CourseRestrictionsEntity;
@@ -36,6 +33,7 @@ public class CourseRestrictionService {
     @SuppressWarnings("unused")
 	private static Logger logger = LoggerFactory.getLogger(CourseRestrictionService.class);
 
+    private static final String COURSE_RESTRICTION_ID = "courseRestrictionId";
 	private static final String CREATE_USER = "createUser";
 	private static final String CREATE_DATE = "createDate";
 
@@ -95,9 +93,10 @@ public class CourseRestrictionService {
 		CourseRestrictionsEntity sourceObject = courseRestrictionTransformer.transformToEntity(courseRestriction);
 		if (courseRestrictionOptional.isPresent()) {
 			CourseRestrictionsEntity courseRestrictionsEntity = courseRestrictionOptional.get();
-			BeanUtils.copyProperties(sourceObject, courseRestrictionsEntity, CREATE_USER, CREATE_DATE);
+			BeanUtils.copyProperties(sourceObject, courseRestrictionsEntity, COURSE_RESTRICTION_ID, CREATE_USER, CREATE_DATE);
 			return courseRestrictionTransformer.transformToDTO(courseRestrictionRepository.save(courseRestrictionsEntity));
 		} else {
+			sourceObject.setCourseRestrictionId(UUID.randomUUID());
 			return courseRestrictionTransformer.transformToDTO(courseRestrictionRepository.save(sourceObject));
 		}
 	}
