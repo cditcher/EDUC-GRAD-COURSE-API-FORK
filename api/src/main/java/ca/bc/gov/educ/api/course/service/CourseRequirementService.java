@@ -1,14 +1,14 @@
 package ca.bc.gov.educ.api.course.service;
 
+import java.util.*;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import ca.bc.gov.educ.api.course.model.entity.CourseRequirementCodeEntity;
+import ca.bc.gov.educ.api.course.repository.CourseRequirementCodeRepository;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -24,7 +24,10 @@ import ca.bc.gov.educ.api.course.model.dto.CourseRequirements;
 import ca.bc.gov.educ.api.course.model.dto.GradRuleDetails;
 import ca.bc.gov.educ.api.course.model.entity.CourseRequirementEntity;
 import ca.bc.gov.educ.api.course.model.transformer.CourseRequirementTransformer;
+import ca.bc.gov.educ.api.course.repository.CourseRequirementCriteriaQueryRepository;
 import ca.bc.gov.educ.api.course.repository.CourseRequirementRepository;
+import ca.bc.gov.educ.api.course.util.criteria.CriteriaHelper;
+import ca.bc.gov.educ.api.course.util.criteria.GradCriteria.OperationEnum;
 import ca.bc.gov.educ.api.course.util.EducCourseApiConstants;
 
 @Service
@@ -37,14 +40,19 @@ public class CourseRequirementService {
     private CourseRequirementTransformer courseRequirementTransformer;
     
     @Autowired
-    CourseRequirements courseRequirements;
+    private CourseRequirementCriteriaQueryRepository courseRequirementCriteriaQueryRepository;
+
+    @Autowired
+    private CourseRequirementCodeRepository courseRequirementCodeRepository;
     
     @Autowired
+    CourseRequirements courseRequirements;
+
+    @Autowired
     CourseService courseService;
-    
-    @Value(EducCourseApiConstants.ENDPOINT_RULE_DETAIL_URL)
-    private String getRuleDetails;
-   
+
+    @Autowired
+    EducCourseApiConstants constants;
     
     @Autowired
     WebClient webClient;
@@ -60,45 +68,29 @@ public class CourseRequirementService {
      * @throws java.lang.Exception
      */
     public List<AllCourseRequirements> getAllCourseRequirementList(Integer pageNo, Integer pageSize,String accessToken) {
-        List<CourseRequirement> courseReqList  = new ArrayList<CourseRequirement>();
-        List<AllCourseRequirements> allCourseRequiremntList = new ArrayList<AllCourseRequirements>();
+        List<CourseRequirement> courseReqList  = new ArrayList<>();
+        List<AllCourseRequirements> allCourseRequiremntList = new ArrayList<>();
         try {  
         	Pageable paging = PageRequest.of(pageNo, pageSize);        	 
             Page<CourseRequirementEntity> pagedResult = courseRequirementRepository.findAll(paging);        	
             courseReqList = courseRequirementTransformer.transformToDTO(pagedResult.getContent());
-            courseReqList.forEach((cR) -> {
+            courseReqList.forEach(cR -> {
             	AllCourseRequirements obj = new AllCourseRequirements();
             	BeanUtils.copyProperties(cR, obj);
+                obj.setRuleCode(cR.getRuleCode().getCourseRequirementCode());
             	Course course = courseService.getCourseDetails(cR.getCourseCode(), cR.getCourseLevel());
         		if(course != null) {
         			obj.setCourseName(course.getCourseName());
         		}
             	List<GradRuleDetails> ruleList = webClient.get()
-                        .uri(String.format(getRuleDetails,cR.getRuleCode()))
+                        .uri(String.format(constants.getRuleDetailProgramManagementApiUrl(),cR.getRuleCode().getCourseRequirementCode()))
                         .headers(h -> h.setBearerAuth(accessToken))
                         .retrieve()
                         .bodyToMono(new ParameterizedTypeReference<List<GradRuleDetails>>() {})
                         .block();
-            	String requirementProgram = "";
-            	for(GradRuleDetails rL: ruleList) {
-            		obj.setRequirementName(rL.getRequirementName());
-            		if(rL.getProgramCode() != null) {
-            			if("".equalsIgnoreCase(requirementProgram)) {
-            				requirementProgram = rL.getProgramCode();
-            			}else {
-            				requirementProgram = requirementProgram + "|" + rL.getProgramCode();
-            			}
-            		}
-            		if(rL.getSpecialProgramCode() != null) {
-            			if("".equalsIgnoreCase(requirementProgram)) {
-            				requirementProgram = requirementProgram + rL.getSpecialProgramCode();
-            			}else {
-            				requirementProgram = requirementProgram + "|" + rL.getSpecialProgramCode();
-            			}
-            			
-            		}
-            	}
-            	obj.setRequirementProgram(requirementProgram);
+            	StringBuilder requirementProgram = getRequirementProgram(ruleList,obj);
+            	
+            	obj.setRequirementProgram(requirementProgram.toString());
             	allCourseRequiremntList.add(obj);
             });
             
@@ -107,6 +99,31 @@ public class CourseRequirementService {
         }
 
         return allCourseRequiremntList;
+    }
+    
+    public StringBuilder getRequirementProgram(List<GradRuleDetails> ruleList, AllCourseRequirements obj) {
+    	StringBuilder requirementProgram = new StringBuilder();
+    	for(GradRuleDetails rL: ruleList) {
+    		obj.setRequirementName(rL.getRequirementName());
+    		if(rL.getProgramCode() != null) {
+    			if(requirementProgram.length() == 0) {
+    				requirementProgram.append(rL.getProgramCode());
+    			}else {
+    				requirementProgram.append("|");
+    				requirementProgram.append(rL.getProgramCode());
+    			}
+    		}
+    		if(rL.getSpecialProgramCode() != null) {
+    			if(requirementProgram.length() == 0) {
+    				requirementProgram.append(rL.getSpecialProgramCode());
+    			}else {
+    				requirementProgram.append("|");
+    				requirementProgram.append(rL.getSpecialProgramCode());
+    			}
+    			
+    		}
+    	}
+    	return requirementProgram;
     }
     
     /**
@@ -118,19 +135,22 @@ public class CourseRequirementService {
      * @throws java.lang.Exception
      */
     public List<CourseRequirement> getAllCourseRequirementListByRule(String rule,Integer pageNo, Integer pageSize) {
-        List<CourseRequirement> courseReqList  = new ArrayList<CourseRequirement>();
+        List<CourseRequirement> courseReqList  = new ArrayList<>();
 
         try {  
-        	Pageable paging = PageRequest.of(pageNo, pageSize);        	 
-            Page<CourseRequirementEntity> pagedResult = courseRequirementRepository.findByRuleCode(rule,paging);        	
-            courseReqList = courseRequirementTransformer.transformToDTO(pagedResult.getContent()); 
-            courseReqList.forEach(cR -> {
-            	Course course = courseService.getCourseDetails(cR.getCourseCode(),
-                        cR.getCourseLevel().equalsIgnoreCase("") ? " ":cR.getCourseLevel());
-        		if(course != null) {
-        			cR.setCourseName(course.getCourseName());
-        		}
-            });
+        	Pageable paging = PageRequest.of(pageNo, pageSize);
+        	Optional<CourseRequirementCodeEntity> ruleOptional = courseRequirementCodeRepository.findById(rule);
+        	if (ruleOptional.isPresent()) {
+                Page<CourseRequirementEntity> pagedResult = courseRequirementRepository.findByRuleCode(ruleOptional.get(), paging);
+                courseReqList = courseRequirementTransformer.transformToDTO(pagedResult.getContent());
+                courseReqList.forEach(cR -> {
+                    Course course = courseService.getCourseDetails(cR.getCourseCode(),
+                            cR.getCourseLevel().equalsIgnoreCase("") ? " " : cR.getCourseLevel());
+                    if (course != null) {
+                        cR.setCourseName(course.getCourseName());
+                    }
+                });
+            }
         } catch (Exception e) {
             logger.debug("Exception:" + e);
         }
@@ -157,4 +177,52 @@ public class CourseRequirementService {
                         courseRequirementRepository.findByCourseCodeIn(courseList.getCourseCodes())));
         return courseRequirements;
 	}
+
+	public List<AllCourseRequirements> getCourseRequirementSearchList(String courseCode, String courseLevel, String rule,String accessToken) {
+		CriteriaHelper criteria = new CriteriaHelper();
+        criteria = getSearchCriteria("courseCode", courseCode, criteria);
+        criteria = getSearchCriteria("courseLevel", courseLevel, criteria);
+        criteria = getSearchCriteria("ruleCode.courseRequirementCode", rule, criteria);
+        List<AllCourseRequirements> allCourseRequiremntList = new ArrayList<>();
+        List<CourseRequirement> courseReqList = courseRequirementTransformer.transformToDTO(courseRequirementCriteriaQueryRepository.findByCriteria(criteria, CourseRequirementEntity.class));
+        if (!courseReqList.isEmpty()) {
+        	courseReqList.forEach(cR -> {
+        		AllCourseRequirements obj = new AllCourseRequirements();
+            	BeanUtils.copyProperties(cR, obj);
+                obj.setRuleCode(cR.getRuleCode().getCourseRequirementCode());
+            	Course course = courseService.getCourseDetails(cR.getCourseCode(), cR.getCourseLevel());
+        		if(course != null) {
+        			obj.setCourseName(course.getCourseName());
+        		}
+            	List<GradRuleDetails> ruleList = webClient.get()
+                        .uri(String.format(constants.getRuleDetailProgramManagementApiUrl(),cR.getRuleCode().getCourseRequirementCode()))
+                        .headers(h -> h.setBearerAuth(accessToken))
+                        .retrieve()
+                        .bodyToMono(new ParameterizedTypeReference<List<GradRuleDetails>>() {})
+                        .block();
+            	StringBuilder requirementProgram = getRequirementProgram(ruleList,obj);
+            	
+            	obj.setRequirementProgram(requirementProgram.toString());
+            	allCourseRequiremntList.add(obj);
+            });
+            Collections.sort(allCourseRequiremntList, Comparator.comparing(AllCourseRequirements::getCourseCode)
+                    .thenComparing(AllCourseRequirements::getCourseLevel));
+        }
+        return allCourseRequiremntList;
+	}
+	
+	public CriteriaHelper getSearchCriteria(String roolElement, String value, CriteriaHelper criteria) {
+        if (StringUtils.isNotBlank(value)) {
+            if (StringUtils.contains(value, "*")) {
+                criteria.add(roolElement, OperationEnum.STARTS_WITH_IGNORE_CASE, StringUtils.strip(value.toUpperCase(), "*"));
+            } else {
+                criteria.add(roolElement, OperationEnum.EQUALS, value.toUpperCase());
+            }
+        }
+        return criteria;
+    }
+
+    public boolean checkFrenchImmersionCourse(String pen) {
+        return courseRequirementRepository.countFrenchImmersionCourses(pen) > 0;
+    }
 }

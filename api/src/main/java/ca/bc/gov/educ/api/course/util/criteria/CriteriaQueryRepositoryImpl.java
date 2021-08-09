@@ -1,4 +1,4 @@
-package ca.bc.gov.educ.api.course.repository.criteria;
+package ca.bc.gov.educ.api.course.util.criteria;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -22,7 +22,7 @@ import org.hibernate.query.criteria.internal.path.PluralAttributePath;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import ca.bc.gov.educ.api.course.repository.criteria.GradCriteria.OperationEnum;
+import ca.bc.gov.educ.api.course.util.criteria.GradCriteria.OperationEnum;
 
 @Repository
 public class CriteriaQueryRepositoryImpl<T> implements CriteriaQueryRepository<T> {
@@ -99,7 +99,7 @@ public class CriteriaQueryRepositoryImpl<T> implements CriteriaQueryRepository<T
 				predicates.add(cb.lessThanOrEqualTo(root.get(criteria.getColumn()), (Comparable) criteria.getValue()));
 				break;
 			case LIKE:
-				predicates.add(cb.like(root.get(criteria.getColumn()), criteria.getValue().toString()));
+				predicates.add(cb.like(root.get(criteria.getColumn()), "%"+criteria.getValue().toString()+"%"));
 				break;
 			case STARTS_WITH_IGNORE_CASE:
 				predicates.add(cb.like((Expression<String>) buildExpression(root, criteria.getColumn()), criteria.getValue() + "%"));

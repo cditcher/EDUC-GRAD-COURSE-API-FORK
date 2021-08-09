@@ -1,6 +1,7 @@
 package ca.bc.gov.educ.api.course.repository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -16,9 +17,15 @@ public interface CourseRestrictionRepository extends JpaRepository<CourseRestric
 
 	List<CourseRestrictionsEntity> findByMainCourseAndMainCourseLevel(String courseCode, String courseLevel);
 
+	List<CourseRestrictionsEntity> findByMainCourseAndRestrictedCourse(String courseCode, String restrictedCourseCode);
+
+	Optional<CourseRestrictionsEntity> findByMainCourseAndMainCourseLevelAndRestrictedCourseAndRestrictedCourseLevel(String courseCode, String courseLevel, String restrictedCourseCode, String restrictedCourseLevel);
+
 	@Query(value="SELECT si.* FROM GRAD_COURSE_RESTRICTIONS si where "
 			+ "(:mainCourseLevel is null or si.CRSE_MAIN_LVL like :mainCourseLevel%)  and "
 			+ "(:mainCourseCode is null or si.CRSE_MAIN like :mainCourseCode%) and ROWNUM <= 50",nativeQuery = true)
 	List<CourseRestrictionsEntity> searchForCourseRestriction(String mainCourseCode, String mainCourseLevel);
+
+	List<CourseRestrictionsEntity> findByMainCourseIn(List<String> courseCodes);
 
 }

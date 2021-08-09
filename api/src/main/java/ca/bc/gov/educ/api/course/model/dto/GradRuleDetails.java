@@ -10,7 +10,7 @@ import lombok.EqualsAndHashCode;
 @Component
 public class GradRuleDetails {
 
-	private String ruleCode; 
+	private String ruleCode;
 	private String requirementName;
 	private String programCode;	
 	private String specialProgramCode;

@@ -75,7 +75,7 @@ public class EducCourseApiUtils {
         if (sessionDate == null)
             return null;
 
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(EducCourseApiConstants.DEFAULT_DATE_FORMAT);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(EducCourseApiConstants.TRAX_DATE_FORMAT);
         Date date = new Date();
 
         try {

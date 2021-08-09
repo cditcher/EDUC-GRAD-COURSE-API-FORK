@@ -1,5 +1,7 @@
 package ca.bc.gov.educ.api.course;
 
+import ca.bc.gov.educ.api.course.model.dto.StudentCourse;
+import ca.bc.gov.educ.api.course.model.entity.StudentCourseEntity;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -8,7 +10,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -21,7 +22,6 @@ import ca.bc.gov.educ.api.course.model.dto.Course;
 import ca.bc.gov.educ.api.course.model.entity.CourseEntity;
 
 @SpringBootApplication
-@ComponentScan(basePackages = { "ca.bc.gov.educ.api.course"})
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 @EnableCaching
 public class EducCourseApiApplication {
@@ -40,6 +40,9 @@ public class EducCourseApiApplication {
 		ModelMapper modelMapper = new ModelMapper();
 		modelMapper.typeMap(CourseEntity.class, Course.class);
 		modelMapper.typeMap(Course.class, CourseEntity.class);
+
+		modelMapper.typeMap(StudentCourseEntity.class, StudentCourse.class);
+		modelMapper.typeMap(StudentCourse.class, StudentCourseEntity.class);
 		return modelMapper;
 	}
 	
