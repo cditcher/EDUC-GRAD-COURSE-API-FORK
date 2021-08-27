@@ -23,6 +23,9 @@ public class StudentExamEntity {
     @Column(name = "PROV_SCHOOL_PCT", nullable = true)
     private Double completedSchoolPercentage;    
     
+    @Column(name = "TO_WRITE_FLAG",nullable = true)
+    private String optIn;
+    
     @Column(name = "WROTE_FLAG", nullable = true)
     private String wroteFlag;
     

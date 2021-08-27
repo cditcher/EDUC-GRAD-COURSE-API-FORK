@@ -14,6 +14,7 @@ public class StudentExam {
     private String courseLevel;
     private String sessionDate;
     private Double bestSchoolPercentage;
+    private String optIn;
     private Double completedSchoolPercentage;   
     private String wroteFlag;    
     private String specialCase;
@@ -32,6 +33,10 @@ public class StudentExam {
 
 	public String getCourseLevel() {
 		return courseLevel != null ? courseLevel.trim(): null;
+	}
+	
+	public String getOptIn() {
+		return optIn != null ? optIn.trim(): null;
 	}
 	
 	public String getCompletedCourseLetterGrade() {
