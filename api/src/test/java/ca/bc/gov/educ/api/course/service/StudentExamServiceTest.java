@@ -17,8 +17,8 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 import ca.bc.gov.educ.api.course.model.dto.Course;
 import ca.bc.gov.educ.api.course.model.dto.StudentExam;
-import ca.bc.gov.educ.api.course.model.entity.StudentCourseId;
 import ca.bc.gov.educ.api.course.model.entity.StudentExamEntity;
+import ca.bc.gov.educ.api.course.model.entity.StudentExamId;
 import ca.bc.gov.educ.api.course.repository.StudentExamRepository;
 
 @RunWith(SpringRunner.class)
@@ -52,7 +52,7 @@ public class StudentExamServiceTest {
     @Test
     public void testGetStudentExamList_whenGivenCourseCodeAndLevelWithRelatedCourse_thenReturnSuccess() {
         // ID
-        StudentCourseId studentExamId = new StudentCourseId();
+        StudentExamId studentExamId = new StudentExamId();
         studentExamId.setPen("123456789");
         studentExamId.setCourseCode("main");
         studentExamId.setCourseLevel("12");
@@ -82,7 +82,7 @@ public class StudentExamServiceTest {
     @Test
     public void testGetStudentExamList_whenGivenCourseCodeWithoutRelatedCourse_thenReturnSuccess() {
         // ID
-    	 StudentCourseId studentExamId = new StudentCourseId();
+    	StudentExamId studentExamId = new StudentExamId();
         studentExamId.setPen("123456789");
         studentExamId.setCourseCode("main");
         studentExamId.setCourseLevel("");
@@ -112,7 +112,7 @@ public class StudentExamServiceTest {
     @Test
     public void testGetStudentExamList_whenGivenCourseCodeAndLevel_withsortforuifalse_thenReturnSuccess() {
         // ID
-        StudentCourseId studentExamId = new StudentCourseId();
+    	StudentExamId studentExamId = new StudentExamId();
         studentExamId.setPen("123456789");
         studentExamId.setCourseCode("main");
         studentExamId.setCourseLevel("12");

@@ -15,7 +15,7 @@ import javax.persistence.Table;
 public class StudentExamEntity {
    
 	@EmbeddedId
-    private StudentCourseId courseKey;
+    private StudentExamId courseKey;
     
     @Column(name = "BEST_SCHOOL_PCT", nullable = true)
     private Double bestSchoolPercentage;
