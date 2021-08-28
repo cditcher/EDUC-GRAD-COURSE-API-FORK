@@ -24,7 +24,7 @@ public class StudentExamId implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Size(max = 10)
-    @Column(name = "STUDNO", insertable = false, updatable = false)
+    @Column(name = "STUD_NO", insertable = false, updatable = false)
     private String pen;
     @Size(max = 5)
     @Column(name = "CRSE_CODE", insertable = false, updatable = false)
