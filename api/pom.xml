@@ -5,10 +5,10 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>ca.bc.gov.educ</groupId>
-	<artifactId>grad-course-api</artifactId>
+	<artifactId>educ-grad-course-api</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>grad-course-api</name>
-	<description>Ministry of Education GRADCourse API</description>
+	<name>educ-grad-course-api</name>
+	<description>Ministry of Education GRAD Course API</description>
    
 
     <properties>
