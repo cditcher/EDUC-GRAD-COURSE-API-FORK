@@ -84,4 +84,4 @@ springdoc:
 endpoint:
   grad-program-api:
     rule-detail:
-      url : https://educ-grad-program-api-77c02f-dev.apps.silver.devops.gov.bc.ca/api/v1/program/programrules/%s
+      url : ${GRAD_PROGRAM_API}api/v1/program/programrules/%s
