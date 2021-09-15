@@ -3,7 +3,7 @@ WORKDIR /workspace/app
 
 COPY api/pom.xml .
 COPY api/src src
-RUN mvn package -DskipTests
+RUN mvn clean package -DskipTests
 RUN mkdir -p target/dependency && (cd target/dependency; jar -xf ../*.jar)
 
 FROM docker-remote.artifacts.developer.gov.bc.ca/openjdk:11-jdk
