@@ -113,12 +113,12 @@ public class CourseRequirementService {
     				requirementProgram.append(rL.getProgramCode());
     			}
     		}
-    		if(rL.getSpecialProgramCode() != null) {
+    		if(rL.getOptionalProgramCode() != null) {
     			if(requirementProgram.length() == 0) {
-    				requirementProgram.append(rL.getSpecialProgramCode());
+    				requirementProgram.append(rL.getOptionalProgramCode());
     			}else {
     				requirementProgram.append("|");
-    				requirementProgram.append(rL.getSpecialProgramCode());
+    				requirementProgram.append(rL.getOptionalProgramCode());
     			}
     			
     		}
