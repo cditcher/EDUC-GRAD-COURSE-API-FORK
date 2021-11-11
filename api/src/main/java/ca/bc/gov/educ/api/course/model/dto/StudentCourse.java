@@ -33,7 +33,8 @@ public class StudentCourse {
 	private String language;
 	private String workExpFlag;
 	private String specialCase; 
-    private String toWriteFlag; 
+    private String toWriteFlag;
+	private String provExamCourse;
 	private boolean isNotCompleted;
 	private boolean isFailed;
 	private boolean isDuplicate;
