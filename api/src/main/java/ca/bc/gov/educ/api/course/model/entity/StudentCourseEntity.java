@@ -60,5 +60,8 @@ public class StudentCourseEntity {
     private String specialCase; 
     
     @Column(name = "TO_WRITE_FLAG", nullable = true)
-    private String toWriteFlag; 
+    private String toWriteFlag;
+
+    @Column(name = "PROV_EXAM_CRSE", nullable = true)
+    private String provExamCourse;
 }
