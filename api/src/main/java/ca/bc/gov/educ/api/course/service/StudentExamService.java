@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import io.github.resilience4j.retry.annotation.Retry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -35,6 +36,7 @@ public class StudentExamService {
      * @param sortForUI     Sort For UI
      * @return Student Course
      */
+    @Retry(name = "generalgetcall")
     public List<StudentExam> getStudentExamList(String pen, boolean sortForUI) {
         List<StudentExam> studentExams  = new ArrayList<>();
         try {
