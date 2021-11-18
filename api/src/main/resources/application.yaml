@@ -64,6 +64,7 @@ logging:
           autoconfigure:
             logging: ${SPRING_BOOT_AUTOCONFIG_LOG_LEVEL}
 
+#Resilience
 resilience4j.retry:
   instances:
     generalgetcall:
@@ -87,6 +88,7 @@ resilience4j.retry:
         - org.springframework.web.client.HttpServerErrorException
       ignoreExceptions:
         - java.lang.NullPointerException
+
 #Local properties
 server:
   undertow:
