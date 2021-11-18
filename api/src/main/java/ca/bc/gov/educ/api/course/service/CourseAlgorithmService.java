@@ -1,6 +1,7 @@
 package ca.bc.gov.educ.api.course.service;
 
 import ca.bc.gov.educ.api.course.model.dto.*;
+import io.github.resilience4j.retry.annotation.Retry;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,6 +21,7 @@ public class CourseAlgorithmService {
         this.courseRestrictionService = courseRestrictionService;
     }
 
+    @Retry(name = "generalgetcall")
     public CourseAlgorithmData getCourseAlgorithmData(String pen, boolean sortForUI) {
         CourseAlgorithmData courseAlgorithmData = new CourseAlgorithmData();
 

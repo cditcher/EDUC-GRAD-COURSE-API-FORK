@@ -5,6 +5,7 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
+import io.github.resilience4j.retry.annotation.Retry;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -48,6 +49,7 @@ public class CourseService {
      * @return Course
      * @throws java.lang.Exception
      */
+    @Retry(name = "generalgetcall")
     public List<Course> getCourseList() {
         return courseTransformer.transformToDTO(courseRepo.findAll());
     }
@@ -59,6 +61,7 @@ public class CourseService {
         return courseTransformer.transformToDTO(courseRepo.findByCourseKey(key));
     }
 
+    @Retry(name = "generalgetcall")
     public List<Course> getCourseSearchList(String courseCode, String courseLevel, String courseName, String language, Date startDate, Date endDate) {
         CriteriaHelper criteria = new CriteriaHelper();
         criteria = getSearchCriteria("courseKey.courseCode", courseCode, "courseCode", criteria);
@@ -91,7 +94,7 @@ public class CourseService {
         return criteria;
     }
 
-    public CriteriaHelper getSearchCriteria(String roolElement, String value, String paramterType, CriteriaHelper criteria) {
+    private CriteriaHelper getSearchCriteria(String roolElement, String value, String paramterType, CriteriaHelper criteria) {
         switch(paramterType) {
         case LANGUAGE:
         	if (StringUtils.isNotBlank(value)) {
