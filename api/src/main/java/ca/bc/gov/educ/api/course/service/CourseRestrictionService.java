@@ -5,6 +5,7 @@ import java.util.*;
 
 import ca.bc.gov.educ.api.course.model.dto.Course;
 import ca.bc.gov.educ.api.course.model.entity.CourseRestrictionsEntity;
+import io.github.resilience4j.retry.annotation.Retry;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,7 +44,9 @@ public class CourseRestrictionService {
      * @return Course 
      * @throws java.lang.Exception
      */
-    public List<CourseRestriction> getAllCourseRestrictionList() {
+
+	 @Retry(name = "generalgetcall")
+	 public List<CourseRestriction> getAllCourseRestrictionList() {
     	List<CourseRestriction> restrictionList = courseRestrictionTransformer.transformToDTO(courseRestrictionRepository.findAll());
     	if(!restrictionList.isEmpty()) {    		
     		Collections.sort(restrictionList, Comparator.comparing(CourseRestriction::getMainCourse)
@@ -51,7 +54,8 @@ public class CourseRestrictionService {
     	}
     	return restrictionList;
     }
-    
+
+	@Retry(name = "generalgetcall")
     public CourseRestrictions getCourseRestrictions() {
     	List<CourseRestriction> restrictionList = courseRestrictionTransformer.transformToDTO(courseRestrictionRepository.findAll());
     	if(!restrictionList.isEmpty()) {
@@ -62,6 +66,7 @@ public class CourseRestrictionService {
         return courseRestrictions;
     }
 
+	@Retry(name = "generalgetcall")
     public CourseRestrictions getCourseRestrictions(String courseCode, String courseLevel) {
         courseRestrictions.setCourseRestrictions(
                 courseRestrictionTransformer.transformToDTO(
@@ -69,6 +74,7 @@ public class CourseRestrictionService {
         return courseRestrictions;
     }
 
+	@Retry(name = "generalgetcall")
 	public CourseRestrictions getCourseRestrictionsByMainCourseAndRestrictedCourse(String courseCode, String restrictedCourseCode) {
 		courseRestrictions.setCourseRestrictions(
 				courseRestrictionTransformer.transformToDTO(
@@ -76,6 +82,7 @@ public class CourseRestrictionService {
 		return courseRestrictions;
 	}
 
+	@Retry(name = "generalgetcall")
 	public CourseRestriction getCourseRestriction(String mainCourseCode, String mainCourseLevel, String restrictedCourseCode, String restrictedCourseLevel) {
     	Optional<CourseRestrictionsEntity> courseRestrictionOptional = courseRestrictionRepository
 				.findByMainCourseAndMainCourseLevelAndRestrictedCourseAndRestrictedCourseLevel(mainCourseCode, mainCourseLevel, restrictedCourseCode, restrictedCourseLevel);
@@ -85,6 +92,7 @@ public class CourseRestrictionService {
     	return null;
 	}
 
+	@Retry(name = "generalpostcall")
 	public CourseRestriction saveCourseRestriction(CourseRestriction courseRestriction) {
     	Optional<CourseRestrictionsEntity> courseRestrictionOptional = courseRestriction.getCourseRestrictionId() != null? courseRestrictionRepository.findById(courseRestriction.getCourseRestrictionId()) :
 			courseRestrictionRepository.findByMainCourseAndMainCourseLevelAndRestrictedCourseAndRestrictedCourseLevel(
@@ -101,6 +109,7 @@ public class CourseRestrictionService {
 		}
 	}
 
+	@Retry(name = "generalgetcall")
 	public List<CourseRestriction> getCourseRestrictionsSearchList(String mainCourseCode, String mainCourseLevel) {
 		return courseRestrictionTransformer.transformToDTO(
 		        courseRestrictionRepository.searchForCourseRestriction(

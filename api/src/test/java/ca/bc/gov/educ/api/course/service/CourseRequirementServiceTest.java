@@ -131,7 +131,6 @@ public class CourseRequirementServiceTest {
         AllCourseRequirements allCourseRequirements = result.get(0);
         assertThat(allCourseRequirements.getCourseName()).isEqualTo(course.getCourseName());
         assertThat(allCourseRequirements.getRequirementName()).isEqualTo(ruleDetails.getRequirementName());
-        assertThat(allCourseRequirements.getRequirementProgram()).isEqualTo(courseRequirementService.getRequirementProgram(Arrays.asList(ruleDetails), allCourseRequirements).toString());
     }
 
     @Test
@@ -294,7 +293,6 @@ public class CourseRequirementServiceTest {
         AllCourseRequirements allCourseRequirements = result.get(0);
         assertThat(allCourseRequirements.getCourseName()).isEqualTo(course.getCourseName());
         assertThat(allCourseRequirements.getRequirementName()).isEqualTo(ruleDetails.getRequirementName());
-        assertThat(allCourseRequirements.getRequirementProgram()).isEqualTo(courseRequirementService.getRequirementProgram(Arrays.asList(ruleDetails), allCourseRequirements).toString());
     }
 
     @Test

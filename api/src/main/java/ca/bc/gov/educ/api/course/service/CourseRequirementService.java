@@ -4,6 +4,7 @@ import java.util.*;
 
 import ca.bc.gov.educ.api.course.model.entity.CourseRequirementCodeEntity;
 import ca.bc.gov.educ.api.course.repository.CourseRequirementCodeRepository;
+import io.github.resilience4j.retry.annotation.Retry;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -67,7 +68,9 @@ public class CourseRequirementService {
      * @return Course 
      * @throws java.lang.Exception
      */
-    public List<AllCourseRequirements> getAllCourseRequirementList(Integer pageNo, Integer pageSize,String accessToken) {
+
+     @Retry(name = "generalgetcall")
+     public List<AllCourseRequirements> getAllCourseRequirementList(Integer pageNo, Integer pageSize,String accessToken) {
         List<CourseRequirement> courseReqList  = new ArrayList<>();
         List<AllCourseRequirements> allCourseRequiremntList = new ArrayList<>();
         try {  
@@ -101,7 +104,7 @@ public class CourseRequirementService {
         return allCourseRequiremntList;
     }
     
-    public StringBuilder getRequirementProgram(List<GradRuleDetails> ruleList, AllCourseRequirements obj) {
+    private StringBuilder getRequirementProgram(List<GradRuleDetails> ruleList, AllCourseRequirements obj) {
     	StringBuilder requirementProgram = new StringBuilder();
     	for(GradRuleDetails rL: ruleList) {
     		obj.setRequirementName(rL.getRequirementName());
@@ -134,6 +137,7 @@ public class CourseRequirementService {
      * @return Course 
      * @throws java.lang.Exception
      */
+    @Retry(name = "generalgetcall")
     public List<CourseRequirement> getAllCourseRequirementListByRule(String rule,Integer pageNo, Integer pageSize) {
         List<CourseRequirement> courseReqList  = new ArrayList<>();
 
@@ -158,12 +162,14 @@ public class CourseRequirementService {
         return courseReqList;
     }
 
+    @Retry(name = "generalgetcall")
 	public CourseRequirements getCourseRequirements() {
         courseRequirements.setCourseRequirementList(
                 courseRequirementTransformer.transformToDTO(courseRequirementRepository.findAll()));
         return courseRequirements;
     }
 
+    @Retry(name = "generalgetcall")
     public CourseRequirements getCourseRequirements(String courseCode, String courseLevel) {
         courseRequirements.setCourseRequirementList(
                 courseRequirementTransformer.transformToDTO(
@@ -178,6 +184,7 @@ public class CourseRequirementService {
         return courseRequirements;
 	}
 
+    @Retry(name = "searchcoursecall")
 	public List<AllCourseRequirements> getCourseRequirementSearchList(String courseCode, String courseLevel, String rule,String accessToken) {
 		CriteriaHelper criteria = new CriteriaHelper();
         criteria = getSearchCriteria("courseCode", courseCode, criteria);
@@ -211,7 +218,7 @@ public class CourseRequirementService {
         return allCourseRequiremntList;
 	}
 	
-	public CriteriaHelper getSearchCriteria(String roolElement, String value, CriteriaHelper criteria) {
+	private CriteriaHelper getSearchCriteria(String roolElement, String value, CriteriaHelper criteria) {
         if (StringUtils.isNotBlank(value)) {
             if (StringUtils.contains(value, "*")) {
                 criteria.add(roolElement, OperationEnum.STARTS_WITH_IGNORE_CASE, StringUtils.strip(value.toUpperCase(), "*"));
@@ -222,6 +229,7 @@ public class CourseRequirementService {
         return criteria;
     }
 
+    @Retry(name = "generalgetcall")
     public boolean checkFrenchImmersionCourse(String pen) {
         return courseRequirementRepository.countFrenchImmersionCourses(pen) > 0;
     }
