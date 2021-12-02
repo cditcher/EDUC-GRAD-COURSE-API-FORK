@@ -152,6 +152,8 @@ public class CourseRequirementService {
                             cR.getCourseLevel().equalsIgnoreCase("") ? " " : cR.getCourseLevel());
                     if (course != null) {
                         cR.setCourseName(course.getCourseName());
+                        cR.setStartDate(course.getStartDate());
+                        cR.setEndDate(course.getEndDate());
                     }
                 });
             }
