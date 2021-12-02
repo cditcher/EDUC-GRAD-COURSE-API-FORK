@@ -1,8 +1,6 @@
 package ca.bc.gov.educ.api.course.config;
 
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -10,12 +8,12 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.lang.Nullable;
 
+import static ca.bc.gov.educ.api.course.util.EducCourseApiConstants.DEFAULT_DATE_FORMAT_INSTANCE;
+
 public class GradDateEditor extends CustomDateEditor {
 
-	private static final DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
-	
 	public GradDateEditor() {
-		super(DATE_FORMAT, true);
+		super(DEFAULT_DATE_FORMAT_INSTANCE, true);
 	} 
 
 	@Override
@@ -30,7 +28,7 @@ public class GradDateEditor extends CustomDateEditor {
 				if (StringUtils.equalsIgnoreCase("now", text)) {
 					setValue(new Date());
 				} else if (text.length() == 10) {
-					setValue(DATE_FORMAT.parse(text));
+					setValue(DEFAULT_DATE_FORMAT_INSTANCE.parse(text));
 				} else if (text.length() > 10) {
 					Calendar calendar = javax.xml.bind.DatatypeConverter.parseDateTime(text);
 					setValue(calendar.getTime());

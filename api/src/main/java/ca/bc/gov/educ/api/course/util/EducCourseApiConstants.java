@@ -5,12 +5,15 @@ import lombok.Setter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import java.util.Date;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 
 @Component
 @Getter
 @Setter
 public class EducCourseApiConstants {
+
+    private EducCourseApiConstants() {}
 
     //API end-point Mapping constants
     public static final String API_ROOT_MAPPING = "";
@@ -53,14 +56,12 @@ public class EducCourseApiConstants {
 
     //Default Attribute value constants
     public static final String DEFAULT_CREATED_BY = "API_COURSE";
-    public static final Date DEFAULT_CREATED_TIMESTAMP = new Date();
     public static final String DEFAULT_UPDATED_BY = "API_COURSE";
-    public static final Date DEFAULT_UPDATED_TIMESTAMP = new Date();
 
     //Default Date format constants
     public static final String DEFAULT_DATE_FORMAT = "yyyy-MM-dd";
-    
     public static final String TRAX_DATE_FORMAT = "yyyyMM";
+    public static final DateFormat DEFAULT_DATE_FORMAT_INSTANCE = new SimpleDateFormat(DEFAULT_DATE_FORMAT);
 
     //Endpoints
     @Value("${endpoint.grad-program-api.rule-detail.url}")

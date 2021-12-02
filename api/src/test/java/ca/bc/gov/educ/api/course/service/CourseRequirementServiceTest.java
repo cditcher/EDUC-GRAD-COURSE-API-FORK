@@ -137,7 +137,7 @@ public class CourseRequirementServiceTest {
     public void testGetAllCourseRequirementListByRule() {
         String ruleCodeValue = "RuleCd";
 
-        CourseRequirementCode ruleCode = new CourseRequirementCode();
+        CourseRequirementCodeDTO ruleCode = new CourseRequirementCodeDTO();
         ruleCode.setCourseRequirementCode(ruleCodeValue);
         ruleCode.setDescription("RuleCd Description");
         ruleCode.setEffectiveDate(new Date(System.currentTimeMillis() - 10000L));

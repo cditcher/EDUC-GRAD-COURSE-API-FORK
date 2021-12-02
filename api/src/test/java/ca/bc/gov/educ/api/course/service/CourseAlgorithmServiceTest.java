@@ -45,7 +45,7 @@ public class CourseAlgorithmServiceTest {
         studentCourse.setLanguage("en");
 
         // Course Requirement Code
-        CourseRequirementCode ruleCode = new CourseRequirementCode();
+        CourseRequirementCodeDTO ruleCode = new CourseRequirementCodeDTO();
         ruleCode.setCourseRequirementCode("RuleCd");
         ruleCode.setDescription("RuleCd Description");
         ruleCode.setEffectiveDate(new Date(System.currentTimeMillis() - 10000L));
@@ -79,7 +79,7 @@ public class CourseAlgorithmServiceTest {
         courseRequirements.setCourseRequirementList(Arrays.asList(courseRequirement));
 
         CourseRestrictions courseRestrictions = new CourseRestrictions();
-        courseRestrictions.setCourseRestrictions(Arrays.asList(courseRestriction));
+        courseRestrictions.setCourseRestrictionList(Arrays.asList(courseRestriction));
 
         when(studentCourseService.getStudentCourseList(studentCourse.getPen(), false)).thenReturn(Arrays.asList(studentCourse));
         when(courseRequirementService.getCourseRequirementListByCourses(courseList)).thenReturn(courseRequirements);

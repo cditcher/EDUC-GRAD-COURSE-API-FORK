@@ -18,8 +18,7 @@ public class CourseRequirementTransformer {
     ModelMapper modelMapper;
 
     public CourseRequirement transformToDTO (CourseRequirementEntity courseRequirementEntity) {
-        CourseRequirement courseRequirement = modelMapper.map(courseRequirementEntity, CourseRequirement.class);
-        return courseRequirement;
+        return modelMapper.map(courseRequirementEntity, CourseRequirement.class);
     }
 
     public CourseRequirement transformToDTO ( Optional<CourseRequirementEntity> courseRequirementEntity ) {
@@ -28,17 +27,15 @@ public class CourseRequirementTransformer {
         if (courseRequirementEntity.isPresent())
             cae = courseRequirementEntity.get();
 
-        CourseRequirement courseRequirement = modelMapper.map(cae, CourseRequirement.class);
-        return courseRequirement;
+        return modelMapper.map(cae, CourseRequirement.class);
     }
 
 	public List<CourseRequirement> transformToDTO (Iterable<CourseRequirementEntity> courseReqEntities ) {
 
-        List<CourseRequirement> courseReqList = new ArrayList<CourseRequirement>();
+        List<CourseRequirement> courseReqList = new ArrayList<>();
 
         for (CourseRequirementEntity courseReqEntity : courseReqEntities) {
-            CourseRequirement courseRequirement = new CourseRequirement();
-            courseRequirement = modelMapper.map(courseReqEntity, CourseRequirement.class); 
+            CourseRequirement courseRequirement = modelMapper.map(courseReqEntity, CourseRequirement.class);
             courseReqList.add(courseRequirement);
         }
 
@@ -46,7 +43,6 @@ public class CourseRequirementTransformer {
     }
 
     public CourseRequirementEntity transformToEntity(CourseRequirement courseRequirement) {
-        CourseRequirementEntity courseRequirementEntity = modelMapper.map(courseRequirement, CourseRequirementEntity.class);
-        return courseRequirementEntity;
+        return modelMapper.map(courseRequirement, CourseRequirementEntity.class);
     }
 }

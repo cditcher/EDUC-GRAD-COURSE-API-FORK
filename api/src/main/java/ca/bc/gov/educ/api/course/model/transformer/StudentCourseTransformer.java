@@ -18,8 +18,7 @@ public class StudentCourseTransformer {
     ModelMapper modelMapper;
 
     public StudentCourse transformToDTO (StudentCourseEntity studentCourseEntity) {
-        StudentCourse studentCourse = modelMapper.map(studentCourseEntity, StudentCourse.class);
-        return studentCourse;
+        return modelMapper.map(studentCourseEntity, StudentCourse.class);
     }
 
     public StudentCourse transformToDTO ( Optional<StudentCourseEntity> courseAchievementEntity ) {
@@ -28,17 +27,15 @@ public class StudentCourseTransformer {
         if (courseAchievementEntity.isPresent())
             cae = courseAchievementEntity.get();
 
-        StudentCourse courseAchievement = modelMapper.map(cae, StudentCourse.class);
-        return courseAchievement;
+        return modelMapper.map(cae, StudentCourse.class);
     }
 
     public List<StudentCourse> transformToDTO (Iterable<StudentCourseEntity> courseAchievementEntities ) {
 
-        List<StudentCourse> courseAchievementList = new ArrayList<StudentCourse>();
+        List<StudentCourse> courseAchievementList = new ArrayList<>();
 
         for (StudentCourseEntity courseAchievementEntity : courseAchievementEntities) {
-            StudentCourse courseAchievement = new StudentCourse();
-            courseAchievement = modelMapper.map(courseAchievementEntity, StudentCourse.class);
+            StudentCourse courseAchievement = modelMapper.map(courseAchievementEntity, StudentCourse.class);
            
             courseAchievement.setPen(courseAchievementEntity.getCourseKey().getPen());
             courseAchievement.setCourseCode(courseAchievementEntity.getCourseKey().getCourseCode());
@@ -51,7 +48,6 @@ public class StudentCourseTransformer {
     }
 
     public StudentCourseEntity transformToEntity(StudentCourse studentCourse) {
-        StudentCourseEntity courseAchievementEntity = modelMapper.map(studentCourse, StudentCourseEntity.class);
-        return courseAchievementEntity;
+        return modelMapper.map(studentCourse, StudentCourseEntity.class);
     }
 }

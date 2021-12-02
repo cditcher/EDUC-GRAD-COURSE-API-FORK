@@ -15,7 +15,7 @@ public class CriteriaHelper {
 
 	private static final Logger LOGGER = Logger.getLogger(CriteriaHelper.class);
 	
-	List<GradCriteria> criteriaList = new ArrayList<GradCriteria>();
+	List<GradCriteria> criteriaList = new ArrayList<>();
 
 	private Map<String, Boolean> orderBy = new HashMap<>();
 	
