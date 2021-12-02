@@ -15,7 +15,7 @@ public class CourseRequirement extends BaseModel {
 	private UUID courseRequirementId;
 	private String courseCode;
     private String courseLevel;
-    private CourseRequirementCode ruleCode;
+    private CourseRequirementCodeDTO ruleCode;
     private String courseName;
 
     public String getCourseCode() {

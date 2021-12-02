@@ -130,18 +130,18 @@ public class CourseControllerTest {
     @Test
     public void testGetAllCoursesRequirementByRule() {
         // Course Requirement Code
-        CourseRequirementCode courseRequirementCode = new CourseRequirementCode();
-        courseRequirementCode.setCourseRequirementCode("RuleCd");
-        courseRequirementCode.setDescription("RuleCd Description");
-        courseRequirementCode.setEffectiveDate(new Date(System.currentTimeMillis() - 10000L));
-        courseRequirementCode.setExpiryDate(new Date(System.currentTimeMillis() + 10000L));
+        CourseRequirementCodeDTO courseRequirementCodeDTO = new CourseRequirementCodeDTO();
+        courseRequirementCodeDTO.setCourseRequirementCode("RuleCd");
+        courseRequirementCodeDTO.setDescription("RuleCd Description");
+        courseRequirementCodeDTO.setEffectiveDate(new Date(System.currentTimeMillis() - 10000L));
+        courseRequirementCodeDTO.setExpiryDate(new Date(System.currentTimeMillis() + 10000L));
 
         // Course Requirement
         CourseRequirement courseRequirement = new CourseRequirement();
         courseRequirement.setCourseRequirementId(UUID.randomUUID());
         courseRequirement.setCourseCode("MAIN");
         courseRequirement.setCourseLevel("12");
-        courseRequirement.setRuleCode(courseRequirementCode);
+        courseRequirement.setRuleCode(courseRequirementCodeDTO);
 
         Mockito.when(courseRequirementService.getAllCourseRequirementListByRule("RuleCd", 1, 5)).thenReturn(Arrays.asList(courseRequirement));
         courseController.getAllCoursesRequirementByRule("RuleCd", 1,5);
@@ -151,18 +151,18 @@ public class CourseControllerTest {
     @Test
     public void testGetCourseRequirements() {
         // Course Requirement Code
-        CourseRequirementCode courseRequirementCode = new CourseRequirementCode();
-        courseRequirementCode.setCourseRequirementCode("RuleCd");
-        courseRequirementCode.setDescription("RuleCd Description");
-        courseRequirementCode.setEffectiveDate(new Date(System.currentTimeMillis() - 10000L));
-        courseRequirementCode.setExpiryDate(new Date(System.currentTimeMillis() + 10000L));
+        CourseRequirementCodeDTO courseRequirementCodeDTO = new CourseRequirementCodeDTO();
+        courseRequirementCodeDTO.setCourseRequirementCode("RuleCd");
+        courseRequirementCodeDTO.setDescription("RuleCd Description");
+        courseRequirementCodeDTO.setEffectiveDate(new Date(System.currentTimeMillis() - 10000L));
+        courseRequirementCodeDTO.setExpiryDate(new Date(System.currentTimeMillis() + 10000L));
 
         // Course Requirement
         CourseRequirement courseRequirement = new CourseRequirement();
         courseRequirement.setCourseRequirementId(UUID.randomUUID());
         courseRequirement.setCourseCode("MAIN");
         courseRequirement.setCourseLevel("12");
-        courseRequirement.setRuleCode(courseRequirementCode);
+        courseRequirement.setRuleCode(courseRequirementCodeDTO);
 
         CourseRequirements courseRequirements = new CourseRequirements();
         courseRequirements.setCourseRequirementList(Arrays.asList(courseRequirement));
@@ -175,18 +175,18 @@ public class CourseControllerTest {
     @Test
     public void testGetCourseRequirementsByCourseAndLevel() {
         // Course Requirement Code
-        CourseRequirementCode courseRequirementCode = new CourseRequirementCode();
-        courseRequirementCode.setCourseRequirementCode("RuleCd");
-        courseRequirementCode.setDescription("RuleCd Description");
-        courseRequirementCode.setEffectiveDate(new Date(System.currentTimeMillis() - 10000L));
-        courseRequirementCode.setExpiryDate(new Date(System.currentTimeMillis() + 10000L));
+        CourseRequirementCodeDTO courseRequirementCodeDTO = new CourseRequirementCodeDTO();
+        courseRequirementCodeDTO.setCourseRequirementCode("RuleCd");
+        courseRequirementCodeDTO.setDescription("RuleCd Description");
+        courseRequirementCodeDTO.setEffectiveDate(new Date(System.currentTimeMillis() - 10000L));
+        courseRequirementCodeDTO.setExpiryDate(new Date(System.currentTimeMillis() + 10000L));
 
         // Course Requirement
         CourseRequirement courseRequirement = new CourseRequirement();
         courseRequirement.setCourseRequirementId(UUID.randomUUID());
         courseRequirement.setCourseCode("MAIN");
         courseRequirement.setCourseLevel("12");
-        courseRequirement.setRuleCode(courseRequirementCode);
+        courseRequirement.setRuleCode(courseRequirementCodeDTO);
 
         CourseRequirements courseRequirements = new CourseRequirements();
         courseRequirements.setCourseRequirementList(Arrays.asList(courseRequirement));
@@ -223,18 +223,18 @@ public class CourseControllerTest {
     @Test
     public void testGetCoursesRequirementByCourse() {
         // Course Requirement Code
-        CourseRequirementCode courseRequirementCode = new CourseRequirementCode();
-        courseRequirementCode.setCourseRequirementCode("RuleCd");
-        courseRequirementCode.setDescription("RuleCd Description");
-        courseRequirementCode.setEffectiveDate(new Date(System.currentTimeMillis() - 10000L));
-        courseRequirementCode.setExpiryDate(new Date(System.currentTimeMillis() + 10000L));
+        CourseRequirementCodeDTO courseRequirementCodeDTO = new CourseRequirementCodeDTO();
+        courseRequirementCodeDTO.setCourseRequirementCode("RuleCd");
+        courseRequirementCodeDTO.setDescription("RuleCd Description");
+        courseRequirementCodeDTO.setEffectiveDate(new Date(System.currentTimeMillis() - 10000L));
+        courseRequirementCodeDTO.setExpiryDate(new Date(System.currentTimeMillis() + 10000L));
 
         // Course Requirement
         CourseRequirement courseRequirement = new CourseRequirement();
         courseRequirement.setCourseRequirementId(UUID.randomUUID());
         courseRequirement.setCourseCode("MAIN");
         courseRequirement.setCourseLevel("12");
-        courseRequirement.setRuleCode(courseRequirementCode);
+        courseRequirement.setRuleCode(courseRequirementCodeDTO);
 
         CourseRequirements courseRequirements = new CourseRequirements();
         courseRequirements.setCourseRequirementList(Arrays.asList(courseRequirement));
@@ -296,7 +296,7 @@ public class CourseControllerTest {
         courseRestriction.setRestrictedCourseLevel("12");
 
         CourseRestrictions courseRestrictions = new CourseRestrictions();
-        courseRestrictions.setCourseRestrictions(Arrays.asList(courseRestriction));
+        courseRestrictions.setCourseRestrictionList(Arrays.asList(courseRestriction));
 
         Mockito.when(courseRestrictionService.getCourseRestrictions()).thenReturn(courseRestrictions);
         courseController.getCourseRestrictions(null, null);
@@ -314,7 +314,7 @@ public class CourseControllerTest {
         courseRestriction.setRestrictedCourseLevel("12");
 
         CourseRestrictions courseRestrictions = new CourseRestrictions();
-        courseRestrictions.setCourseRestrictions(Arrays.asList(courseRestriction));
+        courseRestrictions.setCourseRestrictionList(Arrays.asList(courseRestriction));
 
         Mockito.when(courseRestrictionService.getCourseRestrictions("MAIN", "12")).thenReturn(courseRestrictions);
         courseController.getCourseRestrictions("MAIN", "12");
@@ -332,7 +332,7 @@ public class CourseControllerTest {
         courseRestriction.setRestrictedCourseLevel("12");
 
         CourseRestrictions courseRestrictions = new CourseRestrictions();
-        courseRestrictions.setCourseRestrictions(Arrays.asList(courseRestriction));
+        courseRestrictions.setCourseRestrictionList(Arrays.asList(courseRestriction));
 
         CourseList courseList = new CourseList();
         courseList.setCourseCodes(Arrays.asList("MAIN"));
@@ -353,7 +353,7 @@ public class CourseControllerTest {
         courseRestriction.setRestrictedCourseLevel("12");
 
         CourseRestrictions courseRestrictions = new CourseRestrictions();
-        courseRestrictions.setCourseRestrictions(Arrays.asList(courseRestriction));
+        courseRestrictions.setCourseRestrictionList(Arrays.asList(courseRestriction));
 
         Mockito.when(courseRestrictionService.getCourseRestriction("MAIN", "12", "REST", "12")).thenReturn(courseRestriction);
         courseController.getCourseRestriction("MAIN", "12", "REST", "12");
@@ -370,7 +370,7 @@ public class CourseControllerTest {
         courseRestriction.setRestrictedCourseLevel("12");
 
         CourseRestrictions courseRestrictions = new CourseRestrictions();
-        courseRestrictions.setCourseRestrictions(Arrays.asList(courseRestriction));
+        courseRestrictions.setCourseRestrictionList(Arrays.asList(courseRestriction));
 
         Mockito.when(courseRestrictionService.saveCourseRestriction(courseRestriction)).thenReturn(courseRestriction);
         courseController.saveCourseRestriction(courseRestriction);

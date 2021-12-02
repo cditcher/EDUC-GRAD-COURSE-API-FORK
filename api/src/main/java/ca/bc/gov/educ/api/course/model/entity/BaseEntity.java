@@ -11,6 +11,9 @@ import org.apache.commons.lang3.StringUtils;
 
 import lombok.Data;
 
+import static ca.bc.gov.educ.api.course.util.EducCourseApiConstants.DEFAULT_CREATED_BY;
+import static ca.bc.gov.educ.api.course.util.EducCourseApiConstants.DEFAULT_UPDATED_BY;
+
 @Data
 @MappedSuperclass
 public class BaseEntity {
@@ -28,8 +31,8 @@ public class BaseEntity {
 	
 	@PrePersist
 	protected void onCreate() {
-		this.updateUser = "API_COURSE";
-		this.createUser = "API_COURSE";
+		this.updateUser = DEFAULT_UPDATED_BY;
+		this.createUser = DEFAULT_CREATED_BY;
 		this.createDate = new Date(System.currentTimeMillis());
 		this.updateDate = new Date(System.currentTimeMillis());
 	}
@@ -37,9 +40,9 @@ public class BaseEntity {
 	@PreUpdate
 	protected void onPersist() {
 		this.updateDate = new Date(System.currentTimeMillis());
-		this.updateUser = "API_COURSE";
+		this.updateUser = DEFAULT_UPDATED_BY;
 		if (StringUtils.isBlank(createUser)) {
-			createUser = "API_COURSE";
+			createUser = DEFAULT_CREATED_BY;
 		}
 		if (this.createDate == null) {
 			this.createDate = new Date(System.currentTimeMillis());

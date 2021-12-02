@@ -98,7 +98,7 @@ public class CourseRequirementService {
             });
             
         } catch (Exception e) {
-            logger.debug("Exception:" + e);
+            logger.debug("Exception: {0}", e);
         }
 
         return allCourseRequiremntList;
@@ -156,7 +156,7 @@ public class CourseRequirementService {
                 });
             }
         } catch (Exception e) {
-            logger.debug("Exception:" + e);
+            logger.debug("Exception: {0}", e);
         }
 
         return courseReqList;
@@ -187,9 +187,9 @@ public class CourseRequirementService {
     @Retry(name = "searchcoursecall")
 	public List<AllCourseRequirements> getCourseRequirementSearchList(String courseCode, String courseLevel, String rule,String accessToken) {
 		CriteriaHelper criteria = new CriteriaHelper();
-        criteria = getSearchCriteria("courseCode", courseCode, criteria);
-        criteria = getSearchCriteria("courseLevel", courseLevel, criteria);
-        criteria = getSearchCriteria("ruleCode.courseRequirementCode", rule, criteria);
+        getSearchCriteria("courseCode", courseCode, criteria);
+        getSearchCriteria("courseLevel", courseLevel, criteria);
+        getSearchCriteria("ruleCode.courseRequirementCode", rule, criteria);
         List<AllCourseRequirements> allCourseRequiremntList = new ArrayList<>();
         List<CourseRequirement> courseReqList = courseRequirementTransformer.transformToDTO(courseRequirementCriteriaQueryRepository.findByCriteria(criteria, CourseRequirementEntity.class));
         if (!courseReqList.isEmpty()) {
@@ -218,15 +218,14 @@ public class CourseRequirementService {
         return allCourseRequiremntList;
 	}
 	
-	private CriteriaHelper getSearchCriteria(String roolElement, String value, CriteriaHelper criteria) {
+	private void getSearchCriteria(String rootElement, String value, CriteriaHelper criteria) {
         if (StringUtils.isNotBlank(value)) {
             if (StringUtils.contains(value, "*")) {
-                criteria.add(roolElement, OperationEnum.STARTS_WITH_IGNORE_CASE, StringUtils.strip(value.toUpperCase(), "*"));
+                criteria.add(rootElement, OperationEnum.STARTS_WITH_IGNORE_CASE, StringUtils.strip(value.toUpperCase(), "*"));
             } else {
-                criteria.add(roolElement, OperationEnum.EQUALS, value.toUpperCase());
+                criteria.add(rootElement, OperationEnum.EQUALS, value.toUpperCase());
             }
         }
-        return criteria;
     }
 
     @Retry(name = "generalgetcall")

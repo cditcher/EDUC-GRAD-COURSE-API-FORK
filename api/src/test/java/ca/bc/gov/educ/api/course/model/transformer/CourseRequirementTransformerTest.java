@@ -1,7 +1,7 @@
 package ca.bc.gov.educ.api.course.model.transformer;
 
 import ca.bc.gov.educ.api.course.model.dto.CourseRequirement;
-import ca.bc.gov.educ.api.course.model.dto.CourseRequirementCode;
+import ca.bc.gov.educ.api.course.model.dto.CourseRequirementCodeDTO;
 import ca.bc.gov.educ.api.course.model.entity.CourseRequirementCodeEntity;
 import ca.bc.gov.educ.api.course.model.entity.CourseRequirementEntity;
 import org.junit.Test;
@@ -44,17 +44,17 @@ public class CourseRequirementTransformerTest {
         courseRequirementEntity.setCourseLevel("12");
         courseRequirementEntity.setRuleCode(courseRequirementCodeEntity);
 
-        CourseRequirementCode courseRequirementCode = new CourseRequirementCode();
-        courseRequirementCode.setCourseRequirementCode("RuleCd");
-        courseRequirementCode.setDescription("RuleCd Description");
-        courseRequirementCode.setEffectiveDate(new Date(System.currentTimeMillis() - 10000L));
-        courseRequirementCode.setExpiryDate(new Date(System.currentTimeMillis() + 10000L));
+        CourseRequirementCodeDTO courseRequirementCodeDTO = new CourseRequirementCodeDTO();
+        courseRequirementCodeDTO.setCourseRequirementCode("RuleCd");
+        courseRequirementCodeDTO.setDescription("RuleCd Description");
+        courseRequirementCodeDTO.setEffectiveDate(new Date(System.currentTimeMillis() - 10000L));
+        courseRequirementCodeDTO.setExpiryDate(new Date(System.currentTimeMillis() + 10000L));
 
         CourseRequirement courseRequirement = new CourseRequirement();
         courseRequirement.setCourseRequirementId(courseRequirementEntity.getCourseRequirementId());
         courseRequirement.setCourseCode(courseRequirementEntity.getCourseCode());
         courseRequirement.setCourseLevel(courseRequirementEntity.getCourseLevel());
-        courseRequirement.setRuleCode(courseRequirementCode);
+        courseRequirement.setRuleCode(courseRequirementCodeDTO);
 
         Mockito.when(modelMapper.map(courseRequirementEntity, CourseRequirement.class)).thenReturn(courseRequirement);
         var result = courseRequirementTransformer.transformToDTO(courseRequirementEntity);
@@ -78,17 +78,17 @@ public class CourseRequirementTransformerTest {
         courseRequirementEntity.setCourseLevel("12");
         courseRequirementEntity.setRuleCode(courseRequirementCodeEntity);
 
-        CourseRequirementCode courseRequirementCode = new CourseRequirementCode();
-        courseRequirementCode.setCourseRequirementCode("RuleCd");
-        courseRequirementCode.setDescription("RuleCd Description");
-        courseRequirementCode.setEffectiveDate(new Date(System.currentTimeMillis() - 10000L));
-        courseRequirementCode.setExpiryDate(new Date(System.currentTimeMillis() + 10000L));
+        CourseRequirementCodeDTO courseRequirementCodeDTO = new CourseRequirementCodeDTO();
+        courseRequirementCodeDTO.setCourseRequirementCode("RuleCd");
+        courseRequirementCodeDTO.setDescription("RuleCd Description");
+        courseRequirementCodeDTO.setEffectiveDate(new Date(System.currentTimeMillis() - 10000L));
+        courseRequirementCodeDTO.setExpiryDate(new Date(System.currentTimeMillis() + 10000L));
 
         CourseRequirement courseRequirement = new CourseRequirement();
         courseRequirement.setCourseRequirementId(courseRequirementEntity.getCourseRequirementId());
         courseRequirement.setCourseCode(courseRequirementEntity.getCourseCode());
         courseRequirement.setCourseLevel(courseRequirementEntity.getCourseLevel());
-        courseRequirement.setRuleCode(courseRequirementCode);
+        courseRequirement.setRuleCode(courseRequirementCodeDTO);
 
         Mockito.when(modelMapper.map(courseRequirementEntity, CourseRequirement.class)).thenReturn(courseRequirement);
         var result = courseRequirementTransformer.transformToDTO(Optional.of(courseRequirementEntity));
@@ -112,17 +112,17 @@ public class CourseRequirementTransformerTest {
         courseRequirementEntity.setCourseLevel("12");
         courseRequirementEntity.setRuleCode(courseRequirementCodeEntity);
 
-        CourseRequirementCode courseRequirementCode = new CourseRequirementCode();
-        courseRequirementCode.setCourseRequirementCode("RuleCd");
-        courseRequirementCode.setDescription("RuleCd Description");
-        courseRequirementCode.setEffectiveDate(new Date(System.currentTimeMillis() - 10000L));
-        courseRequirementCode.setExpiryDate(new Date(System.currentTimeMillis() + 10000L));
+        CourseRequirementCodeDTO courseRequirementCodeDTO = new CourseRequirementCodeDTO();
+        courseRequirementCodeDTO.setCourseRequirementCode("RuleCd");
+        courseRequirementCodeDTO.setDescription("RuleCd Description");
+        courseRequirementCodeDTO.setEffectiveDate(new Date(System.currentTimeMillis() - 10000L));
+        courseRequirementCodeDTO.setExpiryDate(new Date(System.currentTimeMillis() + 10000L));
 
         CourseRequirement courseRequirement = new CourseRequirement();
         courseRequirement.setCourseRequirementId(courseRequirementEntity.getCourseRequirementId());
         courseRequirement.setCourseCode(courseRequirementEntity.getCourseCode());
         courseRequirement.setCourseLevel(courseRequirementEntity.getCourseLevel());
-        courseRequirement.setRuleCode(courseRequirementCode);
+        courseRequirement.setRuleCode(courseRequirementCodeDTO);
 
         Mockito.when(modelMapper.map(courseRequirement, CourseRequirementEntity.class)).thenReturn(courseRequirementEntity);
         var result = courseRequirementTransformer.transformToEntity(courseRequirement);

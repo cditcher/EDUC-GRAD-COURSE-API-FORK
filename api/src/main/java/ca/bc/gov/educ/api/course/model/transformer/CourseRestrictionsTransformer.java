@@ -22,11 +22,11 @@ public class CourseRestrictionsTransformer {
     public CourseRestriction transformToDTO(CourseRestrictionsEntity courseRestrictionsEntity) {
         CourseRestriction courseRestrictions = modelMapper.map(courseRestrictionsEntity, CourseRestriction.class);
         courseRestrictions.setRestrictionStartDate(
-                EducCourseApiUtils.parseTraxDate(
+                EducCourseApiUtils.parseDateFromString(
                         courseRestrictionsEntity.getRestrictionStartDate() != null ?
                                 courseRestrictionsEntity.getRestrictionStartDate().toString() : null));
         courseRestrictions.setRestrictionEndDate(
-                EducCourseApiUtils.parseTraxDate(
+                EducCourseApiUtils.parseDateFromString(
                         courseRestrictionsEntity.getRestrictionEndDate() != null ?
                                 courseRestrictionsEntity.getRestrictionEndDate().toString() : null));
         return courseRestrictions;
@@ -40,26 +40,25 @@ public class CourseRestrictionsTransformer {
 
         CourseRestriction courseRestrictions = modelMapper.map(cae, CourseRestriction.class);
         courseRestrictions.setRestrictionStartDate(
-                EducCourseApiUtils.parseTraxDate(
+                EducCourseApiUtils.parseDateFromString(
                         cae.getRestrictionStartDate() != null ? cae.getRestrictionStartDate().toString() : null));
         courseRestrictions.setRestrictionEndDate(
-                EducCourseApiUtils.parseTraxDate(
+                EducCourseApiUtils.parseDateFromString(
                         cae.getRestrictionEndDate() != null ? cae.getRestrictionEndDate().toString() : null));
         return courseRestrictions;
     }
 
     public List<CourseRestriction> transformToDTO(Iterable<CourseRestrictionsEntity> courseReqEntities) {
 
-        List<CourseRestriction> courseReqList = new ArrayList<CourseRestriction>();
+        List<CourseRestriction> courseReqList = new ArrayList<>();
 
         for (CourseRestrictionsEntity courseReqEntity : courseReqEntities) {
-            CourseRestriction courseRestrictions = new CourseRestriction();
-            courseRestrictions = modelMapper.map(courseReqEntity, CourseRestriction.class);
+            CourseRestriction courseRestrictions = modelMapper.map(courseReqEntity, CourseRestriction.class);
             courseRestrictions.setRestrictionStartDate(
-                    EducCourseApiUtils.parseTraxDate(
+                    EducCourseApiUtils.parseDateFromString(
                             courseReqEntity.getRestrictionStartDate() != null ? courseReqEntity.getRestrictionStartDate().toString() : null));
             courseRestrictions.setRestrictionEndDate(
-                    EducCourseApiUtils.parseTraxDate(
+                    EducCourseApiUtils.parseDateFromString(
                             courseReqEntity.getRestrictionEndDate() != null ? courseReqEntity.getRestrictionEndDate().toString() : null));
             courseReqList.add(courseRestrictions);
         }

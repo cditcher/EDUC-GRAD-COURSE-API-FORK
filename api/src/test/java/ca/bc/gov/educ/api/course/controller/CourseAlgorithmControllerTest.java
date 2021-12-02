@@ -43,18 +43,18 @@ public class CourseAlgorithmControllerTest {
         studentCourse.setLanguage("en");
 
         // Course Requirement Code
-        CourseRequirementCode courseRequirementCode = new CourseRequirementCode();
-        courseRequirementCode.setCourseRequirementCode("RuleCd");
-        courseRequirementCode.setDescription("RuleCd Description");
-        courseRequirementCode.setEffectiveDate(new Date(System.currentTimeMillis() - 10000L));
-        courseRequirementCode.setExpiryDate(new Date(System.currentTimeMillis() + 10000L));
+        CourseRequirementCodeDTO courseRequirementCodeDTO = new CourseRequirementCodeDTO();
+        courseRequirementCodeDTO.setCourseRequirementCode("RuleCd");
+        courseRequirementCodeDTO.setDescription("RuleCd Description");
+        courseRequirementCodeDTO.setEffectiveDate(new Date(System.currentTimeMillis() - 10000L));
+        courseRequirementCodeDTO.setExpiryDate(new Date(System.currentTimeMillis() + 10000L));
 
         // Course Requirement
         CourseRequirement courseRequirement = new CourseRequirement();
         courseRequirement.setCourseRequirementId(UUID.randomUUID());
         courseRequirement.setCourseCode("MAIN");
         courseRequirement.setCourseLevel("12");
-        courseRequirement.setRuleCode(courseRequirementCode);
+        courseRequirement.setRuleCode(courseRequirementCodeDTO);
 
         // Course Restriction
         CourseRestriction courseRestriction = new CourseRestriction();

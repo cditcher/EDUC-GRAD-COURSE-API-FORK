@@ -168,8 +168,7 @@ public class CourseController {
             logger.debug("**** CourseCode and CourseLevel Not Specified. Retreiving all CourseRequirements.");
             courseRequirements = courseRequirementService.getCourseRequirements();
         } else {
-            logger.debug("**** Retreiving CourseRequirements for CourseCode= " + courseCode
-                    + " and CourseLevel= " + courseLevel + ".");
+            logger.debug("**** Retrieving CourseRequirements for CourseCode= {} and CourseLevel= {}.", courseCode, courseLevel);
             courseRequirements = courseRequirementService.getCourseRequirements(courseCode, courseLevel);
         }
 
@@ -252,8 +251,7 @@ public class CourseController {
             logger.debug("**** CourseCode and CourseLevel Not Specified. Retreiving all CourseRestrictions.");
             courseRestrictions = courseRestrictionService.getCourseRestrictions();
         } else {
-            logger.debug("**** Retreiving CourseRestrictions for CourseCode= " + courseCode
-                    + " and CourseLevel= " + courseLevel + ".");
+            logger.debug("**** Retrieving CourseRestrictions for CourseCode= {} and CourseLevel= {}.", courseCode, courseLevel);
             courseRestrictions = courseRestrictionService.getCourseRestrictions(courseCode, courseLevel);
         }
 
@@ -303,7 +301,7 @@ public class CourseController {
     @Operation(summary = "Check if student is taking any of french immersion courses", description = "Check if student is taking any of french immersion courses", tags = { "Course Requirements" })
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "OK")})
     public ResponseEntity<Boolean> checkFrenchImmersionCourse(@PathVariable String pen) {
-        logger.debug("Check French Immersion Course : pen = " + pen);
+        logger.debug("Check French Immersion Course : pen = {}", pen);
         return response.GET(courseRequirementService.checkFrenchImmersionCourse(pen));
     }
 }
