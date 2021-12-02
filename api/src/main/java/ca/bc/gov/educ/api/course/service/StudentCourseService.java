@@ -39,30 +39,36 @@ public class StudentCourseService {
         List<StudentCourse> studentCourses  = new ArrayList<>();
         try {
         	studentCourses = studentCourseTransformer.transformToDTO(studentCourseRepo.findByPen(pen));
-        	studentCourses.forEach(sC -> {
-        		if(StringUtils.isNotBlank(sC.getRelatedCourse()) || StringUtils.isNotBlank(sC.getRelatedLevel()) || StringUtils.isNotBlank(sC.getCustomizedCourseName()) 
-        				|| StringUtils.isNotBlank(sC.getBestSchoolPercent() != null ?sC.getBestSchoolPercent().toString():null) || StringUtils.isNotBlank(sC.getBestExamPercent() != null ?sC.getBestExamPercent().toString():null) || StringUtils.isNotBlank(sC.getMetLitNumRequirement())) {
-        			sC.setHasRelatedCourse("Y");
-        		}else {
-        			sC.setHasRelatedCourse("N");
-        		}
-        		if(sC.getCourseLevel() != null) {
-	        		if(sC.getCourseLevel().trim().equalsIgnoreCase("")) {
-	        			getCourseDetails(sC.getCourseCode()," ", sC);
-	        		}else {
-	        			getCourseDetails(sC.getCourseCode(), sC.getCourseLevel(), sC);
-	        		}
-        		}
-        		if((StringUtils.isNotBlank(sC.getRelatedCourse()) || StringUtils.isNotBlank(sC.getRelatedLevel())) && sC.getRelatedLevel() != null) {
-        			checkForMoreOptions(sC);
-        		}
-        	});
+        	studentCourses.forEach(this::populate);
         } catch (Exception e) {
             logger.debug(String.format("Exception: %s",e));
         }
         getDataSorted(studentCourses,sortForUI);
         return studentCourses;
     }
+
+    private void populate(StudentCourse studentCourse) {
+		if(StringUtils.isNotBlank(studentCourse.getRelatedCourse())
+			|| StringUtils.isNotBlank(studentCourse.getRelatedLevel())
+			|| StringUtils.isNotBlank(studentCourse.getCustomizedCourseName())
+			|| StringUtils.isNotBlank(studentCourse.getBestSchoolPercent() != null? studentCourse.getBestSchoolPercent().toString() : null)
+			|| StringUtils.isNotBlank(studentCourse.getBestExamPercent() != null? studentCourse.getBestExamPercent().toString() : null)
+			|| StringUtils.isNotBlank(studentCourse.getMetLitNumRequirement())) {
+			studentCourse.setHasRelatedCourse("Y");
+		}else {
+			studentCourse.setHasRelatedCourse("N");
+		}
+		if(studentCourse.getCourseLevel() != null) {
+			if(studentCourse.getCourseLevel().trim().equalsIgnoreCase("")) {
+				getCourseDetails(studentCourse.getCourseCode()," ", studentCourse);
+			}else {
+				getCourseDetails(studentCourse.getCourseCode(), studentCourse.getCourseLevel(), studentCourse);
+			}
+		}
+		if((StringUtils.isNotBlank(studentCourse.getRelatedCourse()) || StringUtils.isNotBlank(studentCourse.getRelatedLevel())) && studentCourse.getRelatedLevel() != null) {
+			checkForMoreOptions(studentCourse);
+		}
+	}
     
     private void checkForMoreOptions(StudentCourse sC) {
 		if(sC.getRelatedLevel().trim().equalsIgnoreCase("")) {

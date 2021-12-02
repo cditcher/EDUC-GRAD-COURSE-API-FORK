@@ -17,6 +17,7 @@ import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
+import ca.bc.gov.educ.api.course.exception.GradBusinessRuleException;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.query.criteria.internal.path.PluralAttributePath;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -123,7 +124,7 @@ public class CriteriaQueryRepositoryImpl<T> implements CriteriaQueryRepository<T
 				}
 				break;
 			default:
-				throw new RuntimeException("Unable to determine criteria for: " + operation);
+				throw new GradBusinessRuleException("Unable to determine criteria for: " + operation);
 			}
 		}
 		return predicates;
@@ -133,7 +134,7 @@ public class CriteriaQueryRepositoryImpl<T> implements CriteriaQueryRepository<T
 		
 		criteriaHelper.getOrderBy().forEach((column, ascending) -> {
 			Expression<?> expression = buildExpression(root, column);
-			Order order = ascending ? cb.asc(expression) : cb.desc(expression);
+			Order order = ascending == null || ascending ? cb.asc(expression) : cb.desc(expression); // by default, ascending order
 
 			cq.orderBy(order);
 		});

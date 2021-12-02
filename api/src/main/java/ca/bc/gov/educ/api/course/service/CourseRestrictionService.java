@@ -3,7 +3,6 @@ package ca.bc.gov.educ.api.course.service;
 
 import java.util.*;
 
-import ca.bc.gov.educ.api.course.model.dto.Course;
 import ca.bc.gov.educ.api.course.model.entity.CourseRestrictionsEntity;
 import io.github.resilience4j.retry.annotation.Retry;
 import org.apache.commons.lang3.StringUtils;
@@ -62,13 +61,13 @@ public class CourseRestrictionService {
     		Collections.sort(restrictionList, Comparator.comparing(CourseRestriction::getMainCourse)
     				.thenComparing(CourseRestriction::getMainCourseLevel,Comparator.nullsLast(String::compareTo)));
     	}
-    	courseRestrictions.setCourseRestrictions(restrictionList);
+    	courseRestrictions.setCourseRestrictionList(restrictionList);
         return courseRestrictions;
     }
 
 	@Retry(name = "generalgetcall")
     public CourseRestrictions getCourseRestrictions(String courseCode, String courseLevel) {
-        courseRestrictions.setCourseRestrictions(
+        courseRestrictions.setCourseRestrictionList(
                 courseRestrictionTransformer.transformToDTO(
                         courseRestrictionRepository.findByMainCourseAndMainCourseLevel(courseCode, courseLevel)));
         return courseRestrictions;
@@ -76,7 +75,7 @@ public class CourseRestrictionService {
 
 	@Retry(name = "generalgetcall")
 	public CourseRestrictions getCourseRestrictionsByMainCourseAndRestrictedCourse(String courseCode, String restrictedCourseCode) {
-		courseRestrictions.setCourseRestrictions(
+		courseRestrictions.setCourseRestrictionList(
 				courseRestrictionTransformer.transformToDTO(
 						courseRestrictionRepository.findByMainCourseAndRestrictedCourse(courseCode, restrictedCourseCode)));
 		return courseRestrictions;
@@ -118,7 +117,7 @@ public class CourseRestrictionService {
 	}
 
 	public CourseRestrictions getCourseRestrictionsListByCourses(CourseList courseList) {
-		courseRestrictions.setCourseRestrictions(
+		courseRestrictions.setCourseRestrictionList(
 				courseRestrictionTransformer.transformToDTO(
 						courseRestrictionRepository.findByMainCourseIn(courseList.getCourseCodes())));
         return courseRestrictions;
