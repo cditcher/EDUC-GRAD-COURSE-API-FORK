@@ -2,6 +2,7 @@ package ca.bc.gov.educ.api.course.config;
 
 import org.hibernate.dialect.lock.OptimisticEntityLockException;
 import org.hibernate.exception.ConstraintViolationException;
+import org.jboss.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.DataRetrievalFailureException;
@@ -22,6 +23,7 @@ import ca.bc.gov.educ.api.course.util.GradValidation;
 @ControllerAdvice
 public class RestErrorHandler extends ResponseEntityExceptionHandler {
 
+	private static final Logger LOG = Logger.getLogger(RestErrorHandler.class);
 	private static final String ILLEGAL_ARGUMENT_ERROR = "Illegal argument ERROR IS: ";
 
 	@Autowired
@@ -29,7 +31,7 @@ public class RestErrorHandler extends ResponseEntityExceptionHandler {
 
 	@ExceptionHandler(value = { IllegalArgumentException.class, IllegalStateException.class })
 	protected ResponseEntity<Object> handleConflict(RuntimeException ex, WebRequest request) {
-		logger.error(ILLEGAL_ARGUMENT_ERROR + ex.getClass().getName(), ex);
+		LOG.error(ILLEGAL_ARGUMENT_ERROR + ex.getClass().getName(), ex);
 		ApiResponseModel<?> response = ApiResponseModel.ERROR(null, ex.getLocalizedMessage());
 		validation.ifErrors(response::addErrorMessages);
 		validation.ifWarnings(response::addWarningMessages);
@@ -39,7 +41,7 @@ public class RestErrorHandler extends ResponseEntityExceptionHandler {
 
 	@ExceptionHandler(value = { JpaObjectRetrievalFailureException.class, DataRetrievalFailureException.class })
 	protected ResponseEntity<Object> handleEntityNotFound(RuntimeException ex, WebRequest request) {
-		logger.error("JPA ERROR IS: " + ex.getClass().getName(), ex);
+		LOG.error("JPA ERROR IS: " + ex.getClass().getName(), ex);
 		validation.clear();
 		return new ResponseEntity<>(ApiResponseModel.ERROR(null, ex.getLocalizedMessage()), HttpStatus.BAD_REQUEST);
 	}
@@ -47,7 +49,7 @@ public class RestErrorHandler extends ResponseEntityExceptionHandler {
 	@ExceptionHandler(value = { AccessDeniedException.class })
 	protected ResponseEntity<Object> handleAuthorizationErrors(Exception ex, WebRequest request) {
 
-		logger.error("Authorization error EXCETPION IS: " + ex.getClass().getName());
+		LOG.error("Authorization error EXCETPION IS: " + ex.getClass().getName());
 		String message = "You are not authorized to access this resource.";
 		validation.clear();
 		return new ResponseEntity<>(ApiResponseModel.ERROR(null, message), HttpStatus.FORBIDDEN);
@@ -73,7 +75,7 @@ public class RestErrorHandler extends ResponseEntityExceptionHandler {
 	@ExceptionHandler(value = { DataIntegrityViolationException.class })
 	protected ResponseEntity<Object> handleSQLException(DataIntegrityViolationException ex, WebRequest request) {
 
-		logger.error("DATA INTEGRITY VIOLATION IS: " + ex.getClass().getName(), ex);
+		LOG.error("DATA INTEGRITY VIOLATION IS: " + ex.getClass().getName(), ex);
 		String msg = ex.getLocalizedMessage();
 
 		Throwable cause = ex.getCause();
@@ -103,8 +105,8 @@ public class RestErrorHandler extends ResponseEntityExceptionHandler {
 	}
 
 	private ResponseEntity<Object> handleGenericException(Exception ex) {
-		logger.error("EXCEPTION IS: " + ex.getClass().getName(), ex);
-		logger.error(ILLEGAL_ARGUMENT_ERROR + ex.getClass().getName(), ex);
+		LOG.error("EXCEPTION IS: " + ex.getClass().getName(), ex);
+		LOG.error(ILLEGAL_ARGUMENT_ERROR + ex.getClass().getName(), ex);
 
 		ApiResponseModel<?> response = ApiResponseModel.ERROR(null);
 		validation.ifErrors(response::addErrorMessages);
