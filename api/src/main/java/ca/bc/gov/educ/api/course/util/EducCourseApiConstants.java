@@ -15,6 +15,8 @@ public class EducCourseApiConstants {
 
     private EducCourseApiConstants() {}
 
+    public static final String CORRELATION_ID = "correlationID";
+
     //API end-point Mapping constants
     public static final String API_ROOT_MAPPING = "";
     public static final String API_VERSION = "v1";
