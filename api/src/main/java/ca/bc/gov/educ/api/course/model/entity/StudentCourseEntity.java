@@ -62,6 +62,4 @@ public class StudentCourseEntity {
     @Column(name = "TO_WRITE_FLAG", nullable = true)
     private String toWriteFlag;
 
-    @Column(name = "PROV_EXAM_CRSE", nullable = true)
-    private String provExamCourse;
 }
