@@ -35,7 +35,9 @@ public class StudentCourseId implements Serializable {
     @Size(max = 9)
     @Column(name = "CRSE_SESSION", insertable = false, updatable = false)
     private String sessionDate;
-
+    @Size(max = 1)
+    @Column(name = "PROV_EXAM_CRSE", insertable = false, updatable = false)
+    private String provExamCourse;
     public StudentCourseId() {
     }
 
@@ -46,11 +48,13 @@ public class StudentCourseId implements Serializable {
      * @param crseCode
      * @param crseLevel
      * @param crseSession
+     * @param provExamCourse
      */
-    public StudentCourseId(String studNo, String crseCode, String crseLevel, String crseSession) {
+    public StudentCourseId(String studNo, String crseCode, String crseLevel, String crseSession,String provExamCourse) {
         this.pen = studNo;
         this.courseCode = crseCode;
         this.courseLevel = crseLevel;
         this.sessionDate = crseSession;
+        this.provExamCourse = provExamCourse;
     }
 }
