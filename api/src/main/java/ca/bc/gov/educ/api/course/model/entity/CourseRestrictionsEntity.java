@@ -36,7 +36,7 @@ public class CourseRestrictionsEntity extends BaseEntity  {
 	@Column(name = "RESTRICTION_EFFECTIVE_DATE", nullable = false)
     private Date restrictionStartDate; 
 	
-	@Column(name = "RESTRICTION_EXPIRY_DATE", nullable = false)
+	@Column(name = "RESTRICTION_EXPIRY_DATE", nullable = true)
     private Date restrictionEndDate;
 	
 }

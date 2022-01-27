@@ -64,10 +64,10 @@ public class CourseService {
     @Retry(name = "generalgetcall")
     public List<Course> getCourseSearchList(String courseCode, String courseLevel, String courseName, String language, Date startDate, Date endDate) {
         CriteriaHelper criteria = new CriteriaHelper();
-        criteria = getSearchCriteria("courseKey.courseCode", courseCode, "courseCode", criteria);
-        criteria = getSearchCriteria("courseKey.courseLevel", courseLevel, "courseLevel", criteria);
-        criteria = getSearchCriteria("courseName", courseName, "courseName", criteria);
-        criteria = getSearchCriteria(LANGUAGE, language, LANGUAGE, criteria);
+        getSearchCriteria("courseKey.courseCode", courseCode, "courseCode", criteria);
+        getSearchCriteria("courseKey.courseLevel", courseLevel, "courseLevel", criteria);
+        getSearchCriteria(COURSE_NAME, courseName, COURSE_NAME, criteria);
+        getSearchCriteria(LANGUAGE, language, LANGUAGE, criteria);
 
         if (startDate != null) {
             getSearchCriteriaDate(START_DATE, startDate, START_DATE, criteria);
@@ -84,46 +84,40 @@ public class CourseService {
         return courseList;
     }
 
-    private CriteriaHelper getSearchCriteriaDate(String roolElement, Date value, String paramterType,
+    private void getSearchCriteriaDate(String rootElement, Date value, String paramterType,
                                                  CriteriaHelper criteria) {
         if (paramterType.equalsIgnoreCase(START_DATE)) {
-            criteria.add(roolElement, OperationEnum.GREATER_THAN_EQUAL_TO, value);
+            criteria.add(rootElement, OperationEnum.GREATER_THAN_EQUAL_TO, value);
         } else if (paramterType.equalsIgnoreCase(END_DATE)) {
-            criteria.add(roolElement, OperationEnum.LESS_THAN_EQUAL_TO, value);
+            criteria.add(rootElement, OperationEnum.LESS_THAN_EQUAL_TO, value);
         }
-        return criteria;
     }
 
-    private CriteriaHelper getSearchCriteria(String roolElement, String value, String paramterType, CriteriaHelper criteria) {
-        switch(paramterType) {
-        case LANGUAGE:
-        	if (StringUtils.isNotBlank(value)) {
-                if (StringUtils.equals("F", value)) {
-                    criteria.add(roolElement, OperationEnum.EQUALS, value.toUpperCase());
-                } else {
-                    criteria.add(roolElement, OperationEnum.NOT_EQUALS, "F");
-                }
+    private void getSearchCriteria(String rootElement, String value, String paramterType, CriteriaHelper criteria) {
+        if (StringUtils.isNotBlank(value)) {
+            switch (paramterType) {
+                case LANGUAGE:
+                    if (StringUtils.equalsIgnoreCase("F", value)) {
+                        criteria.add(rootElement, OperationEnum.EQUALS, value.toUpperCase());
+                    } else {
+                        criteria.add(rootElement, OperationEnum.NOT_EQUALS, "F");
+                    }
+                    break;
+                case COURSE_NAME:
+                    if (StringUtils.contains(value, "*")) {
+                        criteria.add(rootElement, OperationEnum.LIKE, StringUtils.strip(value.toUpperCase(), "*"));
+                    } else {
+                        criteria.add(rootElement, OperationEnum.EQUALS, value.toUpperCase());
+                    }
+                    break;
+                default:
+                    if (StringUtils.contains(value, "*")) {
+                        criteria.add(rootElement, OperationEnum.STARTS_WITH_IGNORE_CASE, StringUtils.strip(value.toUpperCase(), "*"));
+                    } else {
+                        criteria.add(rootElement, OperationEnum.EQUALS, value.toUpperCase());
+                    }
+                    break;
             }
-        	break;
-        case COURSE_NAME:
-        	if (StringUtils.isNotBlank(value)) {
-                if (StringUtils.contains(value, "*")) {
-                    criteria.add(roolElement, OperationEnum.LIKE, StringUtils.strip(value.toUpperCase(), "*"));
-                } else {
-                    criteria.add(roolElement, OperationEnum.EQUALS, value.toUpperCase());
-                }
-            }
-        	break;
-        default:
-        	if (StringUtils.isNotBlank(value)) {
-                if (StringUtils.contains(value, "*")) {
-                    criteria.add(roolElement, OperationEnum.STARTS_WITH_IGNORE_CASE, StringUtils.strip(value.toUpperCase(), "*"));
-                } else {
-                    criteria.add(roolElement, OperationEnum.EQUALS, value.toUpperCase());
-                }
-            }
-        	break;
         }
-        return criteria;
     }
 }

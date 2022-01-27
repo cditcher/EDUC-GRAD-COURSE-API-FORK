@@ -8,7 +8,6 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.sql.Date;
-import java.util.UUID;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -29,6 +28,6 @@ public class CourseRequirementCodeEntity extends BaseEntity {
     @Column(name = "EFFECTIVE_DATE", nullable = false)
     private Date effectiveDate;
 
-    @Column(name = "EXPIRY_DATE", nullable = false)
+    @Column(name = "EXPIRY_DATE", nullable = true)
     private Date expiryDate;
 }

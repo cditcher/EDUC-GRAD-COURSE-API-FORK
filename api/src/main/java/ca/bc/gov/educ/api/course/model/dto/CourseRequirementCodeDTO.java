@@ -9,7 +9,7 @@ import java.sql.Date;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Component
-public class CourseRequirementCode extends BaseModel {
+public class CourseRequirementCodeDTO extends BaseModel {
     private String courseRequirementCode;
     private String label;
     private String description;

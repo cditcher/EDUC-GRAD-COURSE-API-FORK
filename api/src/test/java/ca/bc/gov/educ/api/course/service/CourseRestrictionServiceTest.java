@@ -12,6 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import java.sql.Date;
 import java.util.Arrays;
@@ -33,6 +34,9 @@ public class CourseRestrictionServiceTest {
 
     @MockBean
     private CourseRestrictionRepository courseRestrictionRepository;
+
+    @MockBean
+    WebClient webClient;
 
     @Test
     public void testGetAllCourseRestrictionList() {
@@ -71,8 +75,8 @@ public class CourseRestrictionServiceTest {
         when(courseRestrictionRepository.findAll()).thenReturn(Arrays.asList(courseRestriction));
         var result = courseRestrictionService.getCourseRestrictions();
         assertThat(result).isNotNull();
-        assertThat(result.getCourseRestrictions().size()).isEqualTo(1);
-        CourseRestriction responseCourseRestriction = result.getCourseRestrictions().get(0);
+        assertThat(result.getCourseRestrictionList().size()).isEqualTo(1);
+        CourseRestriction responseCourseRestriction = result.getCourseRestrictionList().get(0);
         assertThat(responseCourseRestriction.getCourseRestrictionId()).isEqualTo(courseRestriction.getCourseRestrictionId());
         assertThat(responseCourseRestriction.getMainCourse()).isEqualTo(courseRestriction.getMainCourse());
         assertThat(responseCourseRestriction.getMainCourseLevel()).isEqualTo(courseRestriction.getMainCourseLevel());
@@ -96,8 +100,8 @@ public class CourseRestrictionServiceTest {
         when(courseRestrictionRepository.findByMainCourseAndMainCourseLevel(eq("MAIN"), eq("12"))).thenReturn(Arrays.asList(courseRestriction));
         var result = courseRestrictionService.getCourseRestrictions("MAIN", "12");
         assertThat(result).isNotNull();
-        assertThat(result.getCourseRestrictions().size()).isEqualTo(1);
-        CourseRestriction responseCourseRestriction = result.getCourseRestrictions().get(0);
+        assertThat(result.getCourseRestrictionList().size()).isEqualTo(1);
+        CourseRestriction responseCourseRestriction = result.getCourseRestrictionList().get(0);
         assertThat(responseCourseRestriction.getCourseRestrictionId()).isEqualTo(courseRestriction.getCourseRestrictionId());
         assertThat(responseCourseRestriction.getMainCourse()).isEqualTo(courseRestriction.getMainCourse());
         assertThat(responseCourseRestriction.getMainCourseLevel()).isEqualTo(courseRestriction.getMainCourseLevel());
@@ -145,8 +149,8 @@ public class CourseRestrictionServiceTest {
         when(courseRestrictionRepository.findByMainCourseIn(courseList.getCourseCodes())).thenReturn(Arrays.asList(courseRestriction));
         var result = courseRestrictionService.getCourseRestrictionsListByCourses(courseList);
         assertThat(result).isNotNull();
-        assertThat(result.getCourseRestrictions().size()).isEqualTo(1);
-        CourseRestriction responseCourseRestriction = result.getCourseRestrictions().get(0);
+        assertThat(result.getCourseRestrictionList().size()).isEqualTo(1);
+        CourseRestriction responseCourseRestriction = result.getCourseRestrictionList().get(0);
         assertThat(responseCourseRestriction.getCourseRestrictionId()).isEqualTo(courseRestriction.getCourseRestrictionId());
         assertThat(responseCourseRestriction.getMainCourse()).isEqualTo(courseRestriction.getMainCourse());
         assertThat(responseCourseRestriction.getMainCourseLevel()).isEqualTo(courseRestriction.getMainCourseLevel());
@@ -168,8 +172,8 @@ public class CourseRestrictionServiceTest {
         when(courseRestrictionRepository.findByMainCourseAndRestrictedCourse(eq("MAIN"), eq("REST"))).thenReturn(Arrays.asList(courseRestriction));
         var result = courseRestrictionService.getCourseRestrictionsByMainCourseAndRestrictedCourse("MAIN", "REST");
         assertThat(result).isNotNull();
-        assertThat(result.getCourseRestrictions().size()).isEqualTo(1);
-        CourseRestriction responseCourseRestriction = result.getCourseRestrictions().get(0);
+        assertThat(result.getCourseRestrictionList().size()).isEqualTo(1);
+        CourseRestriction responseCourseRestriction = result.getCourseRestrictionList().get(0);
         assertThat(responseCourseRestriction.getCourseRestrictionId()).isEqualTo(courseRestriction.getCourseRestrictionId());
         assertThat(responseCourseRestriction.getMainCourse()).isEqualTo(courseRestriction.getMainCourse());
         assertThat(responseCourseRestriction.getMainCourseLevel()).isEqualTo(courseRestriction.getMainCourseLevel());

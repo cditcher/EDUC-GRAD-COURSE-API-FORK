@@ -8,5 +8,5 @@ import java.util.List;
 @Data
 @Component
 public class CourseRestrictions {
-    List<CourseRestriction> courseRestrictions;
+    List<CourseRestriction> courseRestrictionList;
 }

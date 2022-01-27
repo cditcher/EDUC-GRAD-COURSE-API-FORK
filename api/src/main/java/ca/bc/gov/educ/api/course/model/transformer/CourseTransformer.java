@@ -30,17 +30,15 @@ public class CourseTransformer {
         if (courseAchievementEntity.isPresent())
             cae = courseAchievementEntity.get();
 
-        Course courseAchievement = modelMapper.map(cae, Course.class);
-        return courseAchievement;
+        return modelMapper.map(cae, Course.class);
     }
 
 	public List<Course> transformToDTO (Iterable<CourseEntity> courseEntities ) {
 
-        List<Course> courseList = new ArrayList<Course>();
+        List<Course> courseList = new ArrayList<>();
 
         for (CourseEntity courseEntity : courseEntities) {
-            Course course = new Course();
-            course = modelMapper.map(courseEntity, Course.class);
+            Course course = modelMapper.map(courseEntity, Course.class);
            
             course.setCourseCode(courseEntity.getCourseKey().getCourseCode());
             course.setCourseLevel(courseEntity.getCourseKey().getCourseLevel());
@@ -52,7 +50,6 @@ public class CourseTransformer {
     }
 
     public CourseEntity transformToEntity(Course studentCourse) {
-        CourseEntity courseAchievementEntity = modelMapper.map(studentCourse, CourseEntity.class);
-        return courseAchievementEntity;
+        return modelMapper.map(studentCourse, CourseEntity.class);
     }
 }

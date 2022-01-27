@@ -63,7 +63,8 @@ public class StudentExamController {
             validation.stopOnErrors();
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         } else {
-            logger.debug("#Get All Student Exam by PEN: *****" + pen.substring(5));
+            String penNumber = pen.substring(5);
+            logger.debug("#Get All Student Exam by PEN: *****{}", penNumber);
             List<StudentExam> studentExamList = studentExamService.getStudentExamList(pen, sortForUI);
             if (studentExamList.isEmpty()) {
                 return response.NO_CONTENT();

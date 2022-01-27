@@ -1,5 +1,6 @@
 package ca.bc.gov.educ.api.course.model.dto;
 
+import java.sql.Date;
 import java.util.UUID;
 
 import org.springframework.stereotype.Component;
@@ -15,8 +16,10 @@ public class CourseRequirement extends BaseModel {
 	private UUID courseRequirementId;
 	private String courseCode;
     private String courseLevel;
-    private CourseRequirementCode ruleCode;
+    private CourseRequirementCodeDTO ruleCode;
     private String courseName;
+    private Date startDate;
+    private Date endDate;
 
     public String getCourseCode() {
         if (courseCode != null)

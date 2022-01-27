@@ -44,8 +44,8 @@ public class CourseAlgorithmService {
 
             // Course Restrictions
             CourseRestrictions courseRestrictions = courseRestrictionService.getCourseRestrictionsListByCourses(courseList);
-            if (courseRestrictions != null && !courseRestrictions.getCourseRestrictions().isEmpty()) {
-                courseAlgorithmData.setCourseRestrictions(courseRestrictions.getCourseRestrictions());
+            if (courseRestrictions != null && !courseRestrictions.getCourseRestrictionList().isEmpty()) {
+                courseAlgorithmData.setCourseRestrictions(courseRestrictions.getCourseRestrictionList());
             }
         }
         return courseAlgorithmData;
