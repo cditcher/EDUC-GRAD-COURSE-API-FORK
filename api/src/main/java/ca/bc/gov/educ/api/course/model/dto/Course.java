@@ -19,6 +19,7 @@ public class Course {
     private String workExpFlag;    
     private String genericCourseType;
     private String coRegID;
+	private Integer numCredits;
     
     public String getCourseCode() {
 		return courseCode != null ? courseCode.trim(): null;

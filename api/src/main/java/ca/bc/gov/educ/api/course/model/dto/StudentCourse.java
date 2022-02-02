@@ -10,6 +10,7 @@ public class StudentCourse {
 	private String pen;
     private String courseCode;
     private String courseName;
+	private Integer originalCredits;
     private String courseLevel;
     private String sessionDate;
     private String customizedCourseName;
