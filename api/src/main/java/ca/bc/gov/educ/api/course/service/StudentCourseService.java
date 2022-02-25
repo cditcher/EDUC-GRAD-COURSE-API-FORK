@@ -106,6 +106,7 @@ public class StudentCourseService {
 			sC.setLanguage(course.getLanguage());
 			sC.setWorkExpFlag(course.getWorkExpFlag());
 			sC.setCourseDetails(course);
+			sC.setOriginalCredits(course.getNumCredits());
 		  }
     }
 }
