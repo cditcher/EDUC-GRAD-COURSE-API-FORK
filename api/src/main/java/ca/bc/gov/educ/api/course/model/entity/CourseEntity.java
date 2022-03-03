@@ -40,4 +40,7 @@ public class CourseEntity {
     
     @Column(name = "CRSE_REG_ID", nullable = true)
     private String coRegID;
+
+    @Column(name = "NUM_CREDITS", nullable = true)
+    private Integer numCredits;
 }
