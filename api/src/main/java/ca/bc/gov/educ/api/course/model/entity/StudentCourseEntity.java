@@ -51,8 +51,14 @@ public class StudentCourseEntity {
     private Double bestSchoolPercent; 
     
     @Column(name = "BEST_EXAM_PCT", nullable = true)
-    private Double bestExamPercent;  
-    
+    private Double bestExamPercent;
+
+    @Column(name = "SCHOOL_PCT", nullable = true)
+    private Double schoolPercent;
+
+    @Column(name = "EXAM_PCT", nullable = true)
+    private Double examPercent;
+
     @Column(name = "MET_LIT_NUM_REQT", nullable = true)
     private String metLitNumRequirement;
     
