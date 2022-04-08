@@ -142,26 +142,5 @@ public class StudentCourseServiceTest {
         assertThat(result).isTrue();
     }
 
-    @Test
-    public void checkBlankLanguageCourseByCourseCodeAndCourseLevel() {
-        String courseCode = "SMA";
-        String courseLevel = "12";
-        when(studentCourseRepo.countTabCourses(courseCode, courseLevel, " ")).thenReturn(1L);
-
-        var result = studentCourseService.hasBlankLanguageCourse(courseCode, courseLevel);
-        assertThat(result).isTrue();
-    }
-
-    @Test
-    public void checkFrenchLanguageCourseByCourseCodeAndCourseLevel() {
-        String courseCode = "FRALP";
-        String courseLevel = "12";
-        when(studentCourseRepo.countTabCourses(courseCode, courseLevel, "F")).thenReturn(1L);
-
-        var result = studentCourseService.hasFrenchLanguageCourse(courseCode, courseLevel);
-        assertThat(result).isTrue();
-    }
-
-
 }
 

@@ -126,19 +126,4 @@ public class StudentCourseService {
 		return studentCourseRepo.countFrenchImmersionCourse(pen, courseLevel) > 0;
 	}
 
-	@Retry(name = "generalgetcall")
-	public boolean hasFrenchLanguageCourse(String courseCode, String courseLevel) {
-		if (this.studentCourseRepo.countTabCourses(courseCode, courseLevel, "F") > 0L) {
-			return true;
-		}
-		return false;
-	}
-
-	@Retry(name = "generalgetcall")
-	public boolean hasBlankLanguageCourse(String courseCode, String courseLevel) {
-		if (this.studentCourseRepo.countTabCourses(courseCode, courseLevel, " ") > 0L) {
-			return true;
-		}
-		return false;
-	}
 }

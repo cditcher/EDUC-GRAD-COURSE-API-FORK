@@ -376,4 +376,22 @@ public class CourseControllerTest {
         courseController.saveCourseRestriction(courseRestriction);
         Mockito.verify(courseRestrictionService).saveCourseRestriction(courseRestriction);
     }
+
+    @Test
+    public void checkBlankLanguageCourseByCourseCodeAndCourseLevel() {
+        String courseCode = "SMA";
+        String courseLevel = "12";
+        Mockito.when(courseService.hasBlankLanguageCourse(courseCode, courseLevel)).thenReturn(true);
+        courseController.checkBlankLanguageCourse(courseCode, courseLevel);
+        Mockito.verify(courseService).hasBlankLanguageCourse(courseCode, courseLevel);
+    }
+
+    @Test
+    public void checkFrenchLanguageCourseByCourseCodeAndCourseLevel() {
+        String courseCode = "SMA";
+        String courseLevel = "12";
+        Mockito.when(courseService.hasFrenchLanguageCourse(courseCode, courseLevel)).thenReturn(true);
+        courseController.checkFrenchLanguageCourse(courseCode, courseLevel);
+        Mockito.verify(courseService).hasFrenchLanguageCourse(courseCode, courseLevel);
+    }
 }

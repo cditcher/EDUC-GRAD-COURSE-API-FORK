@@ -37,11 +37,4 @@ public interface StudentCourseRepository extends JpaRepository<StudentCourseEnti
             "and trim(tsc.crse_level) = :level ", nativeQuery=true)
     long countFrenchImmersionCourse(@Param("pen") String pen, @Param("level") String level);
 
-    @Query(value="select count(*) from TAB_CRSE cr \n" +
-            "where cr.crse_code = :courseCode \n" +
-            "and cr.crse_level = :courseLevel \n" +
-            "and cr.language = :lang", nativeQuery=true)
-    long countTabCourses(@Param("courseCode") String courseCode, @Param("courseLevel") String courseLevel, @Param("lang") String lang);
-
-
 }

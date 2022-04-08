@@ -82,21 +82,4 @@ public class StudentCourseControllerTest {
         Mockito.verify(studentCourseService).checkFrenchImmersionCourseForEN(pen, courseLevel);
     }
 
-    @Test
-    public void checkBlankLanguageCourseByCourseCodeAndCourseLevel() {
-        String courseCode = "SMA";
-        String courseLevel = "12";
-        Mockito.when(studentCourseService.hasBlankLanguageCourse(courseCode, courseLevel)).thenReturn(true);
-        studentCourseController.checkBlankLanguageCourse(courseCode, courseLevel);
-        Mockito.verify(studentCourseService).hasBlankLanguageCourse(courseCode, courseLevel);
-    }
-
-    @Test
-    public void checkFrenchLanguageCourseByCourseCodeAndCourseLevel() {
-        String courseCode = "SMA";
-        String courseLevel = "12";
-        Mockito.when(studentCourseService.hasFrenchLanguageCourse(courseCode, courseLevel)).thenReturn(true);
-        studentCourseController.checkFrenchLanguageCourse(courseCode, courseLevel);
-        Mockito.verify(studentCourseService).hasFrenchLanguageCourse(courseCode, courseLevel);
-    }
 }
