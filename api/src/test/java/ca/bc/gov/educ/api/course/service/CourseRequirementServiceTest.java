@@ -295,13 +295,4 @@ public class CourseRequirementServiceTest {
         assertThat(allCourseRequirements.getRequirementName()).isEqualTo(ruleDetails.getRequirementName());
     }
 
-    @Test
-    public void checkFrenchImmersionCourse() {
-        String pen = "123456789";
-        when(courseRequirementRepository.countFrenchImmersionCourses(pen)).thenReturn(1L);
-
-        var result = courseRequirementService.checkFrenchImmersionCourse(pen);
-        assertThat(result).isTrue();
-    }
-
 }

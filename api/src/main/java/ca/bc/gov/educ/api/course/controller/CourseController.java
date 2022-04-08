@@ -200,6 +200,15 @@ public class CourseController {
     	logger.debug("getAllCoursesRequirement : ");
         return response.GET(courseRequirementService.getCourseRequirementListByCourses(courseList));
     }
+
+    @PostMapping (EducCourseApiConstants.SAVE_COURSE_REQUIREMENT)
+    @PreAuthorize(PermissionsConstants.UPDATE_GRAD_COURSE_RESTRICTION)
+    @Operation(summary = "Save Course Requirement", description = "Save Course Requirement", tags = { "Course Requirements" })
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "OK")})
+    public ResponseEntity<CourseRequirement> saveCourseRequirement(@RequestBody CourseRequirement courseRequirement) {
+        logger.debug("Save Course Requirement");
+        return response.GET(courseRequirementService.saveCourseRequirement(courseRequirement));
+    }
     
     @GetMapping(EducCourseApiConstants.GET_COURSE_RESTRICTION_MAPPING)
     @PreAuthorize(PermissionsConstants.READ_GRAD_COURSE_RESTRICTION)
@@ -296,12 +305,22 @@ public class CourseController {
         return response.GET(courseRestrictionService.saveCourseRestriction(courseRestriction));
     }
 
-    @GetMapping(EducCourseApiConstants.CHECK_FRENCH_IMMERSION_COURSE)
-    @PreAuthorize(PermissionsConstants.READ_GRAD_COURSE_REQUIREMENT)
-    @Operation(summary = "Check if student is taking any of french immersion courses", description = "Check if student is taking any of french immersion courses", tags = { "Course Requirements" })
+    @GetMapping(EducCourseApiConstants.CHECK_BLANK_LANGUAGE_COURSE_BY_CODE_AND_LEVEL_MAPPING)
+    @PreAuthorize(PermissionsConstants.READ_GRAD_COURSE)
+    @Operation(summary = "Check if course is blank language", description = "Check if course is blank language", tags = { "Courses" })
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "OK")})
-    public ResponseEntity<Boolean> checkFrenchImmersionCourse(@PathVariable String pen) {
-        logger.debug("Check French Immersion Course : pen = {}", pen);
-        return response.GET(courseRequirementService.checkFrenchImmersionCourse(pen));
+    public ResponseEntity<Boolean> checkBlankLanguageCourse(@PathVariable String courseCode, @PathVariable String courseLevel) {
+        logger.debug("Check Blank Language Course : courseCode = {}, courseLevel = {}", courseCode, courseLevel);
+        return response.GET(courseService.hasBlankLanguageCourse(courseCode, courseLevel));
     }
+
+    @GetMapping(EducCourseApiConstants.CHECK_FRENCH_LANGUAGE_COURSE_BY_CODE_AND_LEVEL_MAPPING)
+    @PreAuthorize(PermissionsConstants.READ_GRAD_COURSE)
+    @Operation(summary = "Check if course is french language", description = "Check if course is french language", tags = { "Courses" })
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "OK")})
+    public ResponseEntity<Boolean> checkFrenchLanguageCourse(@PathVariable String courseCode, @PathVariable String courseLevel) {
+        logger.debug("Check French Language Course : courseCode = {}, courseLevel = {}", courseCode, courseLevel);
+        return response.GET(courseService.hasFrenchLanguageCourse(courseCode, courseLevel));
+    }
+
 }

@@ -62,6 +62,22 @@ public class CourseService {
     }
 
     @Retry(name = "generalgetcall")
+    public boolean hasFrenchLanguageCourse(String courseCode, String courseLevel) {
+        if (this.courseRepo.countTabCourses(courseCode, courseLevel, "F") > 0L) {
+            return true;
+        }
+        return false;
+    }
+
+    @Retry(name = "generalgetcall")
+    public boolean hasBlankLanguageCourse(String courseCode, String courseLevel) {
+        if (this.courseRepo.countTabCourses(courseCode, courseLevel, " ") > 0L) {
+            return true;
+        }
+        return false;
+    }
+
+    @Retry(name = "generalgetcall")
     public List<Course> getCourseSearchList(String courseCode, String courseLevel, String courseName, String language, Date startDate, Date endDate) {
         CriteriaHelper criteria = new CriteriaHelper();
         getSearchCriteria("courseKey.courseCode", courseCode, "courseCode", criteria);
