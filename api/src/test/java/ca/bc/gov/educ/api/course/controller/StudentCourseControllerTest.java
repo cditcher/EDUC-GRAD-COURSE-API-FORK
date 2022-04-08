@@ -55,4 +55,48 @@ public class StudentCourseControllerTest {
         Mockito.verify(validation).hasErrors();
         assertThat(result.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
     }
+
+    @Test
+    public void checkFrenchImmersionCourse() {
+        String pen = "123456789";
+        Mockito.when(studentCourseService.checkFrenchImmersionCourse(pen)).thenReturn(true);
+        studentCourseController.checkFrenchImmersionCourse(pen);
+        Mockito.verify(studentCourseService).checkFrenchImmersionCourse(pen);
+    }
+
+    @Test
+    public void checkFrenchImmersionCourseByPenAndCourseLevel() {
+        String pen = "123456789";
+        String courseLevel = "11";
+        Mockito.when(studentCourseService.checkFrenchImmersionCourse(pen, courseLevel)).thenReturn(true);
+        studentCourseController.checkFrenchImmersionCourse(pen, courseLevel);
+        Mockito.verify(studentCourseService).checkFrenchImmersionCourse(pen, courseLevel);
+    }
+
+    @Test
+    public void checkFrenchImmersionCourseFor1986ENByPenAndCourseLevel() {
+        String pen = "123456789";
+        String courseLevel = "11";
+        Mockito.when(studentCourseService.checkFrenchImmersionCourseForEN(pen, courseLevel)).thenReturn(true);
+        studentCourseController.checkFrenchImmersionCourseForEN(pen, courseLevel);
+        Mockito.verify(studentCourseService).checkFrenchImmersionCourseForEN(pen, courseLevel);
+    }
+
+    @Test
+    public void checkBlankLanguageCourseByCourseCodeAndCourseLevel() {
+        String courseCode = "SMA";
+        String courseLevel = "12";
+        Mockito.when(studentCourseService.hasBlankLanguageCourse(courseCode, courseLevel)).thenReturn(true);
+        studentCourseController.checkBlankLanguageCourse(courseCode, courseLevel);
+        Mockito.verify(studentCourseService).hasBlankLanguageCourse(courseCode, courseLevel);
+    }
+
+    @Test
+    public void checkFrenchLanguageCourseByCourseCodeAndCourseLevel() {
+        String courseCode = "SMA";
+        String courseLevel = "12";
+        Mockito.when(studentCourseService.hasFrenchLanguageCourse(courseCode, courseLevel)).thenReturn(true);
+        studentCourseController.checkFrenchLanguageCourse(courseCode, courseLevel);
+        Mockito.verify(studentCourseService).hasFrenchLanguageCourse(courseCode, courseLevel);
+    }
 }

@@ -4,6 +4,7 @@ import ca.bc.gov.educ.api.course.model.dto.Course;
 import ca.bc.gov.educ.api.course.model.dto.StudentCourse;
 import ca.bc.gov.educ.api.course.model.transformer.StudentCourseTransformer;
 import ca.bc.gov.educ.api.course.repository.StudentCourseRepository;
+import io.github.resilience4j.retry.annotation.Retry;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -109,4 +110,35 @@ public class StudentCourseService {
 			sC.setOriginalCredits(course.getNumCredits());
 		  }
     }
+
+	@Retry(name = "generalgetcall")
+	public boolean checkFrenchImmersionCourse(String pen) {
+		return studentCourseRepo.countFrenchImmersionCourses(pen) > 0;
+	}
+
+	@Retry(name = "generalgetcall")
+	public boolean checkFrenchImmersionCourse(String pen, String courseLevel) {
+		return studentCourseRepo.countFrenchImmersionCourses(pen, courseLevel) > 0;
+	}
+
+	@Retry(name = "generalgetcall")
+	public boolean checkFrenchImmersionCourseForEN(String pen, String courseLevel) {
+		return studentCourseRepo.countFrenchImmersionCourse(pen, courseLevel) > 0;
+	}
+
+	@Retry(name = "generalgetcall")
+	public boolean hasFrenchLanguageCourse(String courseCode, String courseLevel) {
+		if (this.studentCourseRepo.countTabCourses(courseCode, courseLevel, "F") > 0L) {
+			return true;
+		}
+		return false;
+	}
+
+	@Retry(name = "generalgetcall")
+	public boolean hasBlankLanguageCourse(String courseCode, String courseLevel) {
+		if (this.studentCourseRepo.countTabCourses(courseCode, courseLevel, " ") > 0L) {
+			return true;
+		}
+		return false;
+	}
 }

@@ -113,4 +113,55 @@ public class StudentCourseServiceTest {
         assertThat(responseStudentCourse.getGenericCourseType()).isEqualTo(course.getGenericCourseType());
     }
 
+    @Test
+    public void checkFrenchImmersionCourse() {
+        String pen = "123456789";
+        when(studentCourseRepo.countFrenchImmersionCourses(pen)).thenReturn(1L);
+
+        var result = studentCourseService.checkFrenchImmersionCourse(pen);
+        assertThat(result).isTrue();
+    }
+
+    @Test
+    public void checkFrenchImmersionCourseByPenAndCourseLevel() {
+        String pen = "123456789";
+        String courseLevel = "11";
+        when(studentCourseRepo.countFrenchImmersionCourses(pen, courseLevel)).thenReturn(1L);
+
+        var result = studentCourseService.checkFrenchImmersionCourse(pen, courseLevel);
+        assertThat(result).isTrue();
+    }
+
+    @Test
+    public void checkFrenchImmersionCourseFor1986ENByPenAndCourseLevel() {
+        String pen = "123456789";
+        String courseLevel = "11";
+        when(studentCourseRepo.countFrenchImmersionCourse(pen, courseLevel)).thenReturn(1L);
+
+        var result = studentCourseService.checkFrenchImmersionCourseForEN(pen, courseLevel);
+        assertThat(result).isTrue();
+    }
+
+    @Test
+    public void checkBlankLanguageCourseByCourseCodeAndCourseLevel() {
+        String courseCode = "SMA";
+        String courseLevel = "12";
+        when(studentCourseRepo.countTabCourses(courseCode, courseLevel, " ")).thenReturn(1L);
+
+        var result = studentCourseService.hasBlankLanguageCourse(courseCode, courseLevel);
+        assertThat(result).isTrue();
+    }
+
+    @Test
+    public void checkFrenchLanguageCourseByCourseCodeAndCourseLevel() {
+        String courseCode = "FRALP";
+        String courseLevel = "12";
+        when(studentCourseRepo.countTabCourses(courseCode, courseLevel, "F")).thenReturn(1L);
+
+        var result = studentCourseService.hasFrenchLanguageCourse(courseCode, courseLevel);
+        assertThat(result).isTrue();
+    }
+
+
 }
+

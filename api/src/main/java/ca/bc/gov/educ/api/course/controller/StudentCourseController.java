@@ -62,4 +62,49 @@ public class StudentCourseController {
             return response.GET(studentCourseList);
         }
     }
+
+    @GetMapping(EducCourseApiConstants.CHECK_FRENCH_IMMERSION_COURSE)
+    @PreAuthorize(PermissionsConstants.READ_GRAD_COURSE)
+    @Operation(summary = "Check if student is taking any of french immersion courses", description = "Check if student is taking any of french immersion courses", tags = { "Student Courses" })
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "OK")})
+    public ResponseEntity<Boolean> checkFrenchImmersionCourse(@PathVariable String pen) {
+        logger.debug("Check French Immersion Course : pen = {}", pen);
+        return response.GET(studentCourseService.checkFrenchImmersionCourse(pen));
+    }
+
+    @GetMapping(EducCourseApiConstants.CHECK_FRENCH_IMMERSION_COURSE_BY_PEN_AND_LEVEL_MAPPING)
+    @PreAuthorize(PermissionsConstants.READ_GRAD_COURSE)
+    @Operation(summary = "Check if student is taking any of french immersion courses by pen# and course level", description = "Check if student is taking any of french immersion courses by pen# and course level", tags = { "Student Courses" })
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "OK")})
+    public ResponseEntity<Boolean> checkFrenchImmersionCourse(@PathVariable String pen, @PathVariable String courseLevel) {
+        logger.debug("Check French Immersion Course : pen = {}", pen);
+        return response.GET(studentCourseService.checkFrenchImmersionCourse(pen, courseLevel));
+    }
+
+    @GetMapping(EducCourseApiConstants.CHECK_FRENCH_IMMERSION_COURSE_FOR_EN_BY_PEN_AND_LEVEL_MAPPING)
+    @PreAuthorize(PermissionsConstants.READ_GRAD_COURSE)
+    @Operation(summary = "Check if student with EN program is taking any of french immersion courses", description = "Check if student with EN program is taking any of french immersion courses", tags = { "Student Courses" })
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "OK")})
+    public ResponseEntity<Boolean> checkFrenchImmersionCourseForEN(@PathVariable String pen, @PathVariable String courseLevel) {
+        logger.debug("Check French Immersion Course for 1986 EN : pen = {}", pen);
+        return response.GET(studentCourseService.checkFrenchImmersionCourseForEN(pen, courseLevel));
+    }
+
+    @GetMapping(EducCourseApiConstants.CHECK_BLANK_LANGUAGE_COURSE_BY_CODE_AND_LEVEL_MAPPING)
+    @PreAuthorize(PermissionsConstants.READ_GRAD_COURSE)
+    @Operation(summary = "Check if student is taking any of courses with blank language", description = "Check if student is taking any of courses with blank language", tags = { "Student Courses" })
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "OK")})
+    public ResponseEntity<Boolean> checkBlankLanguageCourse(@PathVariable String courseCode, @PathVariable String courseLevel) {
+        logger.debug("Check Blank Language Course : courseCode = {}, courseLevel = {}", courseCode, courseLevel);
+        return response.GET(studentCourseService.hasBlankLanguageCourse(courseCode, courseLevel));
+    }
+
+    @GetMapping(EducCourseApiConstants.CHECK_FRENCH_LANGUAGE_COURSE_BY_CODE_AND_LEVEL_MAPPING)
+    @PreAuthorize(PermissionsConstants.READ_GRAD_COURSE)
+    @Operation(summary = "Check if student is taking any of courses with french language", description = "Check if student is taking any of courses with french language", tags = { "Student Courses" })
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "OK")})
+    public ResponseEntity<Boolean> checkFrenchLanguageCourse(@PathVariable String courseCode, @PathVariable String courseLevel) {
+        logger.debug("Check French Language Course : courseCode = {}, courseLevel = {}", courseCode, courseLevel);
+        return response.GET(studentCourseService.hasFrenchLanguageCourse(courseCode, courseLevel));
+    }
 }

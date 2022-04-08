@@ -200,6 +200,15 @@ public class CourseController {
     	logger.debug("getAllCoursesRequirement : ");
         return response.GET(courseRequirementService.getCourseRequirementListByCourses(courseList));
     }
+
+    @PostMapping (EducCourseApiConstants.SAVE_COURSE_REQUIREMENT)
+    @PreAuthorize(PermissionsConstants.UPDATE_GRAD_COURSE_RESTRICTION)
+    @Operation(summary = "Save Course Requirement", description = "Save Course Requirement", tags = { "Course Requirements" })
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "OK")})
+    public ResponseEntity<CourseRequirement> saveCourseRequirement(@RequestBody CourseRequirement courseRequirement) {
+        logger.debug("Save Course Requirement");
+        return response.GET(courseRequirementService.saveCourseRequirement(courseRequirement));
+    }
     
     @GetMapping(EducCourseApiConstants.GET_COURSE_RESTRICTION_MAPPING)
     @PreAuthorize(PermissionsConstants.READ_GRAD_COURSE_RESTRICTION)
@@ -296,12 +305,4 @@ public class CourseController {
         return response.GET(courseRestrictionService.saveCourseRestriction(courseRestriction));
     }
 
-    @GetMapping(EducCourseApiConstants.CHECK_FRENCH_IMMERSION_COURSE)
-    @PreAuthorize(PermissionsConstants.READ_GRAD_COURSE_REQUIREMENT)
-    @Operation(summary = "Check if student is taking any of french immersion courses", description = "Check if student is taking any of french immersion courses", tags = { "Course Requirements" })
-    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "OK")})
-    public ResponseEntity<Boolean> checkFrenchImmersionCourse(@PathVariable String pen) {
-        logger.debug("Check French Immersion Course : pen = {}", pen);
-        return response.GET(courseRequirementService.checkFrenchImmersionCourse(pen));
-    }
 }

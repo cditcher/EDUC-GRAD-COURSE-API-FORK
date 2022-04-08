@@ -42,6 +42,7 @@ public class EducCourseApiConstants {
     public static final String GET_COURSE_REQUIREMENT_BY_RULE_MAPPING = "/requirement/rule";
     public static final String GET_COURSE_REQUIREMENT_BY_CODE_AND_LEVEL_MAPPING = "/course-requirement";
     public static final String GET_COURSE_REQUIREMENTS_BY_SEARCH_PARAMS_MAPPING = "/courserequirementsearch";
+    public static final String SAVE_COURSE_REQUIREMENT = "/save-course-requirement";
     public static final String GET_COURSE_RESTRICTION_MAPPING = "/restriction";
     public static final String GET_COURSE_RESTRICTION_BY_SEARCH_PARAMS_MAPPING = "/courserestrictionsearch";
     public static final String GET_COURSE_RESTRICTION_BY_CODE_AND_LEVEL_MAPPING = "/course-restriction";
@@ -49,6 +50,10 @@ public class EducCourseApiConstants {
     public static final String GET_COURSE_RESTRICTION_BY_CODE_AND_LEVEL_AND_RESTRICTED_CODE_AND_LEVEL_MAPPING = "/course-restriction/{courseCode}/{courseLevel}/{restrictedCourseCode}/{restrictedCourseLevel}";
     public static final String SAVE_COURSE_RESTRICTION = "/save-course-restriction";
     public static final String CHECK_FRENCH_IMMERSION_COURSE = "/check-french-immersion-course/pen/{pen}";
+    public static final String CHECK_FRENCH_IMMERSION_COURSE_BY_PEN_AND_LEVEL_MAPPING = "/check-french-immersion-course/{pen}/{courseLevel}";
+    public static final String CHECK_FRENCH_IMMERSION_COURSE_FOR_EN_BY_PEN_AND_LEVEL_MAPPING = "/check-french-immersion-course-for-en/{pen}/{courseLevel}";
+    public static final String CHECK_BLANK_LANGUAGE_COURSE_BY_CODE_AND_LEVEL_MAPPING = "/check-blank-language-course/{courseCode}/{courseLevel}";
+    public static final String CHECK_FRENCH_LANGUAGE_COURSE_BY_CODE_AND_LEVEL_MAPPING = "/check-french-language-course/{courseCode}/{courseLevel}";
 
     public static final String GET_COURSE_ALGORITHM_DATA_BY_PEN_MAPPING = "/pen/{pen}";
 

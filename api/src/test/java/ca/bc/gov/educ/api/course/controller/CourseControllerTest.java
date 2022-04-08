@@ -376,12 +376,4 @@ public class CourseControllerTest {
         courseController.saveCourseRestriction(courseRestriction);
         Mockito.verify(courseRestrictionService).saveCourseRestriction(courseRestriction);
     }
-
-    @Test
-    public void checkFrenchImmersionCourse() {
-        String pen = "123456789";
-        Mockito.when(courseRequirementService.checkFrenchImmersionCourse(pen)).thenReturn(true);
-        courseController.checkFrenchImmersionCourse(pen);
-        Mockito.verify(courseRequirementService).checkFrenchImmersionCourse(pen);
-    }
 }
