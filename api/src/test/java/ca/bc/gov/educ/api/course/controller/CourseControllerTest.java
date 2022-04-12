@@ -378,6 +378,17 @@ public class CourseControllerTest {
     }
 
     @Test
+    public void testCheckCourseRequirementExistsByCourseAndLevelAndRule() {
+        String courseCode = "MAIN";
+        String courseLevel = "12";
+        String ruleCode = "RuleCd";
+
+        Mockito.when(courseRequirementService.checkCourseRequirementExists(courseCode, courseLevel, ruleCode)).thenReturn(true);
+        courseController.checkCourseRequirementExists(courseCode, courseLevel, ruleCode);
+        Mockito.verify(courseRequirementService).checkCourseRequirementExists(courseCode, courseLevel, ruleCode);
+    }
+
+    @Test
     public void checkBlankLanguageCourseByCourseCodeAndCourseLevel() {
         String courseCode = "SMA";
         String courseLevel = "12";

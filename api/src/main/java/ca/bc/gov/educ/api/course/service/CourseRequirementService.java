@@ -229,8 +229,21 @@ public class CourseRequirementService {
         }
     }
 
+    @Retry(name = "generalgetcall")
+    public boolean checkCourseRequirementExists(String courseCode, String courseLevel, String ruleCode) {
+        if (StringUtils.isBlank(courseLevel)) {
+            courseLevel = " ";
+        }
+        return courseRequirementRepository.countByCourseCodeAndCourseLevelAndRuleCode(
+                courseCode, courseLevel, ruleCode) > 0L;
+    }
+
     @Retry(name = "generalpostcall")
     public CourseRequirement saveCourseRequirement(CourseRequirement courseRequirement) {
+        if (StringUtils.isBlank(courseRequirement.getCourseLevel())) {
+            courseRequirement.setCourseLevel(" ");
+        }
+
         CourseRequirementEntity currentEntity = null;
         if (courseRequirement.getCourseRequirementId() != null) {
             Optional<CourseRequirementEntity> optional = courseRequirementRepository.findById(courseRequirement.getCourseRequirementId());
@@ -239,20 +252,23 @@ public class CourseRequirementService {
             }
         }
         if (currentEntity == null) {
-            List<CourseRequirementEntity> list = courseRequirementRepository.findByCourseCodeAndCourseLevel(
-                    courseRequirement.getCourseCode(), courseRequirement.getCourseLevel()
+            List<CourseRequirementEntity> list = courseRequirementRepository.findByCourseCodeAndCourseLevelAndRuleCode(
+                    courseRequirement.getCourseCode(), courseRequirement.getCourseLevel(), courseRequirement.getRuleCode().getCourseRequirementCode()
             );
             if (list != null && !list.isEmpty()) {
                 currentEntity = list.get(0);
             }
         }
 
+        CourseRequirementEntity sourceObject = courseRequirementTransformer.transformToEntity(courseRequirement);
+        if (StringUtils.isBlank(sourceObject.getCourseLevel())) {
+            sourceObject.setCourseLevel(" ");
+        }
         Optional<CourseRequirementCodeEntity> optional = courseRequirementCodeRepository.findById(courseRequirement.getRuleCode().getCourseRequirementCode());
         if (optional.isPresent()) {
-            currentEntity.setRuleCode(optional.get());
+            sourceObject.setRuleCode(optional.get());
         }
 
-        CourseRequirementEntity sourceObject = courseRequirementTransformer.transformToEntity(courseRequirement);
         if (currentEntity != null) {
             BeanUtils.copyProperties(sourceObject, currentEntity, COURSE_REQUIREMENT_ID, CREATE_USER, CREATE_DATE);
             return courseRequirementTransformer.transformToDTO(courseRequirementRepository.save(currentEntity));

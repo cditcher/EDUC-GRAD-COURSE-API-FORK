@@ -57,7 +57,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
         security = {@SecurityRequirement(name = "OAUTH2", scopes = {"READ_GRAD_COURSE_DATA","READ_GRAD_COURSE_REQUIREMENT_DATA"})})
 public class CourseController {
 
-    private static Logger logger = LoggerFactory.getLogger(CourseController.class);
+    private static final Logger logger = LoggerFactory.getLogger(CourseController.class);
 
     @InitBinder
 	protected void initBinder(HttpServletRequest request, ServletRequestDataBinder binder) {
@@ -201,12 +201,37 @@ public class CourseController {
         return response.GET(courseRequirementService.getCourseRequirementListByCourses(courseList));
     }
 
+    @GetMapping(EducCourseApiConstants.CHECK_COURSE_REQUIREMENT_EXISTENCE)
+    @PreAuthorize(PermissionsConstants.READ_GRAD_COURSE_REQUIREMENT)
+    @Operation(summary = "Check Course Requirement exists", description = "Check Course Requirement exists", tags = { "Course Requirements" })
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "OK")})
+    public ResponseEntity<Boolean> checkCourseRequirementExists(
+            @RequestParam(value = "courseCode", required = false)  String courseCode,
+            @RequestParam(value = "courseLevel", required = false)  String courseLevel,
+            @RequestParam(value = "ruleCode", required = false)  String ruleCode) {
+        logger.debug("checkCourseRequirementExists : ");
+        return response.GET(courseRequirementService.checkCourseRequirementExists(courseCode,courseLevel,ruleCode));
+    }
+
     @PostMapping (EducCourseApiConstants.SAVE_COURSE_REQUIREMENT)
     @PreAuthorize(PermissionsConstants.UPDATE_GRAD_COURSE_RESTRICTION)
     @Operation(summary = "Save Course Requirement", description = "Save Course Requirement", tags = { "Course Requirements" })
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "OK")})
     public ResponseEntity<CourseRequirement> saveCourseRequirement(@RequestBody CourseRequirement courseRequirement) {
         logger.debug("Save Course Requirement");
+        if(StringUtils.isBlank(courseRequirement.getCourseCode())) {
+            validation.addError("Course Code is required");
+        }
+        if(courseRequirement.getCourseLevel() == null) { // Blank level is allowed
+            validation.addError("Course Level is required.");
+        }
+        if(courseRequirement.getRuleCode() == null || StringUtils.isBlank(courseRequirement.getRuleCode().getCourseRequirementCode())) {
+            validation.addError("Rule Code is required.");
+        }
+        if(validation.hasErrors()) {
+            validation.stopOnErrors();
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
         return response.GET(courseRequirementService.saveCourseRequirement(courseRequirement));
     }
     
@@ -245,7 +270,7 @@ public class CourseController {
         return response.GET(courseRestrictionService.getCourseRestrictionsSearchList(mainCourseCode,mainCourseLevel));
     }
     
-    @GetMapping(EducCourseApiConstants.GET_COURSE_RESTRICTION_BY_CODE_AND_LEVEL_MAPPING)
+    @GetMapping(EducCourseApiConstants.GET_COURSE_RESTRICTIONS_BY_CODE_AND_LEVEL_MAPPING)
     @PreAuthorize(PermissionsConstants.READ_GRAD_COURSE_RESTRICTION)
     @Operation(summary = "Find All Course Restrictions by Course Code and Level",
             description = "Get All Course Restrictions by Course Code and Level", tags = { "Course Restrictions" })
@@ -283,10 +308,10 @@ public class CourseController {
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "OK"),
             @ApiResponse(responseCode = "204", description = "NO CONTENT.")})
     public ResponseEntity<CourseRestriction> getCourseRestriction(
-            @PathVariable String courseCode,
-            @PathVariable String courseLevel,
-            @PathVariable String restrictedCourseCode,
-            @PathVariable String restrictedCourseLevel) {
+            @RequestParam(value = "courseCode")  String courseCode,
+            @RequestParam(value = "courseLevel")  String courseLevel,
+            @RequestParam(value = "restrictedCourseCode")  String restrictedCourseCode,
+            @RequestParam(value = "restrictedCourseLevel")  String restrictedCourseLevel) {
 
         CourseRestriction courseRestriction = courseRestrictionService.getCourseRestriction(
                 courseCode, courseLevel, restrictedCourseCode, restrictedCourseLevel);
@@ -309,7 +334,9 @@ public class CourseController {
     @PreAuthorize(PermissionsConstants.READ_GRAD_COURSE)
     @Operation(summary = "Check if course is blank language", description = "Check if course is blank language", tags = { "Courses" })
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "OK")})
-    public ResponseEntity<Boolean> checkBlankLanguageCourse(@PathVariable String courseCode, @PathVariable String courseLevel) {
+    public ResponseEntity<Boolean> checkBlankLanguageCourse(
+            @RequestParam(value = "courseCode") String courseCode,
+            @RequestParam(value = "courseLevel") String courseLevel) {
         logger.debug("Check Blank Language Course : courseCode = {}, courseLevel = {}", courseCode, courseLevel);
         return response.GET(courseService.hasBlankLanguageCourse(courseCode, courseLevel));
     }
@@ -318,7 +345,9 @@ public class CourseController {
     @PreAuthorize(PermissionsConstants.READ_GRAD_COURSE)
     @Operation(summary = "Check if course is french language", description = "Check if course is french language", tags = { "Courses" })
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "OK")})
-    public ResponseEntity<Boolean> checkFrenchLanguageCourse(@PathVariable String courseCode, @PathVariable String courseLevel) {
+    public ResponseEntity<Boolean> checkFrenchLanguageCourse(
+            @RequestParam(value = "courseCode") String courseCode,
+            @RequestParam(value = "courseLevel") String courseLevel) {
         logger.debug("Check French Language Course : courseCode = {}, courseLevel = {}", courseCode, courseLevel);
         return response.GET(courseService.hasFrenchLanguageCourse(courseCode, courseLevel));
     }
