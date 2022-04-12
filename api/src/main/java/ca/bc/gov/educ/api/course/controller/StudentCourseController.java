@@ -76,8 +76,10 @@ public class StudentCourseController {
     @PreAuthorize(PermissionsConstants.READ_GRAD_COURSE)
     @Operation(summary = "Check if student is taking any of french immersion courses by pen# and course level", description = "Check if student is taking any of french immersion courses by pen# and course level", tags = { "Student Courses" })
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "OK")})
-    public ResponseEntity<Boolean> checkFrenchImmersionCourse(@PathVariable String pen, @PathVariable String courseLevel) {
-        logger.debug("Check French Immersion Course : pen = {}", pen);
+    public ResponseEntity<Boolean> checkFrenchImmersionCourse(
+            @RequestParam(value = "pen") String pen,
+            @RequestParam(value = "courseLevel") String courseLevel) {
+        logger.debug("Check French Immersion Course : pen = {}, course level [{}]", pen, courseLevel);
         return response.GET(studentCourseService.checkFrenchImmersionCourse(pen, courseLevel));
     }
 
@@ -85,8 +87,10 @@ public class StudentCourseController {
     @PreAuthorize(PermissionsConstants.READ_GRAD_COURSE)
     @Operation(summary = "Check if student with EN program is taking any of french immersion courses", description = "Check if student with EN program is taking any of french immersion courses", tags = { "Student Courses" })
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "OK")})
-    public ResponseEntity<Boolean> checkFrenchImmersionCourseForEN(@PathVariable String pen, @PathVariable String courseLevel) {
-        logger.debug("Check French Immersion Course for 1986 EN : pen = {}", pen);
+    public ResponseEntity<Boolean> checkFrenchImmersionCourseForEN(
+            @RequestParam(value = "pen") String pen,
+            @RequestParam(value = "courseLevel") String courseLevel) {
+        logger.debug("Check French Immersion Course for 1986 EN : pen = {}, course level [{}]", pen, courseLevel);
         return response.GET(studentCourseService.checkFrenchImmersionCourseForEN(pen, courseLevel));
     }
 
