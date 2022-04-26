@@ -75,4 +75,8 @@ public class EducCourseApiConstants {
     @Value("${endpoint.grad-program-api.rule-detail.url}")
     private String ruleDetailProgramManagementApiUrl;
 
+    // Splunk LogHelper Enabled
+    @Value("${splunk.log-helper.enabled}")
+    private boolean splunkLogHelperEnabled;
+
 }

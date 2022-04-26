@@ -117,3 +117,8 @@ endpoint:
   grad-program-api:
     rule-detail:
       url : ${GRAD_PROGRAM_API}api/v1/program/programrules/%s
+
+#Splunk LogHelper
+splunk:
+  log-helper:
+    enabled: ${ENABLE_SPLUNK_LOG_HELPER}
