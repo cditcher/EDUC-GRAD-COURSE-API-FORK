@@ -98,4 +98,24 @@ public class CourseServiceTest {
         assertThat(responseCourse.getCourseCode()).isEqualTo(courseKey.getCourseCode());
         assertThat(responseCourse.getCourseLevel()).isEqualTo(courseKey.getCourseLevel());
     }
+
+    @Test
+    public void checkBlankLanguageCourseByCourseCodeAndCourseLevel() {
+        String courseCode = "SMA";
+        String courseLevel = "12";
+        when(courseRepository.countTabCourses(courseCode, courseLevel, " ")).thenReturn(1L);
+
+        var result = courseService.hasBlankLanguageCourse(courseCode, courseLevel);
+        assertThat(result).isTrue();
+    }
+
+    @Test
+    public void checkFrenchLanguageCourseByCourseCodeAndCourseLevel() {
+        String courseCode = "FRALP";
+        String courseLevel = "12";
+        when(courseRepository.countTabCourses(courseCode, courseLevel, "F")).thenReturn(1L);
+
+        var result = courseService.hasFrenchLanguageCourse(courseCode, courseLevel);
+        assertThat(result).isTrue();
+    }
 }

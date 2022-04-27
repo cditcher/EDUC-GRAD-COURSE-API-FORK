@@ -1,6 +1,7 @@
 package ca.bc.gov.educ.api.course.repository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import ca.bc.gov.educ.api.course.model.entity.CourseRequirementCodeEntity;
@@ -24,11 +25,15 @@ public interface CourseRequirementRepository extends JpaRepository<CourseRequire
 
 	List<CourseRequirementEntity> findByCourseCodeIn(List<String> courseCodes);
 
-	@Query(value="select count(*) from STUD_XCRSE sx, COURSE_REQUIREMENT cr\n" +
-			"where sx.stud_no = :pen \n" +
-			"and trim(sx.crse_code) = cr.course_code\n" +
-			"and trim(sx.crse_level) = cr.course_level\n" +
-			"and cr.course_requirement_code = 202\n", nativeQuery=true)
-	long countFrenchImmersionCourses(@Param("pen") String pen);
+	@Query(value="select cr from CourseRequirementEntity cr where cr.courseCode = :courseCode and cr.courseLevel = :courseLevel and cr.ruleCode.courseRequirementCode = :ruleCode")
+	List<CourseRequirementEntity> findByCourseCodeAndCourseLevelAndRuleCode(
+			@Param("courseCode") String courseCode,
+			@Param("courseLevel") String courseLevel,
+			@Param("ruleCode") String ruleCode);
 
+	@Query(value="select count(cr) from CourseRequirementEntity cr where cr.courseCode = :courseCode and cr.courseLevel = :courseLevel and cr.ruleCode.courseRequirementCode = :ruleCode")
+	Long countByCourseCodeAndCourseLevelAndRuleCode(
+			@Param("courseCode") String courseCode,
+			@Param("courseLevel") String courseLevel,
+			@Param("ruleCode") String ruleCode);
 }

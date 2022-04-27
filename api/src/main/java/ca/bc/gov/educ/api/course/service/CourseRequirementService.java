@@ -2,6 +2,7 @@ package ca.bc.gov.educ.api.course.service;
 
 import java.util.*;
 
+import ca.bc.gov.educ.api.course.model.dto.*;
 import ca.bc.gov.educ.api.course.model.entity.CourseRequirementCodeEntity;
 import ca.bc.gov.educ.api.course.repository.CourseRequirementCodeRepository;
 import io.github.resilience4j.retry.annotation.Retry;
@@ -17,12 +18,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import ca.bc.gov.educ.api.course.model.dto.AllCourseRequirements;
-import ca.bc.gov.educ.api.course.model.dto.Course;
-import ca.bc.gov.educ.api.course.model.dto.CourseList;
-import ca.bc.gov.educ.api.course.model.dto.CourseRequirement;
-import ca.bc.gov.educ.api.course.model.dto.CourseRequirements;
-import ca.bc.gov.educ.api.course.model.dto.GradRuleDetails;
 import ca.bc.gov.educ.api.course.model.entity.CourseRequirementEntity;
 import ca.bc.gov.educ.api.course.model.transformer.CourseRequirementTransformer;
 import ca.bc.gov.educ.api.course.repository.CourseRequirementCriteriaQueryRepository;
@@ -59,6 +54,10 @@ public class CourseRequirementService {
     WebClient webClient;
 
     private static Logger logger = LoggerFactory.getLogger(CourseRequirementService.class);
+
+    private static final String COURSE_REQUIREMENT_ID = "courseRequirementId";
+    private static final String CREATE_USER = "createUser";
+    private static final String CREATE_DATE = "createDate";
 
      /**
      * Get all course requirements in Course Requirement DTO
@@ -231,7 +230,52 @@ public class CourseRequirementService {
     }
 
     @Retry(name = "generalgetcall")
-    public boolean checkFrenchImmersionCourse(String pen) {
-        return courseRequirementRepository.countFrenchImmersionCourses(pen) > 0;
+    public boolean checkCourseRequirementExists(String courseCode, String courseLevel, String ruleCode) {
+        if (StringUtils.isBlank(courseLevel)) {
+            courseLevel = " ";
+        }
+        return courseRequirementRepository.countByCourseCodeAndCourseLevelAndRuleCode(
+                courseCode, courseLevel, ruleCode) > 0L;
     }
+
+    @Retry(name = "generalpostcall")
+    public CourseRequirement saveCourseRequirement(CourseRequirement courseRequirement) {
+        if (StringUtils.isBlank(courseRequirement.getCourseLevel())) {
+            courseRequirement.setCourseLevel(" ");
+        }
+
+        CourseRequirementEntity currentEntity = null;
+        if (courseRequirement.getCourseRequirementId() != null) {
+            Optional<CourseRequirementEntity> optional = courseRequirementRepository.findById(courseRequirement.getCourseRequirementId());
+            if (optional.isPresent()) {
+                currentEntity = optional.get();
+            }
+        }
+        if (currentEntity == null) {
+            List<CourseRequirementEntity> list = courseRequirementRepository.findByCourseCodeAndCourseLevelAndRuleCode(
+                    courseRequirement.getCourseCode(), courseRequirement.getCourseLevel(), courseRequirement.getRuleCode().getCourseRequirementCode()
+            );
+            if (list != null && !list.isEmpty()) {
+                currentEntity = list.get(0);
+            }
+        }
+
+        CourseRequirementEntity sourceObject = courseRequirementTransformer.transformToEntity(courseRequirement);
+        if (StringUtils.isBlank(sourceObject.getCourseLevel())) {
+            sourceObject.setCourseLevel(" ");
+        }
+        Optional<CourseRequirementCodeEntity> optional = courseRequirementCodeRepository.findById(courseRequirement.getRuleCode().getCourseRequirementCode());
+        if (optional.isPresent()) {
+            sourceObject.setRuleCode(optional.get());
+        }
+
+        if (currentEntity != null) {
+            BeanUtils.copyProperties(sourceObject, currentEntity, COURSE_REQUIREMENT_ID, CREATE_USER, CREATE_DATE);
+            return courseRequirementTransformer.transformToDTO(courseRequirementRepository.save(currentEntity));
+        } else {
+            sourceObject.setCourseRequirementId(UUID.randomUUID());
+            return courseRequirementTransformer.transformToDTO(courseRequirementRepository.save(sourceObject));
+        }
+    }
+
 }

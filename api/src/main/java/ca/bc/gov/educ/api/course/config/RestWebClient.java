@@ -3,6 +3,7 @@ package ca.bc.gov.educ.api.course.config;
 import ca.bc.gov.educ.api.course.util.EducCourseApiConstants;
 import ca.bc.gov.educ.api.course.util.LogHelper;
 import io.netty.handler.logging.LogLevel;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -18,6 +19,9 @@ import java.time.Duration;
 @Configuration
 @Profile("!test")
 public class RestWebClient {
+    @Autowired
+    EducCourseApiConstants constants;
+
     private final HttpClient httpClient;
 
     public RestWebClient() {
@@ -46,7 +50,8 @@ public class RestWebClient {
                     clientRequest.method(),
                     clientRequest.url().toString(),
                     clientResponse.rawStatusCode(),
-                    clientRequest.headers().get(EducCourseApiConstants.CORRELATION_ID))
+                    clientRequest.headers().get(EducCourseApiConstants.CORRELATION_ID),
+                    constants.isSplunkLogHelperEnabled())
             ));
     }
 }

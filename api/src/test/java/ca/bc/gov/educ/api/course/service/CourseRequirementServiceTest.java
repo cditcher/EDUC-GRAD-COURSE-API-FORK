@@ -227,6 +227,26 @@ public class CourseRequirementServiceTest {
     }
 
     @Test
+    public void testCheckCourseRequirementExistsByCourseAndLevelAndRule() {
+        CourseRequirementCodeEntity courseRequirementCodeEntity = new CourseRequirementCodeEntity();
+        courseRequirementCodeEntity.setCourseRequirementCode("RuleCd");
+        courseRequirementCodeEntity.setDescription("RuleCd Description");
+        courseRequirementCodeEntity.setEffectiveDate(new Date(System.currentTimeMillis() - 10000L));
+        courseRequirementCodeEntity.setExpiryDate(new Date(System.currentTimeMillis() + 10000L));
+
+        CourseRequirementEntity courseRequirementEntity = new CourseRequirementEntity();
+        courseRequirementEntity.setCourseRequirementId(UUID.randomUUID());
+        courseRequirementEntity.setCourseCode("MAIN");
+        courseRequirementEntity.setCourseLevel("12");
+        courseRequirementEntity.setRuleCode(courseRequirementCodeEntity);
+
+        when(courseRequirementRepository.countByCourseCodeAndCourseLevelAndRuleCode(eq("MAIN"), eq("12"), eq("RuleCd"))).thenReturn(1L);
+        var result = courseRequirementService.checkCourseRequirementExists("MAIN", "12", "RuleCd");
+        assertThat(result).isNotNull();
+        assertThat(result).isTrue();
+    }
+
+    @Test
     public void testGetCourseRequirementListByCourses() {
         CourseRequirementCodeEntity courseRequirementCodeEntity = new CourseRequirementCodeEntity();
         courseRequirementCodeEntity.setCourseRequirementCode("RuleCd");
@@ -293,15 +313,6 @@ public class CourseRequirementServiceTest {
         AllCourseRequirements allCourseRequirements = result.get(0);
         assertThat(allCourseRequirements.getCourseName()).isEqualTo(course.getCourseName());
         assertThat(allCourseRequirements.getRequirementName()).isEqualTo(ruleDetails.getRequirementName());
-    }
-
-    @Test
-    public void checkFrenchImmersionCourse() {
-        String pen = "123456789";
-        when(courseRequirementRepository.countFrenchImmersionCourses(pen)).thenReturn(1L);
-
-        var result = courseRequirementService.checkFrenchImmersionCourse(pen);
-        assertThat(result).isTrue();
     }
 
 }
