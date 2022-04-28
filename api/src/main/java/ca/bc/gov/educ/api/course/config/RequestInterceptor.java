@@ -66,9 +66,9 @@ public class RequestInterceptor extends HandlerInterceptorAdapter {
 		val correlationID = request.getHeader(EducCourseApiConstants.CORRELATION_ID);
 		if (correlationID != null) {
 			response.setHeader(EducCourseApiConstants.CORRELATION_ID, request.getHeader(EducCourseApiConstants.CORRELATION_ID));
-			// reset
-			ThreadLocalStateUtil.setCorrelationID(null);
-			ThreadLocalStateUtil.setCurrentUser(null);
 		}
+		// reset
+		ThreadLocalStateUtil.setCorrelationID(null);
+		ThreadLocalStateUtil.setCurrentUser(null);
 	}
 }
