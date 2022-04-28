@@ -12,19 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
-import org.springframework.security.oauth2.provider.authentication.OAuth2AuthenticationDetails;
 import org.springframework.web.bind.ServletRequestDataBinder;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import ca.bc.gov.educ.api.course.config.GradDateEditor;
 import ca.bc.gov.educ.api.course.model.dto.AllCourseRequirements;
@@ -51,7 +40,6 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 @CrossOrigin
 @RestController
 @RequestMapping(EducCourseApiConstants.GRAD_COURSE_URL_MAPPING)
-@EnableResourceServer
 @OpenAPIDefinition(info = @Info(title = "API for Course Management.",
         description = "This API is for Managing Course data.", version = "1"),
         security = {@SecurityRequirement(name = "OAUTH2", scopes = {"READ_GRAD_COURSE_DATA","READ_GRAD_COURSE_REQUIREMENT_DATA"})})
@@ -132,11 +120,9 @@ public class CourseController {
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "OK")})
     public ResponseEntity<List<AllCourseRequirements>> getAllCoursesRequirement(
     		@RequestParam(value = "pageNo", required = false,defaultValue = "0") Integer pageNo, 
-            @RequestParam(value = "pageSize", required = false,defaultValue = "50") Integer pageSize) { 
+            @RequestParam(value = "pageSize", required = false,defaultValue = "50") Integer pageSize,
+            @RequestHeader(name="Authorization") String accessToken) {
     	logger.debug("getAllCoursesRequirement : ");
-    	OAuth2AuthenticationDetails auth = (OAuth2AuthenticationDetails) SecurityContextHolder
-                .getContext().getAuthentication().getDetails();
-    	String accessToken = auth.getTokenValue();
         return response.GET(courseRequirementService.getAllCourseRequirementList(pageNo,pageSize,accessToken));
     }
     
@@ -183,11 +169,9 @@ public class CourseController {
     public ResponseEntity<List<AllCourseRequirements>> getCoursesRequirementSearch(
             @RequestParam(value = "courseCode", required = false) String courseCode,
             @RequestParam(value = "courseLevel", required = false) String courseLevel,
-            @RequestParam(value = "rule", required = false) String rule) { 
+            @RequestParam(value = "rule", required = false) String rule,
+            @RequestHeader(name="Authorization") String accessToken) {
     	logger.debug("getCoursesRequirementSearch : ");
-    	OAuth2AuthenticationDetails auth = (OAuth2AuthenticationDetails) SecurityContextHolder
-                .getContext().getAuthentication().getDetails();
-    	String accessToken = auth.getTokenValue();
         return response.GET(courseRequirementService.getCourseRequirementSearchList(courseCode,courseLevel,rule,accessToken));
     }
     
@@ -351,5 +335,4 @@ public class CourseController {
         logger.debug("Check French Language Course : courseCode = {}, courseLevel = {}", courseCode, courseLevel);
         return response.GET(courseService.hasFrenchLanguageCourse(courseCode, courseLevel));
     }
-
 }

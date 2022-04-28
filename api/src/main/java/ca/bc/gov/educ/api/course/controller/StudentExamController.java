@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,7 +32,6 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 @CrossOrigin
 @RestController
 @RequestMapping(EducCourseApiConstants.STUDENT_EXAM_URL_MAPPING)
-@EnableResourceServer
 @OpenAPIDefinition(info = @Info(title = "API for Student Exam Data.", description = "This API is for Reading Student Exam data.", version = "1"),
         security = {@SecurityRequirement(name = "OAUTH2", scopes = {"READ_GRAD_STUDENT_COURSE_DATA"})})
 public class StudentExamController {
