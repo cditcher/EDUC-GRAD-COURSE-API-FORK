@@ -123,7 +123,7 @@ public class CourseController {
             @RequestParam(value = "pageSize", required = false,defaultValue = "50") Integer pageSize,
             @RequestHeader(name="Authorization") String accessToken) {
     	logger.debug("getAllCoursesRequirement : ");
-        return response.GET(courseRequirementService.getAllCourseRequirementList(pageNo,pageSize,accessToken));
+        return response.GET(courseRequirementService.getAllCourseRequirementList(pageNo,pageSize,accessToken.replaceAll("Bearer ", "")));
     }
     
     @GetMapping(EducCourseApiConstants.GET_COURSE_REQUIREMENT_BY_RULE_MAPPING)
@@ -172,7 +172,7 @@ public class CourseController {
             @RequestParam(value = "rule", required = false) String rule,
             @RequestHeader(name="Authorization") String accessToken) {
     	logger.debug("getCoursesRequirementSearch : ");
-        return response.GET(courseRequirementService.getCourseRequirementSearchList(courseCode,courseLevel,rule,accessToken));
+        return response.GET(courseRequirementService.getCourseRequirementSearchList(courseCode,courseLevel,rule,accessToken.replaceAll("Bearer ", "")));
     }
     
     @PostMapping(EducCourseApiConstants.GET_COURSE_REQUIREMENT_BY_COURSE_LIST_MAPPING)
