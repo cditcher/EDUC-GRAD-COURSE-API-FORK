@@ -83,7 +83,13 @@ public class CourseRestrictionService {
 
 	@Retry(name = "generalgetcall")
 	public CourseRestriction getCourseRestriction(String mainCourseCode, String mainCourseLevel, String restrictedCourseCode, String restrictedCourseLevel) {
-    	Optional<CourseRestrictionsEntity> courseRestrictionOptional = courseRestrictionRepository
+    	if (StringUtils.isBlank(mainCourseLevel)) {
+			mainCourseLevel = " ";
+		}
+		if (StringUtils.isBlank(restrictedCourseLevel)) {
+			restrictedCourseLevel = " ";
+		}
+		 Optional<CourseRestrictionsEntity> courseRestrictionOptional = courseRestrictionRepository
 				.findByMainCourseAndMainCourseLevelAndRestrictedCourseAndRestrictedCourseLevel(mainCourseCode, mainCourseLevel, restrictedCourseCode, restrictedCourseLevel);
     	if (courseRestrictionOptional.isPresent()) {
     		return courseRestrictionTransformer.transformToDTO(courseRestrictionOptional.get());

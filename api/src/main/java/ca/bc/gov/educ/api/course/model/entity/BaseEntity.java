@@ -7,6 +7,8 @@ import javax.persistence.MappedSuperclass;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 
+import ca.bc.gov.educ.api.course.util.EducCourseApiConstants;
+import ca.bc.gov.educ.api.course.util.ThreadLocalStateUtil;
 import org.apache.commons.lang3.StringUtils;
 
 import lombok.Data;
@@ -31,8 +33,18 @@ public class BaseEntity {
 	
 	@PrePersist
 	protected void onCreate() {
-		this.updateUser = DEFAULT_UPDATED_BY;
-		this.createUser = DEFAULT_CREATED_BY;
+		if (StringUtils.isBlank(createUser)) {
+			this.createUser = ThreadLocalStateUtil.getCurrentUser();
+			if (StringUtils.isBlank(createUser)) {
+				this.createUser = EducCourseApiConstants.DEFAULT_CREATED_BY;
+			}
+		}
+		if (StringUtils.isBlank(updateUser)) {
+			this.updateUser = ThreadLocalStateUtil.getCurrentUser();
+			if (StringUtils.isBlank(updateUser)) {
+				this.updateUser = EducCourseApiConstants.DEFAULT_UPDATED_BY;
+			}
+		}
 		this.createDate = new Date(System.currentTimeMillis());
 		this.updateDate = new Date(System.currentTimeMillis());
 	}
@@ -40,9 +52,17 @@ public class BaseEntity {
 	@PreUpdate
 	protected void onPersist() {
 		this.updateDate = new Date(System.currentTimeMillis());
-		this.updateUser = DEFAULT_UPDATED_BY;
+		if (StringUtils.isBlank(updateUser)) {
+			this.updateUser = ThreadLocalStateUtil.getCurrentUser();
+			if (StringUtils.isBlank(updateUser)) {
+				this.updateUser = EducCourseApiConstants.DEFAULT_UPDATED_BY;
+			}
+		}
 		if (StringUtils.isBlank(createUser)) {
-			createUser = DEFAULT_CREATED_BY;
+			this.createUser = ThreadLocalStateUtil.getCurrentUser();
+			if (StringUtils.isBlank(createUser)) {
+				this.createUser = EducCourseApiConstants.DEFAULT_CREATED_BY;
+			}
 		}
 		if (this.createDate == null) {
 			this.createDate = new Date(System.currentTimeMillis());
