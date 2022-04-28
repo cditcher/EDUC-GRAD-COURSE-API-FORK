@@ -18,7 +18,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,7 +25,6 @@ import java.util.List;
 @CrossOrigin
 @RestController
 @RequestMapping(EducCourseApiConstants.STUDENT_COURSE_URL_MAPPING)
-@EnableResourceServer
 @OpenAPIDefinition(info = @Info(title = "API for Student Course Data.", description = "This API is for Reading Student Course data.", version = "1"),
         security = {@SecurityRequirement(name = "OAUTH2", scopes = {"READ_GRAD_STUDENT_COURSE_DATA"})})
 public class StudentCourseController {
@@ -93,5 +91,4 @@ public class StudentCourseController {
         logger.debug("Check French Immersion Course for 1986 EN : pen = {}, course level [{}]", pen, courseLevel);
         return response.GET(studentCourseService.checkFrenchImmersionCourseForEN(pen, courseLevel));
     }
-
 }
