@@ -5,6 +5,7 @@ import java.util.*;
 import ca.bc.gov.educ.api.course.model.dto.*;
 import ca.bc.gov.educ.api.course.model.entity.CourseRequirementCodeEntity;
 import ca.bc.gov.educ.api.course.repository.CourseRequirementCodeRepository;
+import ca.bc.gov.educ.api.course.util.ThreadLocalStateUtil;
 import io.github.resilience4j.retry.annotation.Retry;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -86,7 +87,10 @@ public class CourseRequirementService {
         		}
             	List<GradRuleDetails> ruleList = webClient.get()
                         .uri(String.format(constants.getRuleDetailProgramManagementApiUrl(),cR.getRuleCode().getCourseRequirementCode()))
-                        .headers(h -> h.setBearerAuth(accessToken))
+                        .headers(h -> {
+                          h.setBearerAuth(accessToken);
+                          h.set(EducCourseApiConstants.CORRELATION_ID, ThreadLocalStateUtil.getCorrelationID());
+                        })
                         .retrieve()
                         .bodyToMono(new ParameterizedTypeReference<List<GradRuleDetails>>() {})
                         .block();
@@ -204,7 +208,10 @@ public class CourseRequirementService {
         		}
             	List<GradRuleDetails> ruleList = webClient.get()
                         .uri(String.format(constants.getRuleDetailProgramManagementApiUrl(),cR.getRuleCode().getCourseRequirementCode()))
-                        .headers(h -> h.setBearerAuth(accessToken))
+                        .headers(h -> {
+                          h.setBearerAuth(accessToken);
+                          h.set(EducCourseApiConstants.CORRELATION_ID, ThreadLocalStateUtil.getCorrelationID());
+                        })
                         .retrieve()
                         .bodyToMono(new ParameterizedTypeReference<List<GradRuleDetails>>() {})
                         .block();
