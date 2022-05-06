@@ -216,7 +216,7 @@ public class CourseRequirementService {
                         .bodyToMono(new ParameterizedTypeReference<List<GradRuleDetails>>() {})
                         .block();
             	StringBuilder requirementProgram = getRequirementProgram(ruleList,obj);
-            	
+            	obj.setTraxReqNumber(!ruleList.isEmpty()?ruleList.get(0).getTraxReqNumber():null);
             	obj.setRequirementProgram(requirementProgram.toString());
             	allCourseRequiremntList.add(obj);
             });
