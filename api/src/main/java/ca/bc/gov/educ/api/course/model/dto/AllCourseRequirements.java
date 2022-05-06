@@ -19,6 +19,7 @@ public class AllCourseRequirements extends BaseModel {
     private String ruleCode;
     private String requirementName;
     private String requirementProgram;
+    private String traxReqNumber;
     
     public String getCourseName() {
     	return courseName != null ? courseName.trim():null;
