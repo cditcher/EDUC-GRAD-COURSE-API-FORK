@@ -3,9 +3,7 @@ package ca.bc.gov.educ.api.course.config;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import ca.bc.gov.educ.api.course.util.EducCourseApiConstants;
-import ca.bc.gov.educ.api.course.util.LogHelper;
-import ca.bc.gov.educ.api.course.util.ThreadLocalStateUtil;
+import ca.bc.gov.educ.api.course.util.*;
 import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
@@ -14,8 +12,6 @@ import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
-
-import ca.bc.gov.educ.api.course.util.GradValidation;
 
 import java.time.Instant;
 
@@ -45,7 +41,7 @@ public class RequestInterceptor extends HandlerInterceptorAdapter {
 		// username
 		JwtAuthenticationToken authenticationToken = (JwtAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
 		Jwt jwt = (Jwt) authenticationToken.getCredentials();
-		String username = (String) jwt.getClaims().get("preferred_username");
+		String username = JwtUtil.getName(jwt);
 		if (username != null) {
 			ThreadLocalStateUtil.setCurrentUser(username);
 		}
