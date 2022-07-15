@@ -26,9 +26,4 @@ public class GradAssessmentConfig implements WebMvcConfigurer {
 		registry.addInterceptor(requestInterceptor).addPathPatterns("/**");
 	}
 
-	@Bean
-	public MessageHelper messageHelper() {
-		return new MessageHelper();
-	}
-
 }
