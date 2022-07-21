@@ -56,7 +56,7 @@ public class CourseAlgorithmControllerTest {
         courseRequirement.setCourseLevel("12");
         courseRequirement.setRuleCode(courseRequirementCodeDTO);
 
-        // Course Restriction
+        // Course Restriction 
         CourseRestriction courseRestriction = new CourseRestriction();
         courseRestriction.setCourseRestrictionId(UUID.randomUUID());
         courseRestriction.setMainCourse("MAIN");
