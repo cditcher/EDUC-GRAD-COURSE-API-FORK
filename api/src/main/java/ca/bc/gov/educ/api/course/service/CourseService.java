@@ -1,17 +1,5 @@
 package ca.bc.gov.educ.api.course.service;
 
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.List;
-
-import io.github.resilience4j.retry.annotation.Retry;
-import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import ca.bc.gov.educ.api.course.model.dto.Course;
 import ca.bc.gov.educ.api.course.model.entity.CourseEntity;
 import ca.bc.gov.educ.api.course.model.entity.CourseId;
@@ -20,6 +8,17 @@ import ca.bc.gov.educ.api.course.repository.CourseCriteriaQueryRepository;
 import ca.bc.gov.educ.api.course.repository.CourseRepository;
 import ca.bc.gov.educ.api.course.util.criteria.CriteriaHelper;
 import ca.bc.gov.educ.api.course.util.criteria.GradCriteria.OperationEnum;
+import io.github.resilience4j.retry.annotation.Retry;
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.List;
 
 @Service
 public class CourseService {
@@ -106,6 +105,7 @@ public class CourseService {
             criteria.add(rootElement, OperationEnum.GREATER_THAN_EQUAL_TO, value);
         } else if (paramterType.equalsIgnoreCase(END_DATE)) {
             criteria.add(rootElement, OperationEnum.LESS_THAN_EQUAL_TO, value);
+            criteria.add(rootElement, OperationEnum.NOT_EQUALS, 0);
         }
     }
 
