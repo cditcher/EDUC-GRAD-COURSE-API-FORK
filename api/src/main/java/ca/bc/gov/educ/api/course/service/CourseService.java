@@ -85,10 +85,10 @@ public class CourseService {
         getSearchCriteria(LANGUAGE, language, LANGUAGE, criteria);
 
         if (startDate != null) {
-            getSearchCriteriaDate(START_DATE, startDate, START_DATE, criteria);
+            getSearchCriteriaDate(START_DATE, startDate, null, START_DATE, criteria);
         }
         if (endDate != null) {
-            getSearchCriteriaDate(END_DATE, endDate, END_DATE, criteria);
+            getSearchCriteriaDate(END_DATE, startDate, endDate, END_DATE, criteria);
         }
 
         List<Course> courseList = courseTransformer.transformToDTO(courseCriteriaQueryRepository.findByCriteria(criteria, CourseEntity.class));
@@ -99,13 +99,13 @@ public class CourseService {
         return courseList;
     }
 
-    private void getSearchCriteriaDate(String rootElement, Date value, String paramterType,
+    private void getSearchCriteriaDate(String rootElement, Date startDate, Date endDate, String paramterType,
                                                  CriteriaHelper criteria) {
         if (paramterType.equalsIgnoreCase(START_DATE)) {
-            criteria.add(rootElement, OperationEnum.GREATER_THAN_EQUAL_TO, value);
+            criteria.add(rootElement, OperationEnum.GREATER_THAN_EQUAL_TO, startDate);
         } else if (paramterType.equalsIgnoreCase(END_DATE)) {
-            criteria.add(rootElement, OperationEnum.LESS_THAN_EQUAL_TO, value);
-            criteria.add(rootElement, OperationEnum.NOT_EQUALS, 0);
+            criteria.add(rootElement, OperationEnum.LESS_THAN_EQUAL_TO, endDate);
+            criteria.add(rootElement, OperationEnum.GREATER_THAN, startDate);
         }
     }
 
