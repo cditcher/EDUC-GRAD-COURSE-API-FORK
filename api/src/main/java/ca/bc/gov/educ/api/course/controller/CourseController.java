@@ -111,6 +111,7 @@ public class CourseController {
     public ResponseEntity<Course> getCourseDetailsByCourse(@PathVariable String courseCode) {
     	logger.debug("getCourseDetails with Code : ");
         return response.GET(courseService.getCourseDetails(courseCode," "));
+
     }
     
     @GetMapping(EducCourseApiConstants.GET_COURSE_REQUIREMENT_MAPPING)
