@@ -1,15 +1,10 @@
 package ca.bc.gov.educ.api.course.util.criteria;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import ca.bc.gov.educ.api.course.util.criteria.GradCriteria.OperationEnum;
 import org.apache.commons.lang3.StringUtils;
 import org.jboss.logging.Logger;
 
-import ca.bc.gov.educ.api.course.util.criteria.GradCriteria.OperationEnum;
+import java.util.*;
 
 public class CriteriaHelper {
 
@@ -66,7 +61,7 @@ public class CriteriaHelper {
 	/**
 	 * Order by the specified column (can be nested).
 	 * 
-	 * @param colum
+	 * @param column
 	 * @param asc True for ASC sort, false for DESC sort
 	 * @return
 	 */
