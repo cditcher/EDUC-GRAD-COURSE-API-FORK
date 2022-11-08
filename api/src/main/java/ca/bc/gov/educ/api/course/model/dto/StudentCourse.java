@@ -90,10 +90,10 @@ public class StudentCourse {
 	}
 
 	public Integer getCredits() {
-		if(credits == null) {
-			return Integer.valueOf("0");
-		}
-		return credits;
+	    if(credits == null) {
+	        return Integer.valueOf("0");
+	    }
+	    return credits;
 	}
 
     public String getEquivOrChallenge() {
