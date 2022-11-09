@@ -4,9 +4,7 @@ import ca.bc.gov.educ.api.course.model.dto.*;
 import ca.bc.gov.educ.api.course.model.entity.CourseRequirementCodeEntity;
 import ca.bc.gov.educ.api.course.model.entity.CourseRequirementEntity;
 import ca.bc.gov.educ.api.course.repository.CourseRequirementCodeRepository;
-import ca.bc.gov.educ.api.course.repository.CourseRequirementCriteriaQueryRepository;
 import ca.bc.gov.educ.api.course.repository.CourseRequirementRepository;
-import ca.bc.gov.educ.api.course.util.criteria.CriteriaHelper;
 import ca.bc.gov.educ.api.course.util.EducCourseApiConstants;
 import org.junit.After;
 import org.junit.Before;
@@ -21,6 +19,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -52,9 +51,6 @@ public class CourseRequirementServiceTest {
 
     @MockBean
     private CourseRequirementRepository courseRequirementRepository;
-
-    @MockBean
-    private CourseRequirementCriteriaQueryRepository courseRequirementCriteriaQueryRepository;
 
     @MockBean
     private CourseRequirementCodeRepository courseRequirementCodeRepository;
@@ -295,7 +291,7 @@ public class CourseRequirementServiceTest {
         ruleDetails.setProgramCode("2018-EN");
         ruleDetails.setRequirementName("Test");
 
-        when(courseRequirementCriteriaQueryRepository.findByCriteria(any(CriteriaHelper.class), eq(CourseRequirementEntity.class))).thenReturn(Arrays.asList(courseRequirementEntity));
+        when(courseRequirementRepository.findAll(any(Specification.class))).thenReturn(Arrays.asList(courseRequirementEntity));
         when(courseService.getCourseDetails(eq("MAIN"), eq("12"))).thenReturn(course);
 
         ParameterizedTypeReference<List<GradRuleDetails>> responseType = new ParameterizedTypeReference<List<GradRuleDetails>>() {
