@@ -9,6 +9,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -85,7 +86,7 @@ public class CourseServiceTest {
         course.setStartDate(new Date(System.currentTimeMillis() - 10000L));
         course.setEndDate(new Date(System.currentTimeMillis() + 10000L));
 
-        when(courseRepository.findAll(any(Specification.class))).thenReturn(Arrays.asList(course));
+        when(courseRepository.findAll(any(Specification.class), any(Sort.class))).thenReturn(Arrays.asList(course));
         var result = courseService.getCourseSearchList(courseKey.getCourseCode(), courseKey.getCourseLevel(), null, null,
                 course.getStartDate(), course.getEndDate());
         assertThat(result).isNotNull();
