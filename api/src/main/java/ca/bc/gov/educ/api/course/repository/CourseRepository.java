@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.UUID;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -12,7 +13,7 @@ import ca.bc.gov.educ.api.course.model.entity.CourseEntity;
 import ca.bc.gov.educ.api.course.model.entity.CourseId;
 
 @Repository
-public interface CourseRepository extends JpaRepository<CourseEntity, UUID> {
+public interface CourseRepository extends JpaRepository<CourseEntity, UUID>, JpaSpecificationExecutor<CourseEntity> {
 
     List<CourseEntity> findAll();
 

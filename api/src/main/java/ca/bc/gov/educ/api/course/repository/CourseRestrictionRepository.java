@@ -5,13 +5,14 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import ca.bc.gov.educ.api.course.model.entity.CourseRestrictionsEntity;
 
 @Repository
-public interface CourseRestrictionRepository extends JpaRepository<CourseRestrictionsEntity, UUID> {
+public interface CourseRestrictionRepository extends JpaRepository<CourseRestrictionsEntity, UUID>, JpaSpecificationExecutor<CourseRestrictionsEntity> {
 
     List<CourseRestrictionsEntity> findAll();
 
@@ -21,9 +22,9 @@ public interface CourseRestrictionRepository extends JpaRepository<CourseRestric
 
 	Optional<CourseRestrictionsEntity> findByMainCourseAndMainCourseLevelAndRestrictedCourseAndRestrictedCourseLevel(String courseCode, String courseLevel, String restrictedCourseCode, String restrictedCourseLevel);
 
-	@Query(value="SELECT si.* FROM GRAD_COURSE_RESTRICTIONS si where "
-			+ "(:mainCourseLevel is null or si.CRSE_MAIN_LVL like :mainCourseLevel%)  and "
-			+ "(:mainCourseCode is null or si.CRSE_MAIN like :mainCourseCode%) and ROWNUM <= 50",nativeQuery = true)
+	@Query(value="SELECT si.* FROM COURSE_RESTRICTION si where "
+			+ "(:mainCourseLevel is null or si.MAIN_COURSE_LEVEL like :mainCourseLevel%)  and "
+			+ "(:mainCourseCode is null or si.MAIN_COURSE like :mainCourseCode%) and ROWNUM <= 50",nativeQuery = true)
 	List<CourseRestrictionsEntity> searchForCourseRestriction(String mainCourseCode, String mainCourseLevel);
 
 	List<CourseRestrictionsEntity> findByMainCourseIn(List<String> courseCodes);

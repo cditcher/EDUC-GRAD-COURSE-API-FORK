@@ -6,6 +6,7 @@ import ca.bc.gov.educ.api.course.model.dto.*;
 import ca.bc.gov.educ.api.course.model.entity.CourseRequirementCodeEntity;
 import ca.bc.gov.educ.api.course.repository.CourseRequirementCodeRepository;
 import ca.bc.gov.educ.api.course.util.ThreadLocalStateUtil;
+import ca.bc.gov.educ.api.course.util.criteria.CriteriaSpecification;
 import io.github.resilience4j.retry.annotation.Retry;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -16,12 +17,12 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import ca.bc.gov.educ.api.course.model.entity.CourseRequirementEntity;
 import ca.bc.gov.educ.api.course.model.transformer.CourseRequirementTransformer;
-import ca.bc.gov.educ.api.course.repository.CourseRequirementCriteriaQueryRepository;
 import ca.bc.gov.educ.api.course.repository.CourseRequirementRepository;
 import ca.bc.gov.educ.api.course.util.criteria.CriteriaHelper;
 import ca.bc.gov.educ.api.course.util.criteria.GradCriteria.OperationEnum;
@@ -35,9 +36,6 @@ public class CourseRequirementService {
 
     @Autowired
     private CourseRequirementTransformer courseRequirementTransformer;
-    
-    @Autowired
-    private CourseRequirementCriteriaQueryRepository courseRequirementCriteriaQueryRepository;
 
     @Autowired
     private CourseRequirementCodeRepository courseRequirementCodeRepository;
@@ -196,7 +194,9 @@ public class CourseRequirementService {
         getSearchCriteria("courseLevel", courseLevel, criteria);
         getSearchCriteria("ruleCode.courseRequirementCode", rule, criteria);
         List<AllCourseRequirements> allCourseRequiremntList = new ArrayList<>();
-        List<CourseRequirement> courseReqList = courseRequirementTransformer.transformToDTO(courseRequirementCriteriaQueryRepository.findByCriteria(criteria, CourseRequirementEntity.class));
+
+        CriteriaSpecification<CourseRequirementEntity> spec = new CriteriaSpecification<>(criteria);
+        List<CourseRequirement> courseReqList = courseRequirementTransformer.transformToDTO(courseRequirementRepository.findAll(Specification.where(spec)));
         if (!courseReqList.isEmpty()) {
         	courseReqList.forEach(cR -> {
         		AllCourseRequirements obj = new AllCourseRequirements();

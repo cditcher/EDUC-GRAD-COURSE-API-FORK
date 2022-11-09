@@ -8,6 +8,7 @@ import ca.bc.gov.educ.api.course.model.entity.CourseRequirementCodeEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -15,7 +16,7 @@ import org.springframework.stereotype.Repository;
 import ca.bc.gov.educ.api.course.model.entity.CourseRequirementEntity;
 
 @Repository
-public interface CourseRequirementRepository extends JpaRepository<CourseRequirementEntity, UUID> {
+public interface CourseRequirementRepository extends JpaRepository<CourseRequirementEntity, UUID>, JpaSpecificationExecutor<CourseRequirementEntity> {
 
     List<CourseRequirementEntity> findAll();
 
