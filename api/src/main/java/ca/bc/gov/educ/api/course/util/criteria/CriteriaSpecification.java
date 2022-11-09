@@ -13,9 +13,6 @@ import java.util.LinkedList;
 
 public class CriteriaSpecification<T> implements Specification<T> {
 
-	private static final int MAX_RESULTS_DEFAULT = 1000;
-	private static final int MAX_RESULTS_DEFAULT_EXPORT_TO_EXCEL = 100000;
-
 	private final CriteriaHelper criteriaHelper;
 
 	public CriteriaSpecification(CriteriaHelper criteriaHelper) {
