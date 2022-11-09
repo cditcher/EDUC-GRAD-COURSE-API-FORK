@@ -16,8 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -86,14 +84,11 @@ public class CourseService {
         if (endDate != null) {
             getSearchCriteriaDate(END_DATE, startDate, endDate, END_DATE, criteria);
         }
-        CriteriaSpecification<CourseEntity> spec = new CriteriaSpecification(criteria);
+        criteria.orderBy("courseKey.courseCode", true);
+        criteria.orderBy("courseKey.courseLevel", true);
 
-        List<Course> courseList = courseTransformer.transformToDTO(courseRepo.findAll(Specification.where(spec)));
-        if (!courseList.isEmpty()) {
-            Collections.sort(courseList, Comparator.comparing(Course::getCourseCode)
-                    .thenComparing(Course::getCourseLevel));
-        }
-        return courseList;
+        CriteriaSpecification<CourseEntity> spec = new CriteriaSpecification<>(criteria);
+        return courseTransformer.transformToDTO(courseRepo.findAll(Specification.where(spec), criteria.getSortBy()));
     }
 
     private void getSearchCriteriaDate(String rootElement, Date startDate, Date endDate, String paramterType,

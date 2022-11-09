@@ -195,7 +195,7 @@ public class CourseRequirementService {
         getSearchCriteria("ruleCode.courseRequirementCode", rule, criteria);
         List<AllCourseRequirements> allCourseRequiremntList = new ArrayList<>();
 
-        CriteriaSpecification<CourseRequirementEntity> spec = new CriteriaSpecification(criteria);
+        CriteriaSpecification<CourseRequirementEntity> spec = new CriteriaSpecification<>(criteria);
         List<CourseRequirement> courseReqList = courseRequirementTransformer.transformToDTO(courseRequirementRepository.findAll(Specification.where(spec)));
         if (!courseReqList.isEmpty()) {
         	courseReqList.forEach(cR -> {

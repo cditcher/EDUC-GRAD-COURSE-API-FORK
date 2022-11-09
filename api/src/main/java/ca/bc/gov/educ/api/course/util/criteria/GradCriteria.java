@@ -2,10 +2,9 @@ package ca.bc.gov.educ.api.course.util.criteria;
 
 public class GradCriteria {
 
-	String column;
-	Object value;
-	OperationEnum operation;
-	
+	private String column;
+	private Object value;
+	private OperationEnum operation;
 	
 	public GradCriteria(String column, OperationEnum operation, Object value) {
 		super();
