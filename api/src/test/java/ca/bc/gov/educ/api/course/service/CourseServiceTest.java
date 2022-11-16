@@ -3,13 +3,14 @@ package ca.bc.gov.educ.api.course.service;
 import ca.bc.gov.educ.api.course.model.dto.Course;
 import ca.bc.gov.educ.api.course.model.entity.CourseEntity;
 import ca.bc.gov.educ.api.course.model.entity.CourseId;
-import ca.bc.gov.educ.api.course.repository.CourseCriteriaQueryRepository;
 import ca.bc.gov.educ.api.course.repository.CourseRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -19,7 +20,6 @@ import java.util.Arrays;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
 @RunWith(SpringRunner.class)
@@ -32,9 +32,6 @@ public class CourseServiceTest {
 
     @MockBean
     private CourseRepository courseRepository;
-
-    @MockBean
-    private CourseCriteriaQueryRepository courseCriteriaQueryRepository;
 
     @MockBean
     WebClient webClient;
@@ -89,7 +86,7 @@ public class CourseServiceTest {
         course.setStartDate(new Date(System.currentTimeMillis() - 10000L));
         course.setEndDate(new Date(System.currentTimeMillis() + 10000L));
 
-        when(courseCriteriaQueryRepository.findByCriteria(any(), eq(CourseEntity.class))).thenReturn(Arrays.asList(course));
+        when(courseRepository.findAll(any(Specification.class), any(Sort.class))).thenReturn(Arrays.asList(course));
         var result = courseService.getCourseSearchList(courseKey.getCourseCode(), courseKey.getCourseLevel(), null, null,
                 course.getStartDate(), course.getEndDate());
         assertThat(result).isNotNull();

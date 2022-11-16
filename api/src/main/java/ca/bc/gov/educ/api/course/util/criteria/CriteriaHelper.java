@@ -3,21 +3,26 @@ package ca.bc.gov.educ.api.course.util.criteria;
 import ca.bc.gov.educ.api.course.util.criteria.GradCriteria.OperationEnum;
 import org.apache.commons.lang3.StringUtils;
 import org.jboss.logging.Logger;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 
+import java.io.Serializable;
 import java.util.*;
 
-public class CriteriaHelper {
+public class CriteriaHelper implements Serializable {
+
+	private static final long serialVersionUID = 1L;
+
+	private static final int MAX_RESULTS_DEFAULT = 1000;
 
 	private static final Logger LOGGER = Logger.getLogger(CriteriaHelper.class);
 	
-	List<GradCriteria> criteriaList = new ArrayList<>();
+	private List<GradCriteria> criteriaList = new ArrayList<>();
 
-	private Map<String, Boolean> orderBy = new HashMap<>();
+	private List<Sort.Order> orderBy = new ArrayList<>();
 	
-	private Integer maxResults = null;
-	
-	private boolean noLimit= true;
-	
+	private Pageable maxResults = null;
+
 	/**
 	 * Creates the Criterias needed for Criteria Query
 	 * This version should only be used where no value is required (e.g. IS_NOT_NULL, IS_NULL)
@@ -62,38 +67,32 @@ public class CriteriaHelper {
 	 * Order by the specified column (can be nested).
 	 * 
 	 * @param column
-	 * @param asc True for ASC sort, false for DESC sort
-	 * @return
+	 * @param asc 	true for ASC sort, false for DESC sort
 	 */
-	public CriteriaHelper orderBy(String column, Boolean asc) {
-		orderBy.put(column, asc);
-		return this;
+	public void orderBy(String column, boolean asc) {
+		if (asc)
+			orderBy.add(Sort.Order.asc(column));
+		else
+			orderBy.add(Sort.Order.desc(column));
 	}
 	
 	Collection<GradCriteria> getCriteria() {
 		return this.criteriaList;
 	}
 
-	public Map<String, Boolean> getOrderBy() {
-		return orderBy;
+	public Sort getSortBy() {
+		return Sort.by(orderBy);
 	}
 
-	public Integer getMaxResults() {
+	public Pageable getMaxResults() {
+		if (maxResults == null) {
+			return Pageable.ofSize(MAX_RESULTS_DEFAULT);
+		}
 		return maxResults;
 	}
 
 	public void setMaxResults(Integer maxResults) {
-		this.maxResults = maxResults;
+		this.maxResults = Pageable.ofSize(maxResults);
 	}
-
-	public boolean isNoLimit() {
-		return noLimit;
-	}
-
-	public void setNoLimit(boolean noLimit) {
-		this.noLimit = noLimit;
-	}
-	
-	
 
 }

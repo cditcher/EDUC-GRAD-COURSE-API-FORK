@@ -89,6 +89,13 @@ public class StudentCourse {
 		return completedCoursePercentage; 
 	}
 
+	public Integer getCredits() {
+	    if(credits == null) {
+	        return Integer.valueOf("0");
+	    }
+	    return credits;
+	}
+
     public String getEquivOrChallenge() {
     	return equivOrChallenge != null ? equivOrChallenge.trim() : null;
     }
