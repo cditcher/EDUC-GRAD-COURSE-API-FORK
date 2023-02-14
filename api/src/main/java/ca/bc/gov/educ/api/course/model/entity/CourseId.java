@@ -2,9 +2,9 @@ package ca.bc.gov.educ.api.course.model.entity;
 
 import java.io.Serializable;
 
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
-import javax.validation.constraints.Size;
+import jakarta.persistence.Column;
+import jakarta.persistence.Embeddable;
+import jakarta.validation.constraints.Size;
 
 import lombok.Data;
 

@@ -3,11 +3,11 @@ package ca.bc.gov.educ.api.course.util.criteria;
 import ca.bc.gov.educ.api.course.exception.GradBusinessRuleException;
 import ca.bc.gov.educ.api.course.util.criteria.GradCriteria.OperationEnum;
 import org.apache.commons.lang3.StringUtils;
-import org.hibernate.query.criteria.internal.path.PluralAttributePath;
+import org.hibernate.metamodel.mapping.ordering.ast.PluralAttributePath;
 import org.springframework.data.jpa.domain.Specification;
 
-import javax.persistence.criteria.*;
-import javax.persistence.criteria.CriteriaBuilder.In;
+import jakarta.persistence.criteria.*;
+import jakarta.persistence.criteria.CriteriaBuilder.In;
 import java.util.Collection;
 import java.util.LinkedList;
 

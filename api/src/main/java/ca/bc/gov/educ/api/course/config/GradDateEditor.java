@@ -30,7 +30,7 @@ public class GradDateEditor extends CustomDateEditor {
 				} else if (text.length() == 10) {
 					setValue(DEFAULT_DATE_FORMAT_INSTANCE.parse(text));
 				} else if (text.length() > 10) {
-					Calendar calendar = javax.xml.bind.DatatypeConverter.parseDateTime(text);
+					Calendar calendar = jakarta.xml.bind.DatatypeConverter.parseDateTime(text);
 					setValue(calendar.getTime());
 				}
 			} catch (ParseException ex) {

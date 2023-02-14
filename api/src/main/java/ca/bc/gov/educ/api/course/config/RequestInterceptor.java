@@ -1,7 +1,7 @@
 package ca.bc.gov.educ.api.course.config;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 import ca.bc.gov.educ.api.course.util.*;
 import lombok.val;
@@ -12,12 +12,12 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.stereotype.Component;
-import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
+import org.springframework.web.servlet.AsyncHandlerInterceptor;
 
 import java.time.Instant;
 
 @Component
-public class RequestInterceptor extends HandlerInterceptorAdapter {
+public class RequestInterceptor implements AsyncHandlerInterceptor {
 
 	@Autowired
 	GradValidation validation;

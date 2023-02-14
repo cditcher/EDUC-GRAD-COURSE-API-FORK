@@ -2,7 +2,7 @@ package ca.bc.gov.educ.api.course.model.entity;
 
 import java.util.UUID;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
