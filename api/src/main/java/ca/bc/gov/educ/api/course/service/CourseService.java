@@ -4,19 +4,18 @@ import ca.bc.gov.educ.api.course.model.dto.Course;
 import ca.bc.gov.educ.api.course.model.entity.CourseEntity;
 import ca.bc.gov.educ.api.course.model.entity.CourseId;
 import ca.bc.gov.educ.api.course.model.transformer.CourseTransformer;
-import ca.bc.gov.educ.api.course.repository.CourseCriteriaQueryRepository;
 import ca.bc.gov.educ.api.course.repository.CourseRepository;
 import ca.bc.gov.educ.api.course.util.criteria.CriteriaHelper;
 import ca.bc.gov.educ.api.course.util.criteria.GradCriteria.OperationEnum;
+import ca.bc.gov.educ.api.course.util.criteria.CriteriaSpecification;
 import io.github.resilience4j.retry.annotation.Retry;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -30,11 +29,6 @@ public class CourseService {
 	
     @Autowired
     private CourseRepository courseRepo;
-
-    @Autowired
-    private CourseCriteriaQueryRepository courseCriteriaQueryRepository;
-
-    Iterable<CourseEntity> courseEntities;
 
     @Autowired
     private CourseTransformer courseTransformer;
@@ -85,27 +79,25 @@ public class CourseService {
         getSearchCriteria(LANGUAGE, language, LANGUAGE, criteria);
 
         if (startDate != null) {
-            getSearchCriteriaDate(START_DATE, startDate, START_DATE, criteria);
+            getSearchCriteriaDate(START_DATE, startDate, null, START_DATE, criteria);
         }
         if (endDate != null) {
-            getSearchCriteriaDate(END_DATE, endDate, END_DATE, criteria);
+            getSearchCriteriaDate(END_DATE, startDate, endDate, END_DATE, criteria);
         }
+        criteria.orderBy("courseKey.courseCode", true);
+        criteria.orderBy("courseKey.courseLevel", true);
 
-        List<Course> courseList = courseTransformer.transformToDTO(courseCriteriaQueryRepository.findByCriteria(criteria, CourseEntity.class));
-        if (!courseList.isEmpty()) {
-            Collections.sort(courseList, Comparator.comparing(Course::getCourseCode)
-                    .thenComparing(Course::getCourseLevel));
-        }
-        return courseList;
+        CriteriaSpecification<CourseEntity> spec = new CriteriaSpecification<>(criteria);
+        return courseTransformer.transformToDTO(courseRepo.findAll(Specification.where(spec), criteria.getSortBy()));
     }
 
-    private void getSearchCriteriaDate(String rootElement, Date value, String paramterType,
+    private void getSearchCriteriaDate(String rootElement, Date startDate, Date endDate, String paramterType,
                                                  CriteriaHelper criteria) {
         if (paramterType.equalsIgnoreCase(START_DATE)) {
-            criteria.add(rootElement, OperationEnum.GREATER_THAN_EQUAL_TO, value);
+            criteria.add(rootElement, OperationEnum.GREATER_THAN_EQUAL_TO, startDate);
         } else if (paramterType.equalsIgnoreCase(END_DATE)) {
-            criteria.add(rootElement, OperationEnum.LESS_THAN_EQUAL_TO, value);
-            criteria.add(rootElement, OperationEnum.NOT_EQUALS, 0);
+            criteria.add(rootElement, OperationEnum.LESS_THAN_EQUAL_TO, endDate);
+            criteria.add(rootElement, OperationEnum.GREATER_THAN, startDate);
         }
     }
 
