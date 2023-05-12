@@ -15,7 +15,7 @@ COPY --from=build ${DEPENDENCY}/BOOT-INF/lib /app/lib
 COPY --from=build ${DEPENDENCY}/META-INF /app/META-INF
 COPY --from=build ${DEPENDENCY}/BOOT-INF/classes /app
 ENTRYPOINT ["java","-Duser.name=EDUC_GRAD_COURSE_API",\
-            "-Xms800m","-Xmx800m","-noverify","-XX:TieredStopAtLevel=1",\
+            "-Xms1000m","-Xmx1000m","-noverify","-XX:TieredStopAtLevel=1",\
             "-XX:+UseParallelGC","-XX:MinHeapFreeRatio=20","-XX:MaxHeapFreeRatio=40",\
             "-XX:GCTimeRatio=4","-XX:AdaptiveSizePolicyWeight=90","-XX:MaxMetaspaceSize=100m",\
             "-XX:ParallelGCThreads=1","-Djava.util.concurrent.ForkJoinPool.common.parallelism=1",\

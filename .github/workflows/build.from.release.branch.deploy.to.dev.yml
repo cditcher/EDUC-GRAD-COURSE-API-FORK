@@ -23,8 +23,8 @@ env:
   #GRAD2-1947 Resource Optimization
   MIN_CPU: "20m"
   MAX_CPU: "120m"
-  MIN_MEM: "100Mi"
-  MAX_MEM: "1024Mi"
+  MIN_MEM: "200Mi"
+  MAX_MEM: "1200Mi"
   MIN_REPLICAS: "3"
   MAX_REPLICAS: "5"
 
@@ -42,7 +42,7 @@ jobs:
   openshift-ci-cd:
     name: Build and deploy to OpenShift DEV from release branch
     # ubuntu-20.04 can also be used.
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     environment: dev
 
     outputs:
