@@ -107,7 +107,7 @@ public class CourseRequirementServiceTest {
         Page<CourseRequirementEntity> pagedResult = new PageImpl<>(Arrays.asList(courseRequirementEntity));
 
         when(courseRequirementRepository.findAll(any(Pageable.class))).thenReturn(pagedResult);
-        when(courseService.getCourseDetails(eq("MAIN"), eq("12"))).thenReturn(course);
+        when(courseService.getCourseDetails("MAIN", "12")).thenReturn(course);
 
         ParameterizedTypeReference<List<GradRuleDetails>> responseType = new ParameterizedTypeReference<List<GradRuleDetails>>() {
         };
@@ -163,7 +163,7 @@ public class CourseRequirementServiceTest {
 
         when(courseRequirementCodeRepository.findById(eq(ruleCodeValue))).thenReturn(Optional.of(courseRequirementCodeEntity));
         when(courseRequirementRepository.findByRuleCode(eq(courseRequirementCodeEntity), any(Pageable.class))).thenReturn(pagedResult);
-        when(courseService.getCourseDetails(eq("MAIN"), eq("12"))).thenReturn(course);
+        when(courseService.getCourseDetails("MAIN", "12")).thenReturn(course);
 
         var result = courseRequirementService.getAllCourseRequirementListByRule(ruleCodeValue, 1, 5);
 
@@ -211,7 +211,7 @@ public class CourseRequirementServiceTest {
         courseRequirementEntity.setCourseLevel("12");
         courseRequirementEntity.setRuleCode(courseRequirementCodeEntity);
 
-        when(courseRequirementRepository.findByCourseCodeAndCourseLevel(eq("MAIN"), eq("12"))).thenReturn(Arrays.asList(courseRequirementEntity));
+        when(courseRequirementRepository.findByCourseCodeAndCourseLevel("MAIN", "12")).thenReturn(Arrays.asList(courseRequirementEntity));
         var result = courseRequirementService.getCourseRequirements("MAIN", "12");
         assertThat(result).isNotNull();
         assertThat(result.getCourseRequirementList().size()).isEqualTo(1);
@@ -233,7 +233,7 @@ public class CourseRequirementServiceTest {
         courseRequirementEntity.setCourseLevel("12");
         courseRequirementEntity.setRuleCode(courseRequirementCodeEntity);
 
-        when(courseRequirementRepository.countByCourseCodeAndCourseLevelAndRuleCode(eq("MAIN"), eq("12"), eq("RuleCd"))).thenReturn(1L);
+        when(courseRequirementRepository.countByCourseCodeAndCourseLevelAndRuleCode("MAIN", "12", "RuleCd")).thenReturn(1L);
         var result = courseRequirementService.checkCourseRequirementExists("MAIN", "12", "RuleCd");
         assertThat(result).isNotNull();
         assertThat(result).isTrue();
@@ -253,9 +253,8 @@ public class CourseRequirementServiceTest {
         courseRequirementEntity.setCourseLevel(" ");
         courseRequirementEntity.setRuleCode(courseRequirementCodeEntity);
 
-        when(courseRequirementRepository.countByCourseCodeAndCourseLevelAndRuleCode(eq("MAIN"), eq(" "), eq("RuleCd"))).thenReturn(1L);
+        when(courseRequirementRepository.countByCourseCodeAndCourseLevelAndRuleCode("MAIN", " ", "RuleCd")).thenReturn(1L);
         var result = courseRequirementService.checkCourseRequirementExists("MAIN", " ", "RuleCd");
-        assertThat(result).isNotNull();
         assertThat(result).isTrue();
     }
 
@@ -290,8 +289,8 @@ public class CourseRequirementServiceTest {
         responseCourseRequirementEntity.setCourseLevel("12");
         responseCourseRequirementEntity.setRuleCode(courseRequirementCodeEntity);
 
-        when(courseRequirementRepository.findByCourseCodeAndCourseLevelAndRuleCode(eq("MAIN"), eq("12"), eq("RuleCd"))).thenReturn(Arrays.asList(courseRequirementEntity));
-        when(courseRequirementCodeRepository.findById(eq("RuleCd"))).thenReturn(Optional.of(courseRequirementCodeEntity));
+        when(courseRequirementRepository.findByCourseCodeAndCourseLevelAndRuleCode("MAIN", "12", "RuleCd")).thenReturn(Arrays.asList(courseRequirementEntity));
+        when(courseRequirementCodeRepository.findById("RuleCd")).thenReturn(Optional.of(courseRequirementCodeEntity));
         when(courseRequirementRepository.save(courseRequirementEntity)).thenReturn(responseCourseRequirementEntity);
         var result = courseRequirementService.saveCourseRequirement(courseRequirement);
         assertThat(result).isNotNull();
@@ -332,8 +331,8 @@ public class CourseRequirementServiceTest {
         responseCourseRequirementEntity.setCourseLevel(" ");
         responseCourseRequirementEntity.setRuleCode(courseRequirementCodeEntity);
 
-        when(courseRequirementRepository.findByCourseCodeAndCourseLevelAndRuleCode(eq("MAIN"), eq(" "), eq("RuleCd"))).thenReturn(Arrays.asList(courseRequirementEntity));
-        when(courseRequirementCodeRepository.findById(eq("RuleCd"))).thenReturn(Optional.of(courseRequirementCodeEntity));
+        when(courseRequirementRepository.findByCourseCodeAndCourseLevelAndRuleCode("MAIN", " ", "RuleCd")).thenReturn(Arrays.asList(courseRequirementEntity));
+        when(courseRequirementCodeRepository.findById("RuleCd")).thenReturn(Optional.of(courseRequirementCodeEntity));
         when(courseRequirementRepository.save(courseRequirementEntity)).thenReturn(responseCourseRequirementEntity);
         var result = courseRequirementService.saveCourseRequirement(courseRequirement);
         assertThat(result).isNotNull();
@@ -393,7 +392,7 @@ public class CourseRequirementServiceTest {
         ruleDetails.setRequirementName("Test");
 
         when(courseRequirementRepository.findAll(any(Specification.class))).thenReturn(Arrays.asList(courseRequirementEntity));
-        when(courseService.getCourseDetails(eq("MAIN"), eq("12"))).thenReturn(course);
+        when(courseService.getCourseDetails("MAIN", "12")).thenReturn(course);
 
         ParameterizedTypeReference<List<GradRuleDetails>> responseType = new ParameterizedTypeReference<List<GradRuleDetails>>() {
         };
