@@ -247,8 +247,11 @@ public class CourseRequirementService {
 
     @Retry(name = "generalpostcall")
     public CourseRequirement saveCourseRequirement(CourseRequirement courseRequirement) {
+        String courseLevel;
         if (StringUtils.isBlank(courseRequirement.getCourseLevel())) {
-            courseRequirement.setCourseLevel(" ");
+            courseLevel = " ";
+        } else {
+            courseLevel = courseRequirement.getCourseLevel();
         }
 
         CourseRequirementEntity currentEntity = null;
@@ -260,7 +263,7 @@ public class CourseRequirementService {
         }
         if (currentEntity == null) {
             List<CourseRequirementEntity> list = courseRequirementRepository.findByCourseCodeAndCourseLevelAndRuleCode(
-                    courseRequirement.getCourseCode(), courseRequirement.getCourseLevel(), courseRequirement.getRuleCode().getCourseRequirementCode()
+                    courseRequirement.getCourseCode(), courseLevel, courseRequirement.getRuleCode().getCourseRequirementCode()
             );
             if (list != null && !list.isEmpty()) {
                 currentEntity = list.get(0);
