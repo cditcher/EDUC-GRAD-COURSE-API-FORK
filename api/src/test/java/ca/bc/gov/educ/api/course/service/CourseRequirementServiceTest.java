@@ -26,10 +26,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
 import java.sql.Date;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 import java.util.function.Consumer;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -110,7 +107,7 @@ public class CourseRequirementServiceTest {
         Page<CourseRequirementEntity> pagedResult = new PageImpl<>(Arrays.asList(courseRequirementEntity));
 
         when(courseRequirementRepository.findAll(any(Pageable.class))).thenReturn(pagedResult);
-        when(courseService.getCourseDetails(eq("MAIN"), eq("12"))).thenReturn(course);
+        when(courseService.getCourseDetails("MAIN", "12")).thenReturn(course);
 
         ParameterizedTypeReference<List<GradRuleDetails>> responseType = new ParameterizedTypeReference<List<GradRuleDetails>>() {
         };
@@ -166,7 +163,7 @@ public class CourseRequirementServiceTest {
 
         when(courseRequirementCodeRepository.findById(eq(ruleCodeValue))).thenReturn(Optional.of(courseRequirementCodeEntity));
         when(courseRequirementRepository.findByRuleCode(eq(courseRequirementCodeEntity), any(Pageable.class))).thenReturn(pagedResult);
-        when(courseService.getCourseDetails(eq("MAIN"), eq("12"))).thenReturn(course);
+        when(courseService.getCourseDetails("MAIN", "12")).thenReturn(course);
 
         var result = courseRequirementService.getAllCourseRequirementListByRule(ruleCodeValue, 1, 5);
 
@@ -214,7 +211,7 @@ public class CourseRequirementServiceTest {
         courseRequirementEntity.setCourseLevel("12");
         courseRequirementEntity.setRuleCode(courseRequirementCodeEntity);
 
-        when(courseRequirementRepository.findByCourseCodeAndCourseLevel(eq("MAIN"), eq("12"))).thenReturn(Arrays.asList(courseRequirementEntity));
+        when(courseRequirementRepository.findByCourseCodeAndCourseLevel("MAIN", "12")).thenReturn(Arrays.asList(courseRequirementEntity));
         var result = courseRequirementService.getCourseRequirements("MAIN", "12");
         assertThat(result).isNotNull();
         assertThat(result.getCourseRequirementList().size()).isEqualTo(1);
@@ -236,10 +233,113 @@ public class CourseRequirementServiceTest {
         courseRequirementEntity.setCourseLevel("12");
         courseRequirementEntity.setRuleCode(courseRequirementCodeEntity);
 
-        when(courseRequirementRepository.countByCourseCodeAndCourseLevelAndRuleCode(eq("MAIN"), eq("12"), eq("RuleCd"))).thenReturn(1L);
+        when(courseRequirementRepository.countByCourseCodeAndCourseLevelAndRuleCode("MAIN", "12", "RuleCd")).thenReturn(1L);
         var result = courseRequirementService.checkCourseRequirementExists("MAIN", "12", "RuleCd");
         assertThat(result).isNotNull();
         assertThat(result).isTrue();
+    }
+
+    @Test
+    public void testCheckCourseRequirementExistsByCourseAndLevelAndRule_whenCourseLevel_isBlank() {
+        CourseRequirementCodeEntity courseRequirementCodeEntity = new CourseRequirementCodeEntity();
+        courseRequirementCodeEntity.setCourseRequirementCode("RuleCd");
+        courseRequirementCodeEntity.setDescription("RuleCd Description");
+        courseRequirementCodeEntity.setEffectiveDate(new Date(System.currentTimeMillis() - 10000L));
+        courseRequirementCodeEntity.setExpiryDate(new Date(System.currentTimeMillis() + 10000L));
+
+        CourseRequirementEntity courseRequirementEntity = new CourseRequirementEntity();
+        courseRequirementEntity.setCourseRequirementId(UUID.randomUUID());
+        courseRequirementEntity.setCourseCode("MAIN");
+        courseRequirementEntity.setCourseLevel(" ");
+        courseRequirementEntity.setRuleCode(courseRequirementCodeEntity);
+
+        when(courseRequirementRepository.countByCourseCodeAndCourseLevelAndRuleCode("MAIN", " ", "RuleCd")).thenReturn(1L);
+        var result = courseRequirementService.checkCourseRequirementExists("MAIN", " ", "RuleCd");
+        assertThat(result).isTrue();
+    }
+
+    @Test
+    public void testSaveCourseRequirementExistsByCourseAndLevelAndRule() {
+        CourseRequirementCodeDTO courseRequirementCode = new CourseRequirementCodeDTO();
+        courseRequirementCode.setCourseRequirementCode("RuleCd");
+        courseRequirementCode.setDescription("RuleCd Description");
+        courseRequirementCode.setEffectiveDate(new Date(System.currentTimeMillis() - 10000L));
+        courseRequirementCode.setExpiryDate(new Date(System.currentTimeMillis() + 10000L));
+
+        CourseRequirementCodeEntity courseRequirementCodeEntity = new CourseRequirementCodeEntity();
+        courseRequirementCodeEntity.setCourseRequirementCode("RuleCd");
+        courseRequirementCodeEntity.setDescription("RuleCd Description");
+        courseRequirementCodeEntity.setEffectiveDate(new Date(System.currentTimeMillis() - 10000L));
+        courseRequirementCodeEntity.setExpiryDate(new Date(System.currentTimeMillis() + 10000L));
+
+        CourseRequirement courseRequirement = new CourseRequirement();
+        courseRequirement.setCourseCode("MAIN");
+        courseRequirement.setCourseLevel("12");
+        courseRequirement.setRuleCode(courseRequirementCode);
+
+        CourseRequirementEntity courseRequirementEntity = new CourseRequirementEntity();
+        courseRequirementEntity.setCourseRequirementId(UUID.randomUUID());
+        courseRequirementEntity.setCourseCode("MAIN");
+        courseRequirementEntity.setCourseLevel("12");
+        courseRequirementEntity.setRuleCode(courseRequirementCodeEntity);
+
+        CourseRequirementEntity responseCourseRequirementEntity = new CourseRequirementEntity();
+        responseCourseRequirementEntity.setCourseRequirementId(courseRequirementEntity.getCourseRequirementId());
+        responseCourseRequirementEntity.setCourseCode("MAIN");
+        responseCourseRequirementEntity.setCourseLevel("12");
+        responseCourseRequirementEntity.setRuleCode(courseRequirementCodeEntity);
+
+        when(courseRequirementRepository.findByCourseCodeAndCourseLevelAndRuleCode("MAIN", "12", "RuleCd")).thenReturn(Arrays.asList(courseRequirementEntity));
+        when(courseRequirementCodeRepository.findById("RuleCd")).thenReturn(Optional.of(courseRequirementCodeEntity));
+        when(courseRequirementRepository.save(courseRequirementEntity)).thenReturn(responseCourseRequirementEntity);
+        var result = courseRequirementService.saveCourseRequirement(courseRequirement);
+        assertThat(result).isNotNull();
+        assertThat(result.getCourseCode()).isEqualTo("MAIN");
+        assertThat(result.getCourseLevel()).isEqualTo("12");
+        assertThat(result.getRuleCode()).isNotNull();
+        assertThat(result.getRuleCode().getCourseRequirementCode()).isEqualTo("RuleCd");
+    }
+
+    @Test
+    public void testSaveCourseRequirementExistsByCourseAndLevelAndRule_whenCourseLevel_isBlank() {
+        CourseRequirementCodeDTO courseRequirementCode = new CourseRequirementCodeDTO();
+        courseRequirementCode.setCourseRequirementCode("RuleCd");
+        courseRequirementCode.setDescription("RuleCd Description");
+        courseRequirementCode.setEffectiveDate(new Date(System.currentTimeMillis() - 10000L));
+        courseRequirementCode.setExpiryDate(new Date(System.currentTimeMillis() + 10000L));
+
+        CourseRequirementCodeEntity courseRequirementCodeEntity = new CourseRequirementCodeEntity();
+        courseRequirementCodeEntity.setCourseRequirementCode("RuleCd");
+        courseRequirementCodeEntity.setDescription("RuleCd Description");
+        courseRequirementCodeEntity.setEffectiveDate(new Date(System.currentTimeMillis() - 10000L));
+        courseRequirementCodeEntity.setExpiryDate(new Date(System.currentTimeMillis() + 10000L));
+
+        CourseRequirement courseRequirement = new CourseRequirement();
+        courseRequirement.setCourseCode("MAIN");
+        courseRequirement.setCourseLevel(" ");
+        courseRequirement.setRuleCode(courseRequirementCode);
+
+        CourseRequirementEntity courseRequirementEntity = new CourseRequirementEntity();
+        courseRequirementEntity.setCourseRequirementId(UUID.randomUUID());
+        courseRequirementEntity.setCourseCode("MAIN");
+        courseRequirementEntity.setCourseLevel(" ");
+        courseRequirementEntity.setRuleCode(courseRequirementCodeEntity);
+
+        CourseRequirementEntity responseCourseRequirementEntity = new CourseRequirementEntity();
+        responseCourseRequirementEntity.setCourseRequirementId(courseRequirementEntity.getCourseRequirementId());
+        responseCourseRequirementEntity.setCourseCode("MAIN");
+        responseCourseRequirementEntity.setCourseLevel(" ");
+        responseCourseRequirementEntity.setRuleCode(courseRequirementCodeEntity);
+
+        when(courseRequirementRepository.findByCourseCodeAndCourseLevelAndRuleCode("MAIN", " ", "RuleCd")).thenReturn(Arrays.asList(courseRequirementEntity));
+        when(courseRequirementCodeRepository.findById("RuleCd")).thenReturn(Optional.of(courseRequirementCodeEntity));
+        when(courseRequirementRepository.save(courseRequirementEntity)).thenReturn(responseCourseRequirementEntity);
+        var result = courseRequirementService.saveCourseRequirement(courseRequirement);
+        assertThat(result).isNotNull();
+        assertThat(result.getCourseCode()).isEqualTo("MAIN");
+        assertThat(result.getCourseLevel()).isEmpty();
+        assertThat(result.getRuleCode()).isNotNull();
+        assertThat(result.getRuleCode().getCourseRequirementCode()).isEqualTo("RuleCd");
     }
 
     @Test
@@ -292,7 +392,7 @@ public class CourseRequirementServiceTest {
         ruleDetails.setRequirementName("Test");
 
         when(courseRequirementRepository.findAll(any(Specification.class))).thenReturn(Arrays.asList(courseRequirementEntity));
-        when(courseService.getCourseDetails(eq("MAIN"), eq("12"))).thenReturn(course);
+        when(courseService.getCourseDetails("MAIN", "12")).thenReturn(course);
 
         ParameterizedTypeReference<List<GradRuleDetails>> responseType = new ParameterizedTypeReference<List<GradRuleDetails>>() {
         };
