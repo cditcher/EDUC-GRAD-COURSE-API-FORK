@@ -24,7 +24,7 @@ env:
   APP_DOMAIN: ${{ secrets.APP_DOMAIN }}
   BRANCH: "main"
   TAG: "latest"
-  #GRAD2-1947 Resource OptimizationSS
+  #GRAD2-1947 Resource Optimization
   MIN_CPU: "20m"
   MAX_CPU: "120m"
   MIN_MEM: "200Mi"
@@ -42,10 +42,6 @@ jobs:
     # ubuntu-20.04 can also be used.
     runs-on: ubuntu-20.04
     environment: dev
-
-      #outputs:
-      #ROUTE: ${{ steps.deploy-and-expose.outputs.route }}
-    #SELECTOR: ${{ steps.deploy-and-expose.outputs.selector }}
 
     steps:
       - name: Check out repository
