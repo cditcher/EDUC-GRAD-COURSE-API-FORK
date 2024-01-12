@@ -24,7 +24,6 @@ env:
   APP_DOMAIN: ${{ vars.APP_DOMAIN }}
   BRANCH: "main"
   TAG: "latest"
-  #GRAD2-1947 Resource Optimization
   MIN_CPU: "20m"
   MAX_CPU: "120m"
   MIN_MEM: "200Mi"
@@ -39,7 +38,6 @@ on:
 jobs:
   openshift-ci-cd:
     name: Build and deploy to OpenShift DEV
-    # ubuntu-20.04 can also be used.
     runs-on: ubuntu-20.04
     environment: dev
 
