@@ -41,7 +41,7 @@ PARSER_CONFIG="
 ###########################################################
 echo Creating config map "$APP_NAME"-config-map
 oc create -n "$GRAD_NAMESPACE"-"$envValue" configmap "$APP_NAME"-config-map \
-  --from-literal=APP_LOG_LEVEL="INFO" \
+  --from-literal=APP_LOG_LEVEL="ERROR" \
   --from-literal=ENABLE_FLYWAY="true" \
   --from-literal=GRAD_PROGRAM_API="http://educ-grad-program-api.$GRAD_NAMESPACE-$envValue.svc.cluster.local:8080/" \
   --from-literal=MAX_RETRY_ATTEMPTS="3" \
