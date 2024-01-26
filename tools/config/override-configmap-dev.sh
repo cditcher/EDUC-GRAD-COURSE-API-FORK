@@ -31,15 +31,6 @@ FLB_CONFIG="[SERVICE]
    Name   stdout
    Match  absolutely_nothing_bud
    Log_Level    off
-[OUTPUT]
-   Name  splunk
-   Match *
-   Host  $SPLUNK_URL
-   Port  443
-   TLS         On
-   TLS.Verify  Off
-   Message_Key $APP_NAME
-   Splunk_Token $SPLUNK_TOKEN
 "
 PARSER_CONFIG="
 [PARSER]
@@ -47,16 +38,8 @@ PARSER_CONFIG="
     Format      json
 "
 ###########################################################
-#Setup for config-maps
+#Override config-maps in DEV
 ###########################################################
-echo Creating config map "$APP_NAME"-config-map
-oc create -n "$GRAD_NAMESPACE"-"$envValue" configmap "$APP_NAME"-config-map \
-  --from-literal=APP_LOG_LEVEL="$APP_LOG_LEVEL" \
-  --from-literal=ENABLE_FLYWAY="true" \
-  --from-literal=GRAD_PROGRAM_API="http://educ-grad-program-api.$GRAD_NAMESPACE-$envValue.svc.cluster.local:8080/" \
-  --from-literal=MAX_RETRY_ATTEMPTS="3" \
-  --dry-run=client -o yaml | oc apply -f -
-
 echo Creating config map "$APP_NAME"-flb-sc-config-map
 oc create -n "$GRAD_NAMESPACE"-"$envValue" configmap "$APP_NAME"-flb-sc-config-map \
   --from-literal=fluent-bit.conf="$FLB_CONFIG" \
