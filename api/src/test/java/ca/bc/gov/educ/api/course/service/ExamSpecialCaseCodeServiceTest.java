@@ -44,7 +44,7 @@ public class ExamSpecialCaseCodeServiceTest {
 		Mockito.when(examSpecialCaseCodeRepository.findAll()).thenReturn(examSpecialCaseCodes);
 		var result = examSpecialCaseCodeService.getExamSpecialCaseCodeList();
 		assertNotNull(result);
-		assertThat(result.isEmpty()).isFalse();
+		assertThat(result).isNotEmpty();
 	}
 	
 	@Test

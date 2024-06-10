@@ -10,7 +10,6 @@ import io.swagger.v3.oas.annotations.info.Info;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,8 +25,11 @@ import java.util.List;
         security = {@SecurityRequirement(name = "OAUTH2", scopes = {"READ_GRAD_STUDENT_COURSE_DATA"})})
 public class EquivalentOrChallengeCodeController {
 
-    @Autowired
-    EquivalentOrChallengeCodeService equivalentOrChallengeCodeService;
+    final EquivalentOrChallengeCodeService equivalentOrChallengeCodeService;
+
+    public EquivalentOrChallengeCodeController(EquivalentOrChallengeCodeService equivalentOrChallengeCodeService) {
+        this.equivalentOrChallengeCodeService = equivalentOrChallengeCodeService;
+    }
 
     @GetMapping(EducCourseApiConstants.EQUIVALENT_OR_CHALLENGE_CODES_MAPPING)
     @PreAuthorize(PermissionsConstants.READ_EQUIVALENT_OR_CHALLENGE_CODE)

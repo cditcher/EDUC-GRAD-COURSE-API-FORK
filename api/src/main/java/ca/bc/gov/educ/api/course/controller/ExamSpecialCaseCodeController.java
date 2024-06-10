@@ -10,7 +10,6 @@ import io.swagger.v3.oas.annotations.info.Info;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,8 +25,11 @@ import java.util.List;
         security = {@SecurityRequirement(name = "OAUTH2", scopes = {"READ_GRAD_STUDENT_COURSE_DATA"})})
 public class ExamSpecialCaseCodeController {
 
-    @Autowired
-    ExamSpecialCaseCodeService examSpecialCaseCodeService;
+    final ExamSpecialCaseCodeService examSpecialCaseCodeService;
+
+    public ExamSpecialCaseCodeController(ExamSpecialCaseCodeService examSpecialCaseCodeService) {
+        this.examSpecialCaseCodeService = examSpecialCaseCodeService;
+    }
 
     @GetMapping(EducCourseApiConstants.EXAM_SPECIAL_CASE_CODES_MAPPING)
     @PreAuthorize(PermissionsConstants.READ_EXAM_SPECIAL_CASE_CODE)

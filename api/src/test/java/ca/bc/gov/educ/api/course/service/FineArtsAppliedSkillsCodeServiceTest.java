@@ -44,7 +44,7 @@ public class FineArtsAppliedSkillsCodeServiceTest {
 		Mockito.when(fineArtsAppliedSkillsCodeRepository.findAll()).thenReturn(fineArtsAppliedSkillsCodes);
 		var result = fineArtsAppliedSkillsCodeService.getFineArtsAppliedSkillsCodeList();
 		assertNotNull(result);
-		assertThat(result.isEmpty()).isFalse();
+		assertThat(result).isNotEmpty();
 	}
 	
 	@Test

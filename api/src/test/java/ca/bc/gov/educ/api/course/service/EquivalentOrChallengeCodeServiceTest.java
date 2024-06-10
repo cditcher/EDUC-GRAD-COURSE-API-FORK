@@ -44,7 +44,7 @@ public class EquivalentOrChallengeCodeServiceTest {
 		Mockito.when(equivalentOrChallengeCodeRepository.findAll()).thenReturn(equivalentOrChallengeCodes);
 		var result = equivalentOrChallengeCodeService.getEquivalentOrChallengeCodeList();
 		assertNotNull(result);
-		assertThat(result.isEmpty()).isFalse();
+		assertThat(result).isNotEmpty();
 	}
 	
 	@Test
