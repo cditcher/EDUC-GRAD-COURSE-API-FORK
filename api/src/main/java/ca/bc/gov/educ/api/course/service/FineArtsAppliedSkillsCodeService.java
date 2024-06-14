@@ -2,6 +2,7 @@ package ca.bc.gov.educ.api.course.service;
 
 import ca.bc.gov.educ.api.course.exception.EntityNotFoundException;
 import ca.bc.gov.educ.api.course.model.dto.FineArtsAppliedSkillsCode;
+import ca.bc.gov.educ.api.course.model.entity.FineArtsAppliedSkillsCodeEntity;
 import ca.bc.gov.educ.api.course.model.transformer.FineArtsAppliedSkillsCodeTransformer;
 import ca.bc.gov.educ.api.course.repository.FineArtsAppliedSkillsCodeRepository;
 import io.github.resilience4j.retry.annotation.Retry;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class FineArtsAppliedSkillsCodeService {
@@ -41,8 +43,10 @@ public class FineArtsAppliedSkillsCodeService {
      */
 	@Retry(name = "generalgetcall")
     public FineArtsAppliedSkillsCode getFineArtsAppliedSkillsCode(String fineArtsAppliedSkillsCode) {
-		FineArtsAppliedSkillsCode result = fineArtsAppliedSkillsCodeTransformer.transformToDTO(fineArtsAppliedSkillsCodeRepository.findById(fineArtsAppliedSkillsCode));
-		if(result != null) return result;
+		Optional<FineArtsAppliedSkillsCodeEntity> entity = fineArtsAppliedSkillsCodeRepository.findById(fineArtsAppliedSkillsCode);
+		if(entity.isPresent()) {
+			return fineArtsAppliedSkillsCodeTransformer.transformToDTO(entity.get());
+		}
 		throw new EntityNotFoundException(String.format("Fine Art Applied Skills Code %s not found", fineArtsAppliedSkillsCode));
     }
     
