@@ -1,5 +1,6 @@
 package ca.bc.gov.educ.api.course.service;
 
+import ca.bc.gov.educ.api.course.exception.EntityNotFoundException;
 import ca.bc.gov.educ.api.course.model.dto.ExamSpecialCaseCode;
 import ca.bc.gov.educ.api.course.model.transformer.ExamSpecialCaseCodeTransformer;
 import ca.bc.gov.educ.api.course.repository.ExamSpecialCaseCodeRepository;
@@ -40,7 +41,9 @@ public class ExamSpecialCaseCodeService {
      */
 	@Retry(name = "generalgetcall")
     public ExamSpecialCaseCode getExamSpecialCaseCode(String examSpecialCaseCode) {
-		return examSpecialCaseCodeTransformer.transformToDTO(examSpecialCaseCodeRepository.findById(examSpecialCaseCode));
+		ExamSpecialCaseCode result = examSpecialCaseCodeTransformer.transformToDTO(examSpecialCaseCodeRepository.findById(examSpecialCaseCode));
+		if(result != null) return result;
+		throw new EntityNotFoundException(String.format("Exam Special Code %s not found", examSpecialCaseCode));
     }
     
     private List<ExamSpecialCaseCode> sort(List<ExamSpecialCaseCode> examSpecialCaseCodes) {

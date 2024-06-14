@@ -1,5 +1,6 @@
 package ca.bc.gov.educ.api.course.service;
 
+import ca.bc.gov.educ.api.course.exception.EntityNotFoundException;
 import ca.bc.gov.educ.api.course.model.dto.FineArtsAppliedSkillsCode;
 import ca.bc.gov.educ.api.course.model.transformer.FineArtsAppliedSkillsCodeTransformer;
 import ca.bc.gov.educ.api.course.repository.FineArtsAppliedSkillsCodeRepository;
@@ -40,7 +41,9 @@ public class FineArtsAppliedSkillsCodeService {
      */
 	@Retry(name = "generalgetcall")
     public FineArtsAppliedSkillsCode getFineArtsAppliedSkillsCode(String fineArtsAppliedSkillsCode) {
-		return fineArtsAppliedSkillsCodeTransformer.transformToDTO(fineArtsAppliedSkillsCodeRepository.findById(fineArtsAppliedSkillsCode));
+		FineArtsAppliedSkillsCode result = fineArtsAppliedSkillsCodeTransformer.transformToDTO(fineArtsAppliedSkillsCodeRepository.findById(fineArtsAppliedSkillsCode));
+		if(result != null) return result;
+		throw new EntityNotFoundException(String.format("Fine Art Applied Skills Code %s not found", fineArtsAppliedSkillsCode));
     }
     
     private List<FineArtsAppliedSkillsCode> sort(List<FineArtsAppliedSkillsCode> fineArtsAppliedSkillsCodes) {

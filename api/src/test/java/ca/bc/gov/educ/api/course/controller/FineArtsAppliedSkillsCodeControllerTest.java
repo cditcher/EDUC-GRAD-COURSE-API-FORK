@@ -10,13 +10,10 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.http.ResponseEntity;
 
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.junit.Assert.assertTrue;
 
 
 @RunWith(MockitoJUnitRunner.class)
@@ -59,12 +56,5 @@ public class FineArtsAppliedSkillsCodeControllerTest {
 		fineArtsAppliedSkillsCodeController.getFineArtsAppliedSkillsCode("fineArtsAppliedSkillsCode");
 		Mockito.verify(fineArtsAppliedSkillsCodeService).getFineArtsAppliedSkillsCode("fineArtsAppliedSkillsCode");
 	}
-	
-	@Test
-	public void testGetFineArtsAppliedSkillsCode_noContent() {
-		Mockito.when(fineArtsAppliedSkillsCodeService.getFineArtsAppliedSkillsCode("fineArtsAppliedSkillsCode")).thenReturn(null);
-		ResponseEntity<FineArtsAppliedSkillsCode> result = fineArtsAppliedSkillsCodeController.getFineArtsAppliedSkillsCode("fineArtsAppliedSkillsCode");
-		Mockito.verify(fineArtsAppliedSkillsCodeService).getFineArtsAppliedSkillsCode("fineArtsAppliedSkillsCode");
-		assertTrue(result.getStatusCode().is4xxClientError());
-	}
+
 }

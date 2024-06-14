@@ -1,5 +1,6 @@
 package ca.bc.gov.educ.api.course.service;
 
+import ca.bc.gov.educ.api.course.exception.EntityNotFoundException;
 import ca.bc.gov.educ.api.course.model.entity.FineArtsAppliedSkillsCodeEntity;
 import ca.bc.gov.educ.api.course.repository.FineArtsAppliedSkillsCodeRepository;
 import org.junit.Test;
@@ -18,7 +19,6 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -61,11 +61,10 @@ public class FineArtsAppliedSkillsCodeServiceTest {
 		var result = fineArtsAppliedSkillsCodeService.getFineArtsAppliedSkillsCode("fineArtsAppliedSkillsCode");
 		assertNotNull(result);
 	}
-	
-	@Test
+
+	@Test(expected= EntityNotFoundException.class)
 	public void testGetFineArtsAppliedSkillsCode_noContent() {
 		Mockito.when(fineArtsAppliedSkillsCodeRepository.findById("fineArtsAppliedSkillsCode")).thenReturn(Optional.empty());
-		var result = fineArtsAppliedSkillsCodeService.getFineArtsAppliedSkillsCode("fineArtsAppliedSkillsCode");
-		assertNull(result);
+		fineArtsAppliedSkillsCodeService.getFineArtsAppliedSkillsCode("fineArtsAppliedSkillsCode");
 	}
 }

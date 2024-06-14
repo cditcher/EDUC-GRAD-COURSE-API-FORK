@@ -1,5 +1,6 @@
 package ca.bc.gov.educ.api.course.service;
 
+import ca.bc.gov.educ.api.course.exception.EntityNotFoundException;
 import ca.bc.gov.educ.api.course.model.dto.EquivalentOrChallengeCode;
 import ca.bc.gov.educ.api.course.model.transformer.EquivalentOrChallengeCodeTransformer;
 import ca.bc.gov.educ.api.course.repository.EquivalentOrChallengeCodeRepository;
@@ -39,8 +40,10 @@ public class EquivalentOrChallengeCodeService {
      * @return EquivalentOrChallengeCode
      */
 	@Retry(name = "generalgetcall")
-    public EquivalentOrChallengeCode getEquivalentOrChallengeCode(String equivalentOrChallengeCode) {
-		return equivalentOrChallengeCodeTransformer.transformToDTO(equivalentOrChallengeCodeRepository.findById(equivalentOrChallengeCode));
+    public EquivalentOrChallengeCode getEquivalentOrChallengeCode(String equivalentOrChallengeCode) throws EntityNotFoundException  {
+		EquivalentOrChallengeCode result = equivalentOrChallengeCodeTransformer.transformToDTO(equivalentOrChallengeCodeRepository.findById(equivalentOrChallengeCode));
+		if(result != null) return result;
+		throw new EntityNotFoundException(String.format("Equivalent Or Challenge Code %s not found", equivalentOrChallengeCode));
     }
     
     private List<EquivalentOrChallengeCode> sort(List<EquivalentOrChallengeCode> equivalentOrChallengeCodes) {

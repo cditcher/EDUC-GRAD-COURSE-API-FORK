@@ -1,5 +1,10 @@
 package ca.bc.gov.educ.api.course.config;
 
+import ca.bc.gov.educ.api.course.exception.EntityNotFoundException;
+import ca.bc.gov.educ.api.course.exception.GradBusinessRuleException;
+import ca.bc.gov.educ.api.course.util.ApiResponseMessage.MessageTypeEnum;
+import ca.bc.gov.educ.api.course.util.ApiResponseModel;
+import ca.bc.gov.educ.api.course.util.GradValidation;
 import org.hibernate.dialect.lock.OptimisticEntityLockException;
 import org.hibernate.exception.ConstraintViolationException;
 import org.jboss.logging.Logger;
@@ -14,11 +19,6 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
-
-import ca.bc.gov.educ.api.course.util.ApiResponseMessage.MessageTypeEnum;
-import ca.bc.gov.educ.api.course.util.ApiResponseModel;
-import ca.bc.gov.educ.api.course.exception.GradBusinessRuleException;
-import ca.bc.gov.educ.api.course.util.GradValidation;
 
 @ControllerAdvice
 public class RestErrorHandler extends ResponseEntityExceptionHandler {
@@ -55,16 +55,17 @@ public class RestErrorHandler extends ResponseEntityExceptionHandler {
 		return new ResponseEntity<>(ApiResponseModel.ERROR(null, message), HttpStatus.FORBIDDEN);
 	}
 
-	@ExceptionHandler(value = { GradBusinessRuleException.class })
-	protected ResponseEntity<Object> handleIrisBusinessException(Exception ex, WebRequest request) {
-		ApiResponseModel<?> response = ApiResponseModel.ERROR(null);
+	@ExceptionHandler(value = { GradBusinessRuleException.class, EntityNotFoundException.class })
+	protected ResponseEntity<Object> handleGradBusinessException(Exception ex, WebRequest request) {
+		ApiResponseModel<?> response = ApiResponseModel.ERROR(request.toString());
 		validation.ifErrors(response::addErrorMessages);
 		validation.ifWarnings(response::addWarningMessages);
 		if (response.getMessages().isEmpty()) {
 			response.addMessageItem(ex.getLocalizedMessage(), MessageTypeEnum.ERROR);
 		}
 		validation.clear();
-		return new ResponseEntity<>(response, HttpStatus.UNPROCESSABLE_ENTITY);
+		HttpStatus httpStatus = (ex instanceof EntityNotFoundException) ? HttpStatus.NOT_FOUND : HttpStatus.UNPROCESSABLE_ENTITY;
+		return new ResponseEntity<>(response, httpStatus);
 	}
 
 	@ExceptionHandler(value = { OptimisticEntityLockException.class })
