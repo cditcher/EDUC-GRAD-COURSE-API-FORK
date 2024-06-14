@@ -21,12 +21,11 @@ public class FineArtsAppliedSkillsCodeTransformer {
     }
 
     public FineArtsAppliedSkillsCode transformToDTO ( Optional<FineArtsAppliedSkillsCodeEntity> fineArtsAppliedSkillsCode ) {
-        FineArtsAppliedSkillsCodeEntity cae = new FineArtsAppliedSkillsCodeEntity();
-
-        if (fineArtsAppliedSkillsCode.isPresent())
-            cae = fineArtsAppliedSkillsCode.get();
-
-        return modelMapper.map(cae, FineArtsAppliedSkillsCode.class);
+        if (fineArtsAppliedSkillsCode.isPresent()) {
+            FineArtsAppliedSkillsCodeEntity cae = fineArtsAppliedSkillsCode.get();
+            return modelMapper.map(cae, FineArtsAppliedSkillsCode.class);
+        }
+        return null;
     }
 
 	public List<FineArtsAppliedSkillsCode> transformToDTO (Iterable<FineArtsAppliedSkillsCodeEntity> fineArtsAppliedSkillsCodes ) {

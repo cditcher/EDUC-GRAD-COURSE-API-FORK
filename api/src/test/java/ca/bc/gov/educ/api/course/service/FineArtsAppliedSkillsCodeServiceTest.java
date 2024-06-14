@@ -18,6 +18,7 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -65,6 +66,6 @@ public class FineArtsAppliedSkillsCodeServiceTest {
 	public void testGetFineArtsAppliedSkillsCode_noContent() {
 		Mockito.when(fineArtsAppliedSkillsCodeRepository.findById("fineArtsAppliedSkillsCode")).thenReturn(Optional.empty());
 		var result = fineArtsAppliedSkillsCodeService.getFineArtsAppliedSkillsCode("fineArtsAppliedSkillsCode");
-		assertNotNull(result);
+		assertNull(result);
 	}
 }

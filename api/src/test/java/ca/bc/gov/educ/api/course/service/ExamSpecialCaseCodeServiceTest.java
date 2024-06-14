@@ -18,6 +18,7 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -65,6 +66,6 @@ public class ExamSpecialCaseCodeServiceTest {
 	public void testGetExamSpecialCaseCode_noContent() {
 		Mockito.when(examSpecialCaseCodeRepository.findById("examSpecialCaseCode")).thenReturn(Optional.empty());
 		var result = examSpecialCaseCodeService.getExamSpecialCaseCode("examSpecialCaseCode");
-		assertNotNull(result);
+		assertNull(result);
 	}
 }

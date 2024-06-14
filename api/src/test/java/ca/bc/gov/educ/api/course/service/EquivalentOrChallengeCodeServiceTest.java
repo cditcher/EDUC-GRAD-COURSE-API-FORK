@@ -18,6 +18,7 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -65,6 +66,6 @@ public class EquivalentOrChallengeCodeServiceTest {
 	public void testGetEquivalentOrChallengeCode_noContent() {
 		Mockito.when(equivalentOrChallengeCodeRepository.findById("equivalentOrChallengeCode")).thenReturn(Optional.empty());
 		var result = equivalentOrChallengeCodeService.getEquivalentOrChallengeCode("equivalentOrChallengeCode");
-		assertNotNull(result);
+		assertNull(result);
 	}
 }

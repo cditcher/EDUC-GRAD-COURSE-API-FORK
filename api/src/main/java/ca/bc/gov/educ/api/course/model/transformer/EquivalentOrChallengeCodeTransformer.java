@@ -21,12 +21,11 @@ public class EquivalentOrChallengeCodeTransformer {
     }
 
     public EquivalentOrChallengeCode transformToDTO ( Optional<EquivalentOrChallengeCodeEntity> equivalentOrChallengeCode ) {
-        EquivalentOrChallengeCodeEntity cae = new EquivalentOrChallengeCodeEntity();
-
-        if (equivalentOrChallengeCode.isPresent())
-            cae = equivalentOrChallengeCode.get();
-
-        return modelMapper.map(cae, EquivalentOrChallengeCode.class);
+        if (equivalentOrChallengeCode.isPresent()) {
+            EquivalentOrChallengeCodeEntity cae = equivalentOrChallengeCode.get();
+            return modelMapper.map(cae, EquivalentOrChallengeCode.class);
+        }
+        return null;
     }
 
 	public List<EquivalentOrChallengeCode> transformToDTO (Iterable<EquivalentOrChallengeCodeEntity> EquivalentOrChallengeCodeEntities ) {
