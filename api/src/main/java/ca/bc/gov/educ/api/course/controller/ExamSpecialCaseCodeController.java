@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.info.Info;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -44,6 +45,11 @@ public class ExamSpecialCaseCodeController {
     @Operation(summary = "Find Exam Special Case Code", description = "Find Exam Special Case Code", tags = {"Exam Special Case Code"})
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "OK"), @ApiResponse(responseCode = "404", description = "NOT FOUND")})
     public ResponseEntity<ExamSpecialCaseCode> getExamSpecialCaseCode(@PathVariable String examSpecialCaseCode) {
-        return ResponseEntity.ok().body(examSpecialCaseCodeService.getExamSpecialCaseCode(examSpecialCaseCode));
+        ExamSpecialCaseCode result = examSpecialCaseCodeService.getExamSpecialCaseCode(examSpecialCaseCode);
+        if(result != null) {
+            return ResponseEntity.ok().body(result);
+        } else {
+            return ResponseEntity.status(HttpStatusCode.valueOf(404)).body(null);
+        }
     }
 }

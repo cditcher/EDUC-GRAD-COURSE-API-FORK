@@ -10,10 +10,13 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.ResponseEntity;
 
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.junit.Assert.assertTrue;
 
 
 @RunWith(MockitoJUnitRunner.class)
@@ -60,7 +63,8 @@ public class ExamSpecialCaseCodeControllerTest {
 	@Test
 	public void testGetExamSpecialCaseCode_noContent() {
 		Mockito.when(examSpecialCaseCodeService.getExamSpecialCaseCode("examSpecialCaseCode")).thenReturn(null);
-		examSpecialCaseCodeController.getExamSpecialCaseCode("examSpecialCaseCode");
+		ResponseEntity<ExamSpecialCaseCode> result = examSpecialCaseCodeController.getExamSpecialCaseCode("examSpecialCaseCode");
 		Mockito.verify(examSpecialCaseCodeService).getExamSpecialCaseCode("examSpecialCaseCode");
+		assertTrue(result.getStatusCode().is4xxClientError());
 	}
 }

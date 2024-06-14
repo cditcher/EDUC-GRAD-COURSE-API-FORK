@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 
 @RunWith(MockitoJUnitRunner.class)
@@ -62,7 +63,8 @@ public class EquivalentOrChallengeCodeControllerTest {
 	@Test
 	public void testGetEquivalentOrChallengeCode_noContent() {
 		Mockito.when(equivalentOrChallengeCodeService.getEquivalentOrChallengeCode("equivalentOrChallengeCode")).thenReturn(null);
-		equivalentOrChallengeCodeController.getEquivalentOrChallengeCode("equivalentOrChallengeCode");
+		ResponseEntity<EquivalentOrChallengeCode> result = equivalentOrChallengeCodeController.getEquivalentOrChallengeCode("equivalentOrChallengeCode");
 		Mockito.verify(equivalentOrChallengeCodeService).getEquivalentOrChallengeCode("equivalentOrChallengeCode");
+		assertTrue(result.getStatusCode().is4xxClientError());
 	}
 }

@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.info.Info;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -44,6 +45,11 @@ public class FineArtsAppliedSkillsCodeController {
     @Operation(summary = "Find Fine Arts Applied Skills Code", description = "Find Fine Arts Applied Skills Code", tags = {"Fine Arts Applied Skills Code"})
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "OK"), @ApiResponse(responseCode = "404", description = "NOT FOUND")})
     public ResponseEntity<FineArtsAppliedSkillsCode> getFineArtsAppliedSkillsCode(@PathVariable String fineArtsAppliedSkillsCode) {
-        return ResponseEntity.ok().body(fineArtsAppliedSkillsCodeService.getFineArtsAppliedSkillsCode(fineArtsAppliedSkillsCode));
+        FineArtsAppliedSkillsCode result = fineArtsAppliedSkillsCodeService.getFineArtsAppliedSkillsCode(fineArtsAppliedSkillsCode);
+        if(result != null) {
+            return ResponseEntity.ok().body(result);
+        } else {
+            return ResponseEntity.status(HttpStatusCode.valueOf(404)).body(null);
+        }
     }
 }
