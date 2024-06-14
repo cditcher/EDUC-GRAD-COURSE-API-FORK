@@ -1,5 +1,6 @@
 package ca.bc.gov.educ.api.course.service;
 
+import ca.bc.gov.educ.api.course.exception.EntityNotFoundException;
 import ca.bc.gov.educ.api.course.model.entity.ExamSpecialCaseCodeEntity;
 import ca.bc.gov.educ.api.course.repository.ExamSpecialCaseCodeRepository;
 import org.junit.Test;
@@ -60,11 +61,10 @@ public class ExamSpecialCaseCodeServiceTest {
 		var result = examSpecialCaseCodeService.getExamSpecialCaseCode("examSpecialCaseCode");
 		assertNotNull(result);
 	}
-	
-	@Test
+
+	@Test(expected= EntityNotFoundException.class)
 	public void testGetExamSpecialCaseCode_noContent() {
 		Mockito.when(examSpecialCaseCodeRepository.findById("examSpecialCaseCode")).thenReturn(Optional.empty());
-		var result = examSpecialCaseCodeService.getExamSpecialCaseCode("examSpecialCaseCode");
-		assertNotNull(result);
+		examSpecialCaseCodeService.getExamSpecialCaseCode("examSpecialCaseCode");
 	}
 }

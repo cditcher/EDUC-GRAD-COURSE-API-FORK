@@ -56,11 +56,5 @@ public class FineArtsAppliedSkillsCodeControllerTest {
 		fineArtsAppliedSkillsCodeController.getFineArtsAppliedSkillsCode("fineArtsAppliedSkillsCode");
 		Mockito.verify(fineArtsAppliedSkillsCodeService).getFineArtsAppliedSkillsCode("fineArtsAppliedSkillsCode");
 	}
-	
-	@Test
-	public void testGetFineArtsAppliedSkillsCode_noContent() {
-		Mockito.when(fineArtsAppliedSkillsCodeService.getFineArtsAppliedSkillsCode("fineArtsAppliedSkillsCode")).thenReturn(null);
-		fineArtsAppliedSkillsCodeController.getFineArtsAppliedSkillsCode("fineArtsAppliedSkillsCode");
-		Mockito.verify(fineArtsAppliedSkillsCodeService).getFineArtsAppliedSkillsCode("fineArtsAppliedSkillsCode");
-	}
+
 }

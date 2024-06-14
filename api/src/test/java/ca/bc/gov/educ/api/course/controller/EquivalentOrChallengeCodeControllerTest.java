@@ -58,11 +58,4 @@ public class EquivalentOrChallengeCodeControllerTest {
 		equivalentOrChallengeCodeController.getEquivalentOrChallengeCode("equivalentOrChallengeCode");
 		Mockito.verify(equivalentOrChallengeCodeService).getEquivalentOrChallengeCode("equivalentOrChallengeCode");
 	}
-	
-	@Test
-	public void testGetEquivalentOrChallengeCode_noContent() {
-		Mockito.when(equivalentOrChallengeCodeService.getEquivalentOrChallengeCode("equivalentOrChallengeCode")).thenReturn(null);
-		equivalentOrChallengeCodeController.getEquivalentOrChallengeCode("equivalentOrChallengeCode");
-		Mockito.verify(equivalentOrChallengeCodeService).getEquivalentOrChallengeCode("equivalentOrChallengeCode");
-	}
 }

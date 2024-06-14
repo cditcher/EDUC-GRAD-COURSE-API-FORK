@@ -56,11 +56,4 @@ public class ExamSpecialCaseCodeControllerTest {
 		examSpecialCaseCodeController.getExamSpecialCaseCode("examSpecialCaseCode");
 		Mockito.verify(examSpecialCaseCodeService).getExamSpecialCaseCode("examSpecialCaseCode");
 	}
-	
-	@Test
-	public void testGetExamSpecialCaseCode_noContent() {
-		Mockito.when(examSpecialCaseCodeService.getExamSpecialCaseCode("examSpecialCaseCode")).thenReturn(null);
-		examSpecialCaseCodeController.getExamSpecialCaseCode("examSpecialCaseCode");
-		Mockito.verify(examSpecialCaseCodeService).getExamSpecialCaseCode("examSpecialCaseCode");
-	}
 }

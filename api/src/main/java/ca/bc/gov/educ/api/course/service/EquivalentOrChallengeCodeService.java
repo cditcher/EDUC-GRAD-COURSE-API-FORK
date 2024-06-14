@@ -1,6 +1,8 @@
 package ca.bc.gov.educ.api.course.service;
 
+import ca.bc.gov.educ.api.course.exception.EntityNotFoundException;
 import ca.bc.gov.educ.api.course.model.dto.EquivalentOrChallengeCode;
+import ca.bc.gov.educ.api.course.model.entity.EquivalentOrChallengeCodeEntity;
 import ca.bc.gov.educ.api.course.model.transformer.EquivalentOrChallengeCodeTransformer;
 import ca.bc.gov.educ.api.course.repository.EquivalentOrChallengeCodeRepository;
 import io.github.resilience4j.retry.annotation.Retry;
@@ -9,6 +11,7 @@ import org.springframework.stereotype.Service;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class EquivalentOrChallengeCodeService {
@@ -39,8 +42,12 @@ public class EquivalentOrChallengeCodeService {
      * @return EquivalentOrChallengeCode
      */
 	@Retry(name = "generalgetcall")
-    public EquivalentOrChallengeCode getEquivalentOrChallengeCode(String equivalentOrChallengeCode) {
-		return equivalentOrChallengeCodeTransformer.transformToDTO(equivalentOrChallengeCodeRepository.findById(equivalentOrChallengeCode));
+    public EquivalentOrChallengeCode getEquivalentOrChallengeCode(String equivalentOrChallengeCode) throws EntityNotFoundException  {
+		Optional<EquivalentOrChallengeCodeEntity> entity = equivalentOrChallengeCodeRepository.findById(equivalentOrChallengeCode);
+		if(entity.isPresent()) {
+			return equivalentOrChallengeCodeTransformer.transformToDTO(entity.get());
+		}
+		throw new EntityNotFoundException(String.format("Equivalent Or Challenge Code %s not found", equivalentOrChallengeCode));
     }
     
     private List<EquivalentOrChallengeCode> sort(List<EquivalentOrChallengeCode> equivalentOrChallengeCodes) {

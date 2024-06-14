@@ -21,12 +21,11 @@ public class ExamSpecialCaseCodeTransformer {
     }
 
     public ExamSpecialCaseCode transformToDTO ( Optional<ExamSpecialCaseCodeEntity> examSpecialCaseCodeEntity ) {
-        ExamSpecialCaseCodeEntity cae = new ExamSpecialCaseCodeEntity();
-
-        if (examSpecialCaseCodeEntity.isPresent())
-            cae = examSpecialCaseCodeEntity.get();
-
-        return modelMapper.map(cae, ExamSpecialCaseCode.class);
+        if (examSpecialCaseCodeEntity.isPresent()) {
+            ExamSpecialCaseCodeEntity cae = examSpecialCaseCodeEntity.get();
+            return modelMapper.map(cae, ExamSpecialCaseCode.class);
+        }
+        return null;
     }
 
 	public List<ExamSpecialCaseCode> transformToDTO (Iterable<ExamSpecialCaseCodeEntity> ExamSpecialCaseCodeEntities ) {

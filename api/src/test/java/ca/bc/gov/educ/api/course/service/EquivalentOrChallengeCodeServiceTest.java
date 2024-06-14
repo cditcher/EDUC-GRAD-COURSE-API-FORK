@@ -1,5 +1,6 @@
 package ca.bc.gov.educ.api.course.service;
 
+import ca.bc.gov.educ.api.course.exception.EntityNotFoundException;
 import ca.bc.gov.educ.api.course.model.entity.EquivalentOrChallengeCodeEntity;
 import ca.bc.gov.educ.api.course.repository.EquivalentOrChallengeCodeRepository;
 import org.junit.Test;
@@ -61,10 +62,9 @@ public class EquivalentOrChallengeCodeServiceTest {
 		assertNotNull(result);
 	}
 	
-	@Test
+	@Test(expected=EntityNotFoundException.class)
 	public void testGetEquivalentOrChallengeCode_noContent() {
 		Mockito.when(equivalentOrChallengeCodeRepository.findById("equivalentOrChallengeCode")).thenReturn(Optional.empty());
-		var result = equivalentOrChallengeCodeService.getEquivalentOrChallengeCode("equivalentOrChallengeCode");
-		assertNotNull(result);
+		equivalentOrChallengeCodeService.getEquivalentOrChallengeCode("equivalentOrChallengeCode");
 	}
 }
