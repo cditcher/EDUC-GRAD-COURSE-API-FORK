@@ -6,7 +6,7 @@
 
     <groupId>ca.bc.gov.educ</groupId>
 	<artifactId>educ-grad-course-api</artifactId>
-	<version>1.8.41</version>
+	<version>1.8.42</version>
 	<name>educ-grad-course-api</name>
 	<description>Ministry of Education GRAD Course API</description>
 
@@ -50,6 +50,12 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-undertow</artifactId>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.hibernate.validator/hibernate-validator -->
+        <dependency>
+            <groupId>org.hibernate.validator</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <version>8.0.0.Final</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>

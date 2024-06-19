@@ -55,6 +55,13 @@ public class EducCourseApiConstants {
     public static final String CHECK_FRENCH_IMMERSION_COURSE_FOR_EN_BY_PEN_AND_LEVEL_MAPPING = "/check-french-immersion-course-for-en";
     public static final String CHECK_BLANK_LANGUAGE_COURSE_BY_CODE_AND_LEVEL_MAPPING = "/check-blank-language-course";
     public static final String CHECK_FRENCH_LANGUAGE_COURSE_BY_CODE_AND_LEVEL_MAPPING = "/check-french-language-course";
+    public static final String EQUIVALENT_OR_CHALLENGE_CODES_MAPPING = "/equivalentOrChallengeCodes";
+    public static final String EQUIVALENT_OR_CHALLENGE_CODE_MAPPING = "/equivalentOrChallengeCodes/{equivalentOrChallengeCode}";
+    public static final String EXAM_SPECIAL_CASE_CODES_MAPPING = "/examSpecialCaseCodes";
+    public static final String EXAM_SPECIAL_CASE_CODE_MAPPING = "/examSpecialCaseCodes/{examSpecialCaseCode}";
+    public static final String FINE_ART_APPLIED_SKILLS_CODES_MAPPING = "/fineArtsAppliedSkillsCodes";
+    public static final String FINE_ART_APPLIED_SKILLS_CODE_MAPPING = "/fineArtsAppliedSkillsCodes/{fineArtsAppliedSkillsCode}";
+
 
     public static final String GET_COURSE_ALGORITHM_DATA_BY_PEN_MAPPING = "/pen/{pen}";
 
