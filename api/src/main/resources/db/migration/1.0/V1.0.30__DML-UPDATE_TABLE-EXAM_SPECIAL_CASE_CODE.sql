@@ -4,7 +4,7 @@ SET LABEL='Aegrotat', DESCRIPTION='Aegrotat Standing. The student has been grant
 WHERE EXAM_SPECIAL_CASE_CODE='A';
 
 UPDATE EXAM_SPECIAL_CASE_CODE
-SET LABEL='Bogus', DESCRIPTION='When the school reported the same school percentage in more than one session, but the student did not retake the course.For example, if a school reported 65% for both January and April for a given examinable course, TRAX would recognize a duplication, considered the second superfluous and mark that record’s classroom mark with a B.The B course would be ignored for mixing and matching. ',
+SET LABEL='Bogus', DESCRIPTION='When the school reported the same school percentage in more than one session, but the student did not retake the course. For example, if a school reported 65% for both January and April for a given examinable course, TRAX would recognize a duplication, considered the second superfluous and mark that record’s classroom mark with a B. The B course would be ignored for mixing and matching. ',
     EFFECTIVE_DATE=TO_DATE('1984-07-01', 'YYYY-MM-DD'), EXPIRY_DATE=TO_DATE('2020-06-30', 'YYYY-MM-DD'), UPDATE_USER='API_COURSE' , UPDATE_DATE=SYSTIMESTAMP
 WHERE EXAM_SPECIAL_CASE_CODE='B';
 
