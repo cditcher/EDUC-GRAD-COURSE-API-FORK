@@ -119,6 +119,11 @@ endpoint:
   grad-program-api:
     rule-detail:
       url : ${GRAD_PROGRAM_API}api/v1/program/programrules/%s
+  coreg-api:
+    course-info-by-id:
+      url: ${EDX_COREG_API}api/v1/course/information/%s
+    course-info-by-external-code:
+      url: ${EDX_COREG_API}api/v1/course/information/external/%s
 
 #Splunk LogHelper
 splunk:

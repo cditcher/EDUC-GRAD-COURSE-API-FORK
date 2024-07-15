@@ -16,24 +16,24 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import ca.bc.gov.educ.api.course.model.dto.Course;
-import ca.bc.gov.educ.api.course.model.dto.StudentExam;
-import ca.bc.gov.educ.api.course.model.entity.StudentExamEntity;
-import ca.bc.gov.educ.api.course.model.entity.StudentExamId;
-import ca.bc.gov.educ.api.course.repository.StudentExamRepository;
+import ca.bc.gov.educ.api.course.model.dto.TraxStudentExam;
+import ca.bc.gov.educ.api.course.model.entity.TraxStudentExamEntity;
+import ca.bc.gov.educ.api.course.model.entity.TraxStudentExamId;
+import ca.bc.gov.educ.api.course.repository.TraxStudentExamRepository;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @ActiveProfiles("test")
-public class StudentExamServiceTest {
+public class TraxTraxStudentExamServiceTest {
 
     @Autowired
-    StudentExamService studentExamService;
+    TraxStudentExamService traxStudentExamService;
 
     @MockBean
     private CourseService courseService;
 
     @MockBean
-    private StudentExamRepository studentExamRepo;
+    private TraxStudentExamRepository studentExamRepo;
 
     @MockBean
     WebClient webClient;
@@ -52,14 +52,14 @@ public class StudentExamServiceTest {
     @Test
     public void testGetStudentExamList_whenGivenCourseCodeAndLevelWithRelatedCourse_thenReturnSuccess() {
         // ID
-        StudentExamId studentExamId = new StudentExamId();
-        studentExamId.setPen("123456789");
-        studentExamId.setCourseCode("main");
-        studentExamId.setCourseLevel("12");
-        studentExamId.setSessionDate("2020-05");
+        TraxStudentExamId traxStudentExamId = new TraxStudentExamId();
+        traxStudentExamId.setPen("123456789");
+        traxStudentExamId.setCourseCode("main");
+        traxStudentExamId.setCourseLevel("12");
+        traxStudentExamId.setSessionDate("2020-05");
 
-        StudentExamEntity studentExamEntity = new StudentExamEntity();
-        studentExamEntity.setCourseKey(studentExamId);
+        TraxStudentExamEntity traxStudentExamEntity = new TraxStudentExamEntity();
+        traxStudentExamEntity.setCourseKey(traxStudentExamId);
 
         Course course = new Course();
         course.setCourseCode("main");
@@ -69,27 +69,27 @@ public class StudentExamServiceTest {
         course.setLanguage("en");
         course.setWorkExpFlag("Y");
 
-        when(studentExamRepo.findByPen(studentExamId.getPen())).thenReturn(Arrays.asList(studentExamEntity));
+        when(studentExamRepo.findByPen(traxStudentExamId.getPen())).thenReturn(Arrays.asList(traxStudentExamEntity));
         when(courseService.getCourseDetails(course.getCourseCode(), course.getCourseLevel())).thenReturn(course);
 
-        var result = studentExamService.getStudentExamList(studentExamId.getPen(), true);
+        var result = traxStudentExamService.getStudentExamList(traxStudentExamId.getPen(), true);
         assertThat(result).isNotNull();
         assertThat(result.isEmpty()).isFalse();
-        StudentExam responseStudentExam = result.get(0);
-        assertThat(responseStudentExam.getCourseCode()).isEqualTo(course.getCourseCode());
+        TraxStudentExam responseTraxStudentExam = result.get(0);
+        assertThat(responseTraxStudentExam.getCourseCode()).isEqualTo(course.getCourseCode());
     }
 
     @Test
     public void testGetStudentExamList_whenGivenCourseCodeWithoutRelatedCourse_thenReturnSuccess() {
         // ID
-    	StudentExamId studentExamId = new StudentExamId();
-        studentExamId.setPen("123456789");
-        studentExamId.setCourseCode("main");
-        studentExamId.setCourseLevel("");
-        studentExamId.setSessionDate("2020-05");
+    	TraxStudentExamId traxStudentExamId = new TraxStudentExamId();
+        traxStudentExamId.setPen("123456789");
+        traxStudentExamId.setCourseCode("main");
+        traxStudentExamId.setCourseLevel("");
+        traxStudentExamId.setSessionDate("2020-05");
 
-        StudentExamEntity studentExamEntity = new StudentExamEntity();
-        studentExamEntity.setCourseKey(studentExamId);
+        TraxStudentExamEntity traxStudentExamEntity = new TraxStudentExamEntity();
+        traxStudentExamEntity.setCourseKey(traxStudentExamId);
 
         Course course = new Course();
         course.setCourseCode("main");
@@ -99,27 +99,27 @@ public class StudentExamServiceTest {
         course.setLanguage("en");
         course.setWorkExpFlag("Y");
 
-        when(studentExamRepo.findByPen(studentExamId.getPen())).thenReturn(Arrays.asList(studentExamEntity));
+        when(studentExamRepo.findByPen(traxStudentExamId.getPen())).thenReturn(Arrays.asList(traxStudentExamEntity));
         when(courseService.getCourseDetails(course.getCourseCode(), " ")).thenReturn(course);
 
-        var result = studentExamService.getStudentExamList(studentExamId.getPen(), true);
+        var result = traxStudentExamService.getStudentExamList(traxStudentExamId.getPen(), true);
         assertThat(result).isNotNull();
         assertThat(result.isEmpty()).isFalse();
-        StudentExam responseStudentExam = result.get(0);
-        assertThat(responseStudentExam.getCourseCode()).isEqualTo(course.getCourseCode());
+        TraxStudentExam responseTraxStudentExam = result.get(0);
+        assertThat(responseTraxStudentExam.getCourseCode()).isEqualTo(course.getCourseCode());
     }
 
     @Test
     public void testGetStudentExamList_whenGivenCourseCodeAndLevel_withsortforuifalse_thenReturnSuccess() {
         // ID
-    	StudentExamId studentExamId = new StudentExamId();
-        studentExamId.setPen("123456789");
-        studentExamId.setCourseCode("main");
-        studentExamId.setCourseLevel("12");
-        studentExamId.setSessionDate("2020-05");
+    	TraxStudentExamId traxStudentExamId = new TraxStudentExamId();
+        traxStudentExamId.setPen("123456789");
+        traxStudentExamId.setCourseCode("main");
+        traxStudentExamId.setCourseLevel("12");
+        traxStudentExamId.setSessionDate("2020-05");
 
-        StudentExamEntity studentExamEntity = new StudentExamEntity();
-        studentExamEntity.setCourseKey(studentExamId);
+        TraxStudentExamEntity traxStudentExamEntity = new TraxStudentExamEntity();
+        traxStudentExamEntity.setCourseKey(traxStudentExamId);
 
         Course course = new Course();
         course.setCourseCode("main");
@@ -129,13 +129,13 @@ public class StudentExamServiceTest {
         course.setLanguage("en");
         course.setWorkExpFlag("Y");
 
-        when(studentExamRepo.findByPen(studentExamId.getPen())).thenReturn(Arrays.asList(studentExamEntity));
+        when(studentExamRepo.findByPen(traxStudentExamId.getPen())).thenReturn(Arrays.asList(traxStudentExamEntity));
         when(courseService.getCourseDetails(course.getCourseCode(), course.getCourseLevel())).thenReturn(course);
 
-        var result = studentExamService.getStudentExamList(studentExamId.getPen(), false);
+        var result = traxStudentExamService.getStudentExamList(traxStudentExamId.getPen(), false);
         assertThat(result).isNotNull();
         assertThat(result.isEmpty()).isFalse();
-        StudentExam responseStudentExam = result.get(0);
-        assertThat(responseStudentExam.getCourseCode()).isEqualTo(course.getCourseCode());
+        TraxStudentExam responseTraxStudentExam = result.get(0);
+        assertThat(responseTraxStudentExam.getCourseCode()).isEqualTo(course.getCourseCode());
     }
 }

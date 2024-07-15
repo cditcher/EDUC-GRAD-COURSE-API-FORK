@@ -56,18 +56,18 @@ public class CourseRequirementServiceTest {
     private CourseService courseService;
 
     @MockBean
-    private WebClient webClient;
+    private RESTService restService;
 
-    @Mock
-    private WebClient.RequestHeadersSpec requestHeadersMock;
-    @Mock
-    private WebClient.RequestHeadersUriSpec requestHeadersUriMock;
-    @Mock
-    private WebClient.RequestBodySpec requestBodyMock;
-    @Mock
-    private WebClient.RequestBodyUriSpec requestBodyUriMock;
-    @Mock
-    private WebClient.ResponseSpec responseMock;
+//    @Mock
+//    private WebClient.RequestHeadersSpec requestHeadersMock;
+//    @Mock
+//    private WebClient.RequestHeadersUriSpec requestHeadersUriMock;
+//    @Mock
+//    private WebClient.RequestBodySpec requestBodyMock;
+//    @Mock
+//    private WebClient.RequestBodyUriSpec requestBodyUriMock;
+//    @Mock
+//    private WebClient.ResponseSpec responseMock;
 
     @Before
     public void setUp() {
@@ -112,15 +112,17 @@ public class CourseRequirementServiceTest {
         ParameterizedTypeReference<List<GradRuleDetails>> responseType = new ParameterizedTypeReference<List<GradRuleDetails>>() {
         };
 
-        when(this.webClient.get()).thenReturn(this.requestHeadersUriMock);
-        when(this.requestHeadersUriMock.uri(String.format(constants.getRuleDetailProgramManagementApiUrl(), courseRequirementEntity.getRuleCode().getCourseRequirementCode()))).thenReturn(this.requestHeadersMock);
-        when(this.requestHeadersMock.headers(any(Consumer.class))).thenReturn(this.requestHeadersMock);
-        when(this.requestHeadersMock.retrieve()).thenReturn(this.responseMock);
-        when(this.responseMock.bodyToMono(responseType)).thenReturn(Mono.just(Arrays.asList(ruleDetails)));
+        when(restService.get(String.format(constants.getRuleDetailProgramManagementApiUrl(), courseRequirementEntity.getRuleCode().getCourseRequirementCode()), List.class, "accessToken")).thenReturn(Arrays.asList(ruleDetails));
+
+//        when(this.webClient.get()).thenReturn(this.requestHeadersUriMock);
+//        when(this.requestHeadersUriMock.uri(String.format(constants.getRuleDetailProgramManagementApiUrl(), courseRequirementEntity.getRuleCode().getCourseRequirementCode()))).thenReturn(this.requestHeadersMock);
+//        when(this.requestHeadersMock.headers(any(Consumer.class))).thenReturn(this.requestHeadersMock);
+//        when(this.requestHeadersMock.retrieve()).thenReturn(this.responseMock);
+//        when(this.responseMock.bodyToMono(responseType)).thenReturn(Mono.just(Arrays.asList(ruleDetails)));
 
         var result = courseRequirementService.getAllCourseRequirementList(1,5, "accessToken");
         assertThat(result).isNotNull();
-        assertThat(result.size()).isEqualTo(1);
+        assertThat(result).hasSize(1);
         AllCourseRequirements allCourseRequirements = result.get(0);
         assertThat(allCourseRequirements.getCourseName()).isEqualTo(course.getCourseName());
         assertThat(allCourseRequirements.getRequirementName()).isEqualTo(ruleDetails.getRequirementName());
@@ -393,15 +395,7 @@ public class CourseRequirementServiceTest {
 
         when(courseRequirementRepository.findAll(any(Specification.class))).thenReturn(Arrays.asList(courseRequirementEntity));
         when(courseService.getCourseDetails("MAIN", "12")).thenReturn(course);
-
-        ParameterizedTypeReference<List<GradRuleDetails>> responseType = new ParameterizedTypeReference<List<GradRuleDetails>>() {
-        };
-
-        when(this.webClient.get()).thenReturn(this.requestHeadersUriMock);
-        when(this.requestHeadersUriMock.uri(String.format(constants.getRuleDetailProgramManagementApiUrl(), courseRequirementEntity.getRuleCode().getCourseRequirementCode()))).thenReturn(this.requestHeadersMock);
-        when(this.requestHeadersMock.headers(any(Consumer.class))).thenReturn(this.requestHeadersMock);
-        when(this.requestHeadersMock.retrieve()).thenReturn(this.responseMock);
-        when(this.responseMock.bodyToMono(responseType)).thenReturn(Mono.just(Arrays.asList(ruleDetails)));
+        when(restService.get(String.format(constants.getRuleDetailProgramManagementApiUrl(), courseRequirementEntity.getRuleCode().getCourseRequirementCode()), List.class, "accessToken")).thenReturn(Arrays.asList(ruleDetails));
 
         var result = courseRequirementService.getCourseRequirementSearchList("MAIN", "12", "RuleCd", "accessToken");
         assertThat(result).isNotNull();

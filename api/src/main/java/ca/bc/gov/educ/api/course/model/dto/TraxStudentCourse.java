@@ -3,25 +3,21 @@ package ca.bc.gov.educ.api.course.model.dto;
 import lombok.Data;
 import org.springframework.stereotype.Component;
 
-import java.util.UUID;
-
 @Data
 @Component
-public class StudentCourse {
-
+public class TraxStudentCourse {
 	private String pen;
     private String courseCode;
     private String courseName; // Course
 	private Integer originalCredits; // Course
     private String courseLevel;
     private String sessionDate;
-    private String customizedCourseName; // Course
+    private String customizedCourseName;
 	private String gradReqMet;
 	private Double completedCoursePercentage;
 	private String completedCourseLetterGrade;
 	private Double interimPercent;
 	private String interimLetterGrade;
-	private UUID studentExamId; // Exam
 	private Double bestSchoolPercent; // Exam
     private Double bestExamPercent; // Exam
 	private Double schoolPercent; // Exam
@@ -45,6 +41,10 @@ public class StudentCourse {
 	private boolean isFailed;
 	private boolean isDuplicate;
 	private Course courseDetails;
+	
+	public String getPen() {
+    	return pen != null ? pen.trim():null;
+    }
 	
 	public String getCourseCode() {
 		return courseCode != null ? courseCode.trim(): null;
@@ -109,9 +109,9 @@ public class StudentCourse {
 
 	@Override
 	public String toString() {
-		return "StudentCourse [studentID=" + studentID + ", courseID=" + courseID + ", courseCode=" + courseCode
-				+ ", courseName=" + courseName + ", courseLevel=" + courseLevel + ", sessionDate=" + sessionDate
-				+ ", customizedCourseName=" + customizedCourseName + ", gradReqMet=" + gradReqMet + ", completedCoursePercentage="
+		return "StudentCourse [pen=" + pen + ", courseCode=" + courseCode + ", courseName=" + courseName
+				+ ", courseLevel=" + courseLevel + ", sessionDate=" + sessionDate + ", customizedCourseName="
+				+ customizedCourseName + ", gradReqMet=" + gradReqMet + ", completedCoursePercentage="
 				+ completedCoursePercentage + ", completedCourseLetterGrade=" + completedCourseLetterGrade
 				+ ", interimPercent=" + interimPercent + ", interimLetterGrade=" + interimLetterGrade
 				+ ", bestSchoolPercent=" + bestSchoolPercent + ", bestExamPercent=" + bestExamPercent

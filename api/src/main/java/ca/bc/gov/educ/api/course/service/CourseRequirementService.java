@@ -5,21 +5,20 @@ import java.util.*;
 import ca.bc.gov.educ.api.course.model.dto.*;
 import ca.bc.gov.educ.api.course.model.entity.CourseRequirementCodeEntity;
 import ca.bc.gov.educ.api.course.repository.CourseRequirementCodeRepository;
-import ca.bc.gov.educ.api.course.util.ThreadLocalStateUtil;
+import ca.bc.gov.educ.api.course.util.JsonTransformer;
 import ca.bc.gov.educ.api.course.util.criteria.CriteriaSpecification;
+import com.fasterxml.jackson.core.type.TypeReference;
 import io.github.resilience4j.retry.annotation.Retry;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
-import org.springframework.web.reactive.function.client.WebClient;
 
 import ca.bc.gov.educ.api.course.model.entity.CourseRequirementEntity;
 import ca.bc.gov.educ.api.course.model.transformer.CourseRequirementTransformer;
@@ -48,9 +47,12 @@ public class CourseRequirementService {
 
     @Autowired
     EducCourseApiConstants constants;
-    
+
     @Autowired
-    WebClient webClient;
+    RESTService restService;
+
+    @Autowired
+    JsonTransformer jsonTransformer;
 
     private static Logger logger = LoggerFactory.getLogger(CourseRequirementService.class);
 
@@ -83,15 +85,7 @@ public class CourseRequirementService {
         		if(course != null) {
         			obj.setCourseName(course.getCourseName());
         		}
-            	List<GradRuleDetails> ruleList = webClient.get()
-                        .uri(String.format(constants.getRuleDetailProgramManagementApiUrl(),cR.getRuleCode().getCourseRequirementCode()))
-                        .headers(h -> {
-                          h.setBearerAuth(accessToken);
-                          h.set(EducCourseApiConstants.CORRELATION_ID, ThreadLocalStateUtil.getCorrelationID());
-                        })
-                        .retrieve()
-                        .bodyToMono(new ParameterizedTypeReference<List<GradRuleDetails>>() {})
-                        .block();
+                List<GradRuleDetails> ruleList = getRuleDetails(cR.getRuleCode().getCourseRequirementCode(), accessToken);
             	StringBuilder requirementProgram = getRequirementProgram(ruleList,obj);
             	
             	obj.setRequirementProgram(requirementProgram.toString());
@@ -104,7 +98,7 @@ public class CourseRequirementService {
 
         return allCourseRequiremntList;
     }
-    
+
     private StringBuilder getRequirementProgram(List<GradRuleDetails> ruleList, AllCourseRequirements obj) {
     	StringBuilder requirementProgram = new StringBuilder();
     	for(GradRuleDetails rL: ruleList) {
@@ -206,15 +200,7 @@ public class CourseRequirementService {
         		if(course != null) {
         			obj.setCourseName(course.getCourseName());
         		}
-            	List<GradRuleDetails> ruleList = webClient.get()
-                        .uri(String.format(constants.getRuleDetailProgramManagementApiUrl(),cR.getRuleCode().getCourseRequirementCode()))
-                        .headers(h -> {
-                          h.setBearerAuth(accessToken);
-                          h.set(EducCourseApiConstants.CORRELATION_ID, ThreadLocalStateUtil.getCorrelationID());
-                        })
-                        .retrieve()
-                        .bodyToMono(new ParameterizedTypeReference<List<GradRuleDetails>>() {})
-                        .block();
+                List<GradRuleDetails> ruleList = getRuleDetails(cR.getRuleCode().getCourseRequirementCode(), accessToken);
             	StringBuilder requirementProgram = getRequirementProgram(ruleList,obj);
             	obj.setTraxReqNumber(!ruleList.isEmpty()?ruleList.get(0).getTraxReqNumber():null);
             	obj.setRequirementProgram(requirementProgram.toString());
@@ -286,6 +272,12 @@ public class CourseRequirementService {
             sourceObject.setCourseRequirementId(UUID.randomUUID());
             return courseRequirementTransformer.transformToDTO(courseRequirementRepository.save(sourceObject));
         }
+    }
+
+    private List<GradRuleDetails> getRuleDetails(String ruleCode, String accessToken) {
+        List<Map> response = restService.get(String.format(constants.getRuleDetailProgramManagementApiUrl(), ruleCode),
+                List.class, accessToken);
+        return jsonTransformer.convertValue(response, new TypeReference<>(){});
     }
 
 }
