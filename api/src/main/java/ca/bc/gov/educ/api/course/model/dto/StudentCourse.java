@@ -8,8 +8,9 @@ import java.util.UUID;
 @Data
 @Component
 public class StudentCourse {
-
-	private String pen;
+	private UUID id;
+	private UUID studentID;
+	private String courseID;
     private String courseCode;
     private String courseName; // Course
 	private Integer originalCredits; // Course
