@@ -141,8 +141,8 @@ public class StudentCourseServiceTest {
         responseEntity.setId(UUID.randomUUID());
         responseEntity.setCustomizedCourseName(course.getCourseName());
 
-        when(courseServiceV2.getCourseInfo(course.getCourseCode(), course.getCourseLevel(), "123")).thenReturn(course);
-        when(studentCourseRepository.saveAndFlush(scEntity)).thenReturn(responseEntity);
+//        when(courseServiceV2.getCourseInfo(course.getCourseID(), "123")).thenReturn(course);
+        when(studentCourseRepository.saveAndFlush(any())).thenReturn(responseEntity);
 
         var result = studentCourseService.saveStudentCourse(sc, "123");
         assertThat(result).isNotNull();
@@ -209,65 +209,6 @@ public class StudentCourseServiceTest {
     }
 
     @Test
-    public void testSaveStudentCourse_when_StudentCourse_isCreated_as_Examinable_withoutCourseID() {
-        Course course = new Course();
-        course.setCourseID("1234567");
-        course.setCourseCode("CH");
-        course.setCourseLevel("12");
-        course.setCourseName("Test Course Name");
-
-        StudentExam se = new StudentExam();
-        se.setExamPercentage(85.0);
-        se.setSchoolPercentage(90.0);
-        se.setSpecialCase("C");
-        se.setToWriteFlag("Y");
-
-        StudentCourse sc = new StudentCourse();
-        sc.setStudentID(UUID.randomUUID());
-//        sc.setCourseID(course.getCourseID());
-        sc.setCourseCode(course.getCourseCode());
-        sc.setCourseLevel(course.getCourseLevel());
-        sc.setOriginalCredits(4);
-        sc.setHasRelatedCourse("N");
-        sc.setCourseDetails(course);
-        // Examinable Course
-        sc.setProvExamCourse("Y");
-        sc.setSchoolPercent(se.getSchoolPercentage());
-        sc.setExamPercent(se.getExamPercentage());
-        sc.setSpecialCase(se.getSpecialCase());
-        sc.setToWriteFlag(se.getToWriteFlag());
-
-        StudentExamEntity seEntity = studentExamTransformer.transformToEntity(se);
-        StudentCourseEntity scEntity = studentCourseTransformer.transformToEntity(sc);
-
-        StudentExamEntity savedSeEntity = new StudentExamEntity();
-        BeanUtils.copyProperties(seEntity, savedSeEntity);
-        savedSeEntity.setId(UUID.randomUUID());
-
-        StudentCourseEntity savedScEntity = new StudentCourseEntity();
-        BeanUtils.copyProperties(scEntity, savedScEntity);
-        savedScEntity.setId(UUID.randomUUID());
-        savedScEntity.setCustomizedCourseName(course.getCourseName());
-        savedScEntity.setStudentExamId(savedSeEntity.getId());
-        savedScEntity.setCourseID(Integer.valueOf(course.getCourseID()));
-
-        when(courseServiceV2.getCourseInfo(course.getCourseCode(), course.getCourseLevel(), "123")).thenReturn(course);
-        when(studentExamRepository.findById(any(UUID.class))).thenReturn(Optional.empty());
-        when(studentExamRepository.saveAndFlush(any())).thenReturn(savedSeEntity);
-        when(studentCourseRepository.saveAndFlush(any())).thenReturn(savedScEntity);
-
-        var result = studentCourseService.saveStudentCourse(sc, "123");
-        assertThat(result).isNotNull();
-        assertThat(result.getStudentID()).isEqualTo(sc.getStudentID());
-        assertThat(result.getCourseID()).isEqualTo(course.getCourseID());
-        assertThat(result.getStudentExamId()).isNotNull();
-        assertThat(result.getExamPercent()).isEqualTo(se.getExamPercentage());
-        assertThat(result.getSchoolPercent()).isEqualTo(se.getSchoolPercentage());
-        assertThat(result.getSpecialCase()).isEqualTo(se.getSpecialCase());
-        assertThat(result.getToWriteFlag()).isEqualTo(se.getToWriteFlag());
-    }
-
-    @Test
     public void testSaveStudentCourse_when_StudentCourse_isCreated_as_Examinable_withRelatedCourse() {
         Course course = new Course();
         course.setCourseID("1234567");
@@ -295,6 +236,7 @@ public class StudentCourseServiceTest {
         sc.setOriginalCredits(4);
         // Related Course
         sc.setHasRelatedCourse("Y");
+        sc.setRelatedCourseId(relatedCourse.getCourseID());
         sc.setRelatedCourse(relatedCourse.getCourseCode());
         sc.setRelatedLevel(relatedCourse.getCourseLevel());
         sc.setCourseDetails(course);
@@ -319,8 +261,7 @@ public class StudentCourseServiceTest {
         savedScEntity.setStudentExamId(savedSeEntity.getId());
         savedScEntity.setRelatedCourseId(Integer.valueOf(relatedCourse.getCourseID()));
 
-        when(courseServiceV2.getCourseInfo(course.getCourseCode(), course.getCourseLevel(), "123")).thenReturn(course);
-        when(courseServiceV2.getCourseInfo(relatedCourse.getCourseCode(), relatedCourse.getCourseLevel(), "123")).thenReturn(relatedCourse);
+        when(courseServiceV2.getCourseInfo(relatedCourse.getCourseID(), "123")).thenReturn(relatedCourse);
         when(studentExamRepository.findById(any(UUID.class))).thenReturn(Optional.empty());
         when(studentExamRepository.saveAndFlush(any())).thenReturn(savedSeEntity);
         when(studentCourseRepository.saveAndFlush(any())).thenReturn(savedScEntity);
@@ -334,8 +275,8 @@ public class StudentCourseServiceTest {
         assertThat(result.getSchoolPercent()).isEqualTo(se.getSchoolPercentage());
         assertThat(result.getSpecialCase()).isEqualTo(se.getSpecialCase());
         assertThat(result.getToWriteFlag()).isEqualTo(se.getToWriteFlag());
-        assertThat(result.getRelatedCourse()).isNotNull();
-        assertThat(result.getRelatedLevel()).isNotNull();
+        assertThat(result.getRelatedCourseId()).isEqualTo(relatedCourse.getCourseID());
+        assertThat(result.getRelatedCourse()).isEqualTo(relatedCourse.getCourseCode());
     }
 
     @Test
@@ -403,7 +344,31 @@ public class StudentCourseServiceTest {
 
     @Test
     public void testDeleteStudentCourse() {
+        UUID studentCourseId = UUID.randomUUID();
 
+        StudentCourseEntity sce = new StudentCourseEntity();
+        sce.setId(studentCourseId);
+        sce.setStudentID(UUID.randomUUID());
+        sce.setCourseID(1234567);
+
+        when(studentCourseRepository.findById(studentCourseId)).thenReturn(Optional.of(sce));
+        var result = studentCourseService.deleteStudentCourse(studentCourseId);
+        assertThat(result).isEqualTo(1);
+    }
+
+    @Test
+    public void testDeleteStudentCourseWithStudentExam() {
+        UUID studentCourseId = UUID.randomUUID();
+
+        StudentCourseEntity sce = new StudentCourseEntity();
+        sce.setId(studentCourseId);
+        sce.setStudentID(UUID.randomUUID());
+        sce.setCourseID(1234567);
+        sce.setStudentExamId(UUID.randomUUID());
+
+        when(studentCourseRepository.findById(studentCourseId)).thenReturn(Optional.of(sce));
+        var result = studentCourseService.deleteStudentCourse(studentCourseId);
+        assertThat(result).isEqualTo(2);
     }
 
 

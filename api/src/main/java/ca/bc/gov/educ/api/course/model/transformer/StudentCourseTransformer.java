@@ -23,7 +23,8 @@ public class StudentCourseTransformer {
         sc.setSessionDate(EducCourseApiUtils.formatDate(studentCourseEntity.getSessionDate()));
         sc.setProvExamCourse(studentCourseEntity.getStudentExamId() != null? "Y" : "N");
         sc.setHasRelatedCourse(studentCourseEntity.getRelatedCourseId() != null? "Y" : "N");
-        return modelMapper.map(studentCourseEntity, StudentCourse.class);
+        sc.setRelatedCourseId(studentCourseEntity.getRelatedCourseId() != null? studentCourseEntity.getRelatedCourseId().toString() : null);
+        return sc;
     }
 
     public StudentCourse transformToDTO (Optional<StudentCourseEntity> courseAchievementEntity ) {

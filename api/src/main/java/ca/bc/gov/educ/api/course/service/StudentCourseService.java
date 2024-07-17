@@ -67,26 +67,10 @@ public class StudentCourseService {
         UUID studentCourseId = studentCourse.getId();
         Optional<StudentCourseEntity> studentCourseOptional = studentCourseId == null? Optional.empty() : studentCourseRepository.findById(studentCourseId);
         StudentCourseEntity sourceObject = studentCourseTransformer.transformToEntity(studentCourse);
-        // courseId
-        if (studentCourse.getCourseID() == null) {
-            Course course = courseService.getCourseInfo(studentCourse.getCourseCode(), studentCourse.getCourseLevel(), accessToken);
-            if (course != null) {
-                sourceObject.setCourseID(Integer.valueOf(course.getCourseID()));
-                sourceObject.setCustomizedCourseName(course.getCourseName());
-            }
-        }
-        // relatedCourseId
-        if ("Y".equalsIgnoreCase(studentCourse.getHasRelatedCourse())) {
-            Course relatedCourse = courseService.getCourseInfo(studentCourse.getRelatedCourse(), studentCourse.getRelatedLevel(), accessToken);
-            if (relatedCourse != null) {
-                sourceObject.setRelatedCourseId(Integer.valueOf(relatedCourse.getCourseID()));
-            }
-        }
         if (studentCourseOptional.isPresent()) {
             // StudentCourse
             StudentCourseEntity entity = studentCourseOptional.get();
-            if (entity.getStudentExamId() != null && studentCourse.getStudentExamId() != null
-                && !entity.getStudentExamId().equals(studentCourse.getStudentExamId())) {
+            if (entity.getStudentExamId() != null && !entity.getStudentExamId().equals(studentCourse.getStudentExamId())) {
                 // delete the current student exam
                 studentExamRepository.deleteById(entity.getStudentExamId());
             }
@@ -111,9 +95,13 @@ public class StudentCourseService {
                 sourceObject.setStudentExamId(studentExam.getId());
             }
             // StudentCourse
+            if (sourceObject.getId() == null) {
+                sourceObject.setId(UUID.randomUUID());
+            }
             sourceObject = studentCourseRepository.saveAndFlush(sourceObject);
             response = studentCourseTransformer.transformToDTO(sourceObject);
         }
+        getCourseDetail(response, accessToken);
         if (studentExam != null) {
             populateStudentExamInStudentCourse(response, studentExam);
         }
@@ -189,15 +177,31 @@ public class StudentCourseService {
 
     private void getCourseDetails(List<StudentCourse> studentCourses, String accessToken) {
         for (StudentCourse sc : studentCourses) {
-            if (sc.getCourseID() != null && NumberUtils.isCreatable(sc.getCourseID())) {
-                Course course = courseService.getCourseInfo(sc.getCourseID(), accessToken);
+            getCourseDetail(sc, accessToken);
+        }
+    }
+
+    private void getCourseDetail(StudentCourse sc, String accessToken) {
+        if (sc.getCourseID() != null && NumberUtils.isCreatable(sc.getCourseID())) {
+            Course course = courseService.getCourseInfo(sc.getCourseID(), accessToken);
+            if (course != null) {
                 sc.setCourseDetails(course);
+                sc.setCourseCode(course.getCourseCode());
+                sc.setCourseLevel(course.getCourseLevel());
                 sc.setCourseName(course.getCourseName());
                 sc.setGenericCourseType(course.getGenericCourseType());
                 sc.setLanguage(course.getLanguage());
                 sc.setWorkExpFlag(course.getWorkExpFlag());
                 sc.setCourseDetails(course);
                 sc.setOriginalCredits(course.getNumCredits());
+            }
+        }
+        if (sc.getRelatedCourseId() != null && NumberUtils.isCreatable(sc.getRelatedCourseId())) {
+            Course relatedCourse = courseService.getCourseInfo(sc.getRelatedCourseId(), accessToken);
+            if (relatedCourse != null) {
+                sc.setRelatedCourse(relatedCourse.getCourseCode());
+                sc.setRelatedLevel(relatedCourse.getCourseLevel());
+                sc.setRelatedCourseName(relatedCourse.getCourseName());
             }
         }
     }

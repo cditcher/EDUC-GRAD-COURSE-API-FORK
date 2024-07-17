@@ -11,10 +11,10 @@ public class StudentCourse {
 	private UUID id;
 	private UUID studentID;
 	private String courseID;
-    private String courseCode;
+    private String courseCode; // Course
     private String courseName; // Course
 	private Integer originalCredits; // Course
-    private String courseLevel;
+    private String courseLevel; // Course
     private String sessionDate;
     private String customizedCourseName; // Course
 	private String gradReqMet;
@@ -31,11 +31,12 @@ public class StudentCourse {
     private String fineArtsAppliedSkills;    
     private String metLitNumRequirement; 
 	private Integer credits;
-	private Integer creditsUsedForGrad;	
-	private String relatedCourse;
-	private String relatedCourseName;
-	private String relatedLevel;
+	private Integer creditsUsedForGrad;
 	private String hasRelatedCourse;
+	private String relatedCourseId;
+	private String relatedCourse;  // Course
+	private String relatedCourseName; // Course
+	private String relatedLevel; // Course
 	private String genericCourseType; // Course
 	private String language; // Course
 	private String workExpFlag; // Course
@@ -119,8 +120,8 @@ public class StudentCourse {
 				+ ", equivOrChallenge=" + equivOrChallenge + ", fineArtsAppliedSkills=" + fineArtsAppliedSkills
 				+ ", metLitNumRequirement=" + metLitNumRequirement + ", credits=" + credits + ", creditsUsedForGrad="
 				+ creditsUsedForGrad + ", relatedCourse=" + relatedCourse + ", relatedCourseName=" + relatedCourseName
-				+ ", relatedLevel=" + relatedLevel + ", hasRelatedCourse=" + hasRelatedCourse + ", genericCourseType="
-				+ genericCourseType + ", language=" + language + ", workExpFlag=" + workExpFlag + ", specialCase="
+				+ ", relatedLevel=" + relatedLevel + ", hasRelatedCourse=" + hasRelatedCourse + ", relatedCourseId=" + relatedCourseId
+				+ ", genericCourseType=" + genericCourseType + ", language=" + language + ", workExpFlag=" + workExpFlag + ", specialCase="
 				+ specialCase + ", toWriteFlag=" + toWriteFlag + ", isNotCompleted=" + isNotCompleted + ", isFailed="
 				+ isFailed + ", isDuplicate=" + isDuplicate + ", courseDetails=" + courseDetails + "]";
 	}		

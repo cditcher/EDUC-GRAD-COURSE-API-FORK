@@ -58,16 +58,4 @@ public class StudentCourseEntity extends BaseEntity {
     @Column(name = "RELATED_COURSE_ID")
     private Integer relatedCourseId;
 
-    @Column(name = "COURSE_CODE", nullable = false)
-    private String courseCode;
-
-    @Column(name = "COURSE_LEVEL")
-    private String courseLevel;
-
-    @Column(name = "RELATED_COURSE")
-    private String relatedCourse;
-
-    @Column(name = "RELATED_LEVEL")
-    private String relatedLevel;
-
 }
