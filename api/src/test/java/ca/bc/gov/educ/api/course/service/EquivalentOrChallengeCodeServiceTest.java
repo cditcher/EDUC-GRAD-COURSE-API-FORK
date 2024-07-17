@@ -7,10 +7,15 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
+import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
+import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepository;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import java.sql.Date;
 import java.util.ArrayList;
@@ -30,6 +35,23 @@ public class EquivalentOrChallengeCodeServiceTest {
 
 	@MockBean
 	private EquivalentOrChallengeCodeRepository equivalentOrChallengeCodeRepository;
+
+	@MockBean
+	public OAuth2AuthorizedClientRepository oAuth2AuthorizedClientRepository;
+
+	@MockBean
+	public OAuth2AuthorizedClientService oAuth2AuthorizedClientService;
+
+	@MockBean
+	public ClientRegistrationRepository clientRegistrationRepository;
+
+	@Qualifier("courseApiClient")
+	@MockBean
+	public WebClient courseApiClient;
+
+	@Qualifier("default")
+	@MockBean
+	public WebClient webClient;
 	
 	@Test
 	public void testGetEquivalentOrChallengeCodeList() {

@@ -40,6 +40,16 @@ spring:
         jwt:
           issuer-uri: ${TOKEN_ISSUER_URL}
           jwk-set-uri: ${TOKEN_ISSUER_URL}/protocol/openid-connect/certs
+      client:
+        registration:
+          course-api-client:
+            client-id: ${COURSE_CLIENT_NAME}
+            client-secret: ${COURSE_CLIENT_SECRET}
+            authorization-grant-type: client_credentials
+        provider:
+          course-api-client:
+            issuer-uri: ${TOKEN_ISSUER_URL}
+            token-uri: ${TOKEN_ISSUER_URL}/protocol/openid-connect/token
 
 #Logging properties
 logging:

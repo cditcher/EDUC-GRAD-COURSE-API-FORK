@@ -6,8 +6,10 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepository;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -27,6 +29,21 @@ public class RESTServiceGETTest {
     private RESTService restService;
 
     @MockBean
+    public OAuth2AuthorizedClientRepository oAuth2AuthorizedClientRepository;
+
+    @MockBean
+    public OAuth2AuthorizedClientService oAuth2AuthorizedClientService;
+
+    @MockBean
+    public ClientRegistrationRepository clientRegistrationRepository;
+
+    @Qualifier("courseApiClient")
+    @MockBean
+    public WebClient courseApiClient;
+
+    @Qualifier("default")
+
+    @MockBean
     private WebClient.RequestHeadersSpec requestHeadersMock;
     @MockBean
     private WebClient.RequestHeadersUriSpec requestHeadersUriMock;
@@ -38,12 +55,6 @@ public class RESTServiceGETTest {
     private WebClient.ResponseSpec responseMock;
     @MockBean(name = "webClient")
     WebClient webClient;
-
-    @MockBean
-    private ClientRegistrationRepository clientRegistrationRepositoryMock;
-
-    @MockBean
-    private OAuth2AuthorizedClientRepository oAuth2AuthorizedClientRepositoryMock;
 
     private static final String TEST_URL_200 = "https://httpstat.us/200";
     private static final String TEST_URL_403 = "https://httpstat.us/403";

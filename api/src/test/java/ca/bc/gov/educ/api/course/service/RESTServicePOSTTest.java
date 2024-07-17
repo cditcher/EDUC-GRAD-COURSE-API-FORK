@@ -8,8 +8,10 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.runner.RunWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepository;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -38,14 +40,23 @@ public class RESTServicePOSTTest {
     private WebClient.RequestBodyUriSpec requestBodyUriMock;
     @MockBean
     private WebClient.ResponseSpec responseMock;
-    @MockBean(name = "webClient")
-    WebClient webClient;
+    @MockBean
+    public OAuth2AuthorizedClientRepository oAuth2AuthorizedClientRepository;
 
     @MockBean
-    ClientRegistrationRepository clientRegistrationRepository;
+    public OAuth2AuthorizedClientService oAuth2AuthorizedClientService;
 
     @MockBean
-    OAuth2AuthorizedClientRepository oAuth2AuthorizedClientRepository;
+    public ClientRegistrationRepository clientRegistrationRepository;
+
+    @Qualifier("courseApiClient")
+    @MockBean
+    public WebClient courseApiClient;
+
+    @Qualifier("default")
+    @MockBean(name="webClient")
+    public WebClient webClient;
+
 
     private static final byte[] TEST_BYTES = "The rain in Spain stays mainly on the plain.".getBytes();
     private static final String TEST_BODY = "{test:test}";

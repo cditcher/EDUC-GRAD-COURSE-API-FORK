@@ -11,6 +11,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.core.ParameterizedTypeReference;
@@ -19,8 +20,12 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
+import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
+import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepository;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import java.sql.Date;
 import java.util.*;
@@ -53,6 +58,23 @@ public class CourseRequirementServiceTest {
 
     @MockBean
     private RESTService restService;
+
+    @MockBean
+    public OAuth2AuthorizedClientRepository oAuth2AuthorizedClientRepository;
+
+    @MockBean
+    public OAuth2AuthorizedClientService oAuth2AuthorizedClientService;
+
+    @MockBean
+    public ClientRegistrationRepository clientRegistrationRepository;
+
+    @Qualifier("courseApiClient")
+    @MockBean
+    public WebClient courseApiClient;
+
+    @Qualifier("default")
+    @MockBean
+    public WebClient webClient;
 
     @Before
     public void setUp() {
