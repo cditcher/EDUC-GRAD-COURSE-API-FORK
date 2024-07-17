@@ -10,7 +10,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -22,12 +21,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.web.reactive.function.client.WebClient;
-import reactor.core.publisher.Mono;
 
 import java.sql.Date;
 import java.util.*;
-import java.util.function.Consumer;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -57,17 +53,6 @@ public class CourseRequirementServiceTest {
 
     @MockBean
     private RESTService restService;
-
-//    @Mock
-//    private WebClient.RequestHeadersSpec requestHeadersMock;
-//    @Mock
-//    private WebClient.RequestHeadersUriSpec requestHeadersUriMock;
-//    @Mock
-//    private WebClient.RequestBodySpec requestBodyMock;
-//    @Mock
-//    private WebClient.RequestBodyUriSpec requestBodyUriMock;
-//    @Mock
-//    private WebClient.ResponseSpec responseMock;
 
     @Before
     public void setUp() {
@@ -113,12 +98,6 @@ public class CourseRequirementServiceTest {
         };
 
         when(restService.get(String.format(constants.getRuleDetailProgramManagementApiUrl(), courseRequirementEntity.getRuleCode().getCourseRequirementCode()), List.class, "accessToken")).thenReturn(Arrays.asList(ruleDetails));
-
-//        when(this.webClient.get()).thenReturn(this.requestHeadersUriMock);
-//        when(this.requestHeadersUriMock.uri(String.format(constants.getRuleDetailProgramManagementApiUrl(), courseRequirementEntity.getRuleCode().getCourseRequirementCode()))).thenReturn(this.requestHeadersMock);
-//        when(this.requestHeadersMock.headers(any(Consumer.class))).thenReturn(this.requestHeadersMock);
-//        when(this.requestHeadersMock.retrieve()).thenReturn(this.responseMock);
-//        when(this.responseMock.bodyToMono(responseType)).thenReturn(Mono.just(Arrays.asList(ruleDetails)));
 
         var result = courseRequirementService.getAllCourseRequirementList(1,5, "accessToken");
         assertThat(result).isNotNull();
