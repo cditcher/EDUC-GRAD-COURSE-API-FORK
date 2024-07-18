@@ -49,14 +49,14 @@ public class StudentCourseController {
     @Operation(summary = "Find All Student Courses by Student ID", description = "Get All Student Courses by Student ID", tags = {"Student Courses"})
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "OK"), @ApiResponse(responseCode = "204", description = "NO CONTENT")})
     public ResponseEntity<List<StudentCourse>> getStudentCoursesByStudentID(
-            @PathVariable UUID studentID, @RequestParam(value = "sortForUI", required = false, defaultValue = "false") boolean sortForUI, @RequestHeader(name="Authorization") String accessToken) {
+            @PathVariable UUID studentID, @RequestParam(value = "sortForUI", required = false, defaultValue = "false") boolean sortForUI) {
         validation.requiredField(studentID, "Student ID");
         if (validation.hasErrors()) {
             validation.stopOnErrors();
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         log.debug("#Get All Student Course by Student ID: {}", studentID);
-        List<StudentCourse> studentCourseList = studentCourseService.getStudentCourses(studentID, sortForUI, accessToken.replace(BEARER, ""));
+        List<StudentCourse> studentCourseList = studentCourseService.getStudentCourses(studentID, sortForUI);
         if (studentCourseList.isEmpty()) {
             return response.NO_CONTENT();
         }
@@ -72,7 +72,7 @@ public class StudentCourseController {
             @ApiResponse(responseCode = "422", description = "VALIDATION ERROR")
     })
     public ResponseEntity<ApiResponseModel<StudentCourse>> saveStudentCourse(
-            @NotNull @Valid @RequestBody StudentCourse studentCourse, @RequestHeader(name="Authorization") String accessToken) {
+            @NotNull @Valid @RequestBody StudentCourse studentCourse) {
         validation.requiredField(studentCourse.getStudentID(), "Student ID");
         validation.requiredField(studentCourse.getCourseID(), "Course ID");
         if (validation.hasErrors()) {
@@ -80,7 +80,7 @@ public class StudentCourseController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
-        StudentCourse result = studentCourseService.saveStudentCourse(studentCourse, accessToken.replace(BEARER, ""));
+        StudentCourse result = studentCourseService.saveStudentCourse(studentCourse);
         return response.UPDATED(result, StudentCourse.class);
     }
 

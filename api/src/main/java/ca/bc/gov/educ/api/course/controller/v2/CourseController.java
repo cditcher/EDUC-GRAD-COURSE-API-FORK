@@ -46,9 +46,9 @@ public class CourseController {
     @Operation(summary = "Find a Course by Course ID",
             description = "Get a Course by Course ID", tags = { "Courses" })
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "OK")})
-    public ResponseEntity<Course> getCourseDetails(@PathVariable String courseID, @RequestHeader(name="Authorization") String accessToken) {
+    public ResponseEntity<Course> getCourseDetails(@PathVariable String courseID) {
         log.info("#getCourseDetails : courseID={}", courseID);
-        return response.GET(courseService.getCourseInfo(courseID, accessToken.replace(BEARER, "")));
+        return response.GET(courseService.getCourseInfo(courseID));
     }
 
     @GetMapping(EducCourseApiConstants.GET_COURSE_BY_CODE_MAPPING)
@@ -56,9 +56,9 @@ public class CourseController {
     @Operation(summary = "Find a Course by Course Code and Course Level",
             description = "Get a Course by Course Code and Course Level", tags = { "Courses" })
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "OK")})
-    public ResponseEntity<Course> getCourseDetails(@PathVariable String courseCode, @PathVariable String courseLevel, @RequestHeader(name="Authorization") String accessToken) {
+    public ResponseEntity<Course> getCourseDetails(@PathVariable String courseCode, @PathVariable String courseLevel) {
         log.info("#getCourseDetails : courseCode={}, courseLevel={}", courseCode, courseLevel);
-        return response.GET(courseService.getCourseInfo(courseCode, courseLevel, accessToken.replace(BEARER, "")));
+        return response.GET(courseService.getCourseInfo(courseCode, courseLevel));
     }
 
 }

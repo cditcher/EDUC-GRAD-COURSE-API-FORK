@@ -14,7 +14,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
@@ -64,11 +63,6 @@ public class StudentCourseServiceTest {
     @MockBean
     public ClientRegistrationRepository clientRegistrationRepository;
 
-    @Qualifier("courseApiClient")
-    @MockBean
-    public WebClient courseApiClient;
-
-    @Qualifier("default")
     @MockBean
     public WebClient webClient;
 
@@ -88,11 +82,11 @@ public class StudentCourseServiceTest {
 
         StudentCourseEntity scEntity1 = studentCourseTransformer.transformToEntity(sc);
 
-        when(courseServiceV2.getCourseInfo(course.getCourseCode(), course.getCourseLevel(), "123")).thenReturn(course);
-        when(courseServiceV2.getCourseInfo(course.getCourseID(), "123")).thenReturn(course);
+        when(courseServiceV2.getCourseInfo(course.getCourseCode(), course.getCourseLevel())).thenReturn(course);
+        when(courseServiceV2.getCourseInfo(course.getCourseID())).thenReturn(course);
         when(studentCourseRepository.findByStudentID(sc.getStudentID())).thenReturn(Arrays.asList(scEntity1));
 
-        var results = studentCourseService.getStudentCourses(sc.getStudentID(), false, "123");
+        var results = studentCourseService.getStudentCourses(sc.getStudentID(), false);
         assertThat(results).hasSize(1);
         assertThat(results.get(0).getStudentID()).isEqualTo(sc.getStudentID());
         assertThat(results.get(0).getCourseDetails()).isNotNull();
@@ -127,11 +121,11 @@ public class StudentCourseServiceTest {
 
         StudentCourseEntity scEntity1 = studentCourseTransformer.transformToEntity(sc);
 
-        when(courseServiceV2.getCourseInfo(course.getCourseCode(), course.getCourseLevel(), "123")).thenReturn(course);
-        when(courseServiceV2.getCourseInfo(course.getCourseID(), "123")).thenReturn(course);
+        when(courseServiceV2.getCourseInfo(course.getCourseCode(), course.getCourseLevel())).thenReturn(course);
+        when(courseServiceV2.getCourseInfo(course.getCourseID())).thenReturn(course);
         when(studentCourseRepository.findByStudentID(sc.getStudentID())).thenReturn(Arrays.asList(scEntity1));
 
-        var results = studentCourseService.getStudentCourses(sc.getStudentID(), true, "123");
+        var results = studentCourseService.getStudentCourses(sc.getStudentID(), true);
         assertThat(results).hasSize(1);
         assertThat(results.get(0).getStudentID()).isEqualTo(sc.getStudentID());
         assertThat(results.get(0).getCourseDetails()).isNotNull();
@@ -163,10 +157,10 @@ public class StudentCourseServiceTest {
         responseEntity.setId(UUID.randomUUID());
         responseEntity.setCustomizedCourseName(course.getCourseName());
 
-//        when(courseServiceV2.getCourseInfo(course.getCourseID(), "123")).thenReturn(course);
+//        when(courseServiceV2.getCourseInfo(course.getCourseID())).thenReturn(course);
         when(studentCourseRepository.saveAndFlush(any())).thenReturn(responseEntity);
 
-        var result = studentCourseService.saveStudentCourse(sc, "123");
+        var result = studentCourseService.saveStudentCourse(sc);
         assertThat(result).isNotNull();
         assertThat(result.getStudentID()).isEqualTo(sc.getStudentID());
         assertThat(result.getCourseID()).isEqualTo(course.getCourseID());
@@ -214,12 +208,12 @@ public class StudentCourseServiceTest {
         savedScEntity.setCustomizedCourseName(course.getCourseName());
         savedScEntity.setStudentExamId(savedSeEntity.getId());
 
-        when(courseServiceV2.getCourseInfo(course.getCourseCode(), course.getCourseLevel(), "123")).thenReturn(course);
+        when(courseServiceV2.getCourseInfo(course.getCourseCode(), course.getCourseLevel())).thenReturn(course);
         when(studentExamRepository.findById(any(UUID.class))).thenReturn(Optional.empty());
         when(studentExamRepository.saveAndFlush(any())).thenReturn(savedSeEntity);
         when(studentCourseRepository.saveAndFlush(any())).thenReturn(savedScEntity);
 
-        var result = studentCourseService.saveStudentCourse(sc, "123");
+        var result = studentCourseService.saveStudentCourse(sc);
         assertThat(result).isNotNull();
         assertThat(result.getStudentID()).isEqualTo(sc.getStudentID());
         assertThat(result.getCourseID()).isEqualTo(course.getCourseID());
@@ -283,12 +277,12 @@ public class StudentCourseServiceTest {
         savedScEntity.setStudentExamId(savedSeEntity.getId());
         savedScEntity.setRelatedCourseId(Integer.valueOf(relatedCourse.getCourseID()));
 
-        when(courseServiceV2.getCourseInfo(relatedCourse.getCourseID(), "123")).thenReturn(relatedCourse);
+        when(courseServiceV2.getCourseInfo(relatedCourse.getCourseID())).thenReturn(relatedCourse);
         when(studentExamRepository.findById(any(UUID.class))).thenReturn(Optional.empty());
         when(studentExamRepository.saveAndFlush(any())).thenReturn(savedSeEntity);
         when(studentCourseRepository.saveAndFlush(any())).thenReturn(savedScEntity);
 
-        var result = studentCourseService.saveStudentCourse(sc, "123");
+        var result = studentCourseService.saveStudentCourse(sc);
         assertThat(result).isNotNull();
         assertThat(result.getStudentID()).isEqualTo(sc.getStudentID());
         assertThat(result.getCourseID()).isEqualTo(course.getCourseID());
@@ -347,12 +341,12 @@ public class StudentCourseServiceTest {
         savedScEntity.setStudentExamId(savedSeEntity.getId());
 
         when(studentCourseRepository.findById(sc.getId())).thenReturn(Optional.of(scEntity));
-        when(courseServiceV2.getCourseInfo(course.getCourseCode(), course.getCourseLevel(), "123")).thenReturn(course);
+        when(courseServiceV2.getCourseInfo(course.getCourseCode(), course.getCourseLevel())).thenReturn(course);
         when(studentExamRepository.findById(any(UUID.class))).thenReturn(Optional.of(seEntity));
         when(studentExamRepository.saveAndFlush(any())).thenReturn(savedSeEntity);
         when(studentCourseRepository.saveAndFlush(any())).thenReturn(savedScEntity);
 
-        var result = studentCourseService.saveStudentCourse(sc, "123");
+        var result = studentCourseService.saveStudentCourse(sc);
         assertThat(result).isNotNull();
         assertThat(result.getStudentID()).isEqualTo(sc.getStudentID());
         assertThat(result.getCourseID()).isEqualTo(course.getCourseID());

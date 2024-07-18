@@ -47,11 +47,11 @@ public class StudentCourseService {
     }
 
     @Transactional(readOnly = true)
-    public List<StudentCourse> getStudentCourses(UUID studentID, boolean sortForUI, String accessToken) {
+    public List<StudentCourse> getStudentCourses(UUID studentID, boolean sortForUI) {
         List<StudentCourse> studentCourses = new ArrayList<>();
         try {
             studentCourses = studentCourseTransformer.transformToDTO(studentCourseRepository.findByStudentID(studentID));
-            getCourseDetails(studentCourses, accessToken);
+            getCourseDetails(studentCourses);
             getStudentExams(studentCourses);
         } catch (Exception e) {
             log.debug(String.format("Exception: %s",e));
@@ -61,7 +61,7 @@ public class StudentCourseService {
     }
 
     @Transactional
-    public StudentCourse saveStudentCourse(StudentCourse studentCourse, String accessToken) {
+    public StudentCourse saveStudentCourse(StudentCourse studentCourse) {
         StudentCourse response;
         StudentExam studentExam = null;
         UUID studentCourseId = studentCourse.getId();
@@ -101,7 +101,7 @@ public class StudentCourseService {
             sourceObject = studentCourseRepository.saveAndFlush(sourceObject);
             response = studentCourseTransformer.transformToDTO(sourceObject);
         }
-        getCourseDetail(response, accessToken);
+        getCourseDetail(response);
         if (studentExam != null) {
             populateStudentExamInStudentCourse(response, studentExam);
         }
@@ -175,15 +175,15 @@ public class StudentCourseService {
         return se;
     }
 
-    private void getCourseDetails(List<StudentCourse> studentCourses, String accessToken) {
+    private void getCourseDetails(List<StudentCourse> studentCourses) {
         for (StudentCourse sc : studentCourses) {
-            getCourseDetail(sc, accessToken);
+            getCourseDetail(sc);
         }
     }
 
-    private void getCourseDetail(StudentCourse sc, String accessToken) {
+    private void getCourseDetail(StudentCourse sc) {
         if (sc.getCourseID() != null && NumberUtils.isCreatable(sc.getCourseID())) {
-            Course course = courseService.getCourseInfo(sc.getCourseID(), accessToken);
+            Course course = courseService.getCourseInfo(sc.getCourseID());
             if (course != null) {
                 sc.setCourseDetails(course);
                 sc.setCourseCode(course.getCourseCode());
@@ -197,7 +197,7 @@ public class StudentCourseService {
             }
         }
         if (sc.getRelatedCourseId() != null && NumberUtils.isCreatable(sc.getRelatedCourseId())) {
-            Course relatedCourse = courseService.getCourseInfo(sc.getRelatedCourseId(), accessToken);
+            Course relatedCourse = courseService.getCourseInfo(sc.getRelatedCourseId());
             if (relatedCourse != null) {
                 sc.setRelatedCourse(relatedCourse.getCourseCode());
                 sc.setRelatedLevel(relatedCourse.getCourseLevel());

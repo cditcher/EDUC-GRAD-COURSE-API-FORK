@@ -28,15 +28,15 @@ public class CourseService {
         this.constants = constants;
     }
 
-    public Course getCourseInfo(String courseID, String accessToken) {
+    public Course getCourseInfo(String courseID) {
         String url = String.format(constants.getCourseDetailByCourseIdUrl(), courseID);
-        Courses course = restService.get(url, Courses.class, accessToken);
+        Courses course = restService.get(url, Courses.class);
         if (course != null) {
             return EducCourseApiUtils.convertCoregCourseIntoGradCourse(course);
         }
         return null;
     }
-    public Course getCourseInfo(String courseCode, String courseLevel, String accessToken) {
+    public Course getCourseInfo(String courseCode, String courseLevel) {
         String externalCode = EducCourseApiUtils.getExternalCodeByCourseCodeAndLevel(courseCode, courseLevel);
         log.info("CoReg API lookup by external code: [{}]", externalCode);
         try {
@@ -45,7 +45,7 @@ public class CourseService {
             log.error(e.getMessage());
         }
         String url = String.format(constants.getCourseDetailByExternalCodeUrl(), externalCode);
-        Courses course = restService.get(url, Courses.class, accessToken);
+        Courses course = restService.get(url, Courses.class);
         if (course != null) {
             return EducCourseApiUtils.convertCoregCourseIntoGradCourse(course);
         }

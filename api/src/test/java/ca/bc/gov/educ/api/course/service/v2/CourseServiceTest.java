@@ -11,7 +11,6 @@ import ca.bc.gov.educ.api.course.util.EducCourseApiUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
@@ -51,11 +50,6 @@ public class CourseServiceTest {
     @MockBean
     public ClientRegistrationRepository clientRegistrationRepository;
 
-    @Qualifier("courseApiClient")
-    @MockBean
-    public WebClient courseApiClient;
-
-    @Qualifier("default")
     @MockBean
     public WebClient webClient;
 
@@ -69,9 +63,9 @@ public class CourseServiceTest {
         course.setNumCredits(4);
 
         String url = String.format(constants.getCourseDetailByCourseIdUrl(), course.getCourseID());
-        when(restService.get(url, Courses.class, "123")).thenReturn(null);
+        when(restService.get(url, Courses.class)).thenReturn(null);
 
-        var result = courseServiceV2.getCourseInfo(course.getCourseID(), "123");
+        var result = courseServiceV2.getCourseInfo(course.getCourseID());
         assertThat(result).isNull();
     }
 
@@ -107,9 +101,9 @@ public class CourseServiceTest {
         coregCourse.setCourseAllowableCredit(Arrays.asList(credit1, credit2));
 
         String url = String.format(constants.getCourseDetailByCourseIdUrl(), course.getCourseID());
-        when(restService.get(url, Courses.class, "123")).thenReturn(coregCourse);
+        when(restService.get(url, Courses.class)).thenReturn(coregCourse);
 
-        var result = courseServiceV2.getCourseInfo(course.getCourseID(), "123");
+        var result = courseServiceV2.getCourseInfo(course.getCourseID());
         assertThat(result).isNotNull();
         assertThat(result.getCourseID()).isEqualTo(course.getCourseID());
         assertThat(result.getCourseCode()).isEqualTo(course.getCourseCode());
@@ -148,9 +142,9 @@ public class CourseServiceTest {
         credit2.setCreditValue("4");
         coregCourse.setCourseAllowableCredit(Arrays.asList(credit1, credit2));
 
-        when(restService.get(any(), eq(Courses.class), eq("123"))).thenReturn(coregCourse);
+        when(restService.get(any(), eq(Courses.class))).thenReturn(coregCourse);
 
-        var result = courseServiceV2.getCourseInfo(course.getCourseCode(), course.getCourseLevel(), "123");
+        var result = courseServiceV2.getCourseInfo(course.getCourseCode(), course.getCourseLevel());
         assertThat(result).isNotNull();
         assertThat(result.getCourseID()).isEqualTo(course.getCourseID());
         assertThat(result.getCourseCode()).isEqualTo(course.getCourseCode());

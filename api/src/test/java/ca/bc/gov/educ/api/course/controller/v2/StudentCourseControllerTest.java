@@ -54,9 +54,9 @@ public class StudentCourseControllerTest {
         sc2.setCourseLevel("12");
         sc2.setOriginalCredits(3);
 
-        Mockito.when(studentCourseService.getStudentCourses(studentID, true, "123")).thenReturn(Arrays.asList(sc1, sc2));
-        studentCourseControllerV2.getStudentCoursesByStudentID(studentID, true, "123");
-        Mockito.verify(studentCourseService).getStudentCourses(studentID, true, "123");
+        Mockito.when(studentCourseService.getStudentCourses(studentID, true)).thenReturn(Arrays.asList(sc1, sc2));
+        studentCourseControllerV2.getStudentCoursesByStudentID(studentID, true);
+        Mockito.verify(studentCourseService).getStudentCourses(studentID, true);
     }
 
     @Test
@@ -70,9 +70,9 @@ public class StudentCourseControllerTest {
         sc.setCourseLevel("12");
         sc.setOriginalCredits(4);
 
-        Mockito.when(studentCourseService.saveStudentCourse(sc, "123")).thenReturn(sc);
-        studentCourseControllerV2.saveStudentCourse(sc, "123");
-        Mockito.verify(studentCourseService).saveStudentCourse(sc, "123");
+        Mockito.when(studentCourseService.saveStudentCourse(sc)).thenReturn(sc);
+        studentCourseControllerV2.saveStudentCourse(sc);
+        Mockito.verify(studentCourseService).saveStudentCourse(sc);
     }
 
     @Test
@@ -86,7 +86,7 @@ public class StudentCourseControllerTest {
         sc.setOriginalCredits(4);
 
         Mockito.when(validation.hasErrors()).thenReturn(true);
-        var response = studentCourseControllerV2.saveStudentCourse(sc, "123");
+        var response = studentCourseControllerV2.saveStudentCourse(sc);
         assertThat(response).isNotNull();
         assertThat(response.getStatusCode()).isNotNull();
         assertThat(response.getStatusCode().value()).isEqualTo(HttpStatus.BAD_REQUEST.value());

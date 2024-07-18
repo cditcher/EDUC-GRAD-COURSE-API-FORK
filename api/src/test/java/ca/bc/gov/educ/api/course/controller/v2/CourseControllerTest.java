@@ -42,9 +42,9 @@ public class CourseControllerTest {
         course.setStartDate(new Date(System.currentTimeMillis() - 10000L));
         course.setEndDate(new Date(System.currentTimeMillis() + 10000L));
 
-        Mockito.when(courseServiceV2.getCourseInfo(course.getCourseID(), "123")).thenReturn(course);
-        courseControllerV2.getCourseDetails(course.getCourseID(), "123");
-        Mockito.verify(courseServiceV2).getCourseInfo(course.getCourseID(), "123");
+        Mockito.when(courseServiceV2.getCourseInfo(course.getCourseID())).thenReturn(course);
+        courseControllerV2.getCourseDetails(course.getCourseID());
+        Mockito.verify(courseServiceV2).getCourseInfo(course.getCourseID());
 
     }
 
@@ -59,9 +59,9 @@ public class CourseControllerTest {
         course.setStartDate(new Date(System.currentTimeMillis() - 10000L));
         course.setEndDate(new Date(System.currentTimeMillis() + 10000L));
 
-        Mockito.when(courseServiceV2.getCourseInfo(course.getCourseCode(), course.getCourseLevel(), "123")).thenReturn(course);
-        courseControllerV2.getCourseDetails(course.getCourseCode(), course.getCourseLevel(), "123");
-        Mockito.verify(courseServiceV2).getCourseInfo(course.getCourseCode(), course.getCourseLevel(), "123");
+        Mockito.when(courseServiceV2.getCourseInfo(course.getCourseCode(), course.getCourseLevel())).thenReturn(course);
+        courseControllerV2.getCourseDetails(course.getCourseCode(), course.getCourseLevel());
+        Mockito.verify(courseServiceV2).getCourseInfo(course.getCourseCode(), course.getCourseLevel());
 
     }
 

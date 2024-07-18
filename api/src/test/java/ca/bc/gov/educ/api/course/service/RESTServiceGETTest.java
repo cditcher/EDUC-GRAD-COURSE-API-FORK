@@ -6,7 +6,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
@@ -37,11 +36,8 @@ public class RESTServiceGETTest {
     @MockBean
     public ClientRegistrationRepository clientRegistrationRepository;
 
-    @Qualifier("courseApiClient")
     @MockBean
-    public WebClient courseApiClient;
-
-    @Qualifier("default")
+    WebClient webClient;
 
     @MockBean
     private WebClient.RequestHeadersSpec requestHeadersMock;
@@ -53,8 +49,6 @@ public class RESTServiceGETTest {
     private WebClient.RequestBodyUriSpec requestBodyUriMock;
     @MockBean
     private WebClient.ResponseSpec responseMock;
-    @MockBean(name = "webClient")
-    WebClient webClient;
 
     private static final String TEST_URL_200 = "https://httpstat.us/200";
     private static final String TEST_URL_403 = "https://httpstat.us/403";
@@ -75,39 +69,39 @@ public class RESTServiceGETTest {
     @Test
     public void testGet_GivenProperData_Expect200Response(){
         when(this.responseMock.bodyToMono(String.class)).thenReturn(Mono.just(OK_RESPONSE));
-        String response = this.restService.get(TEST_URL_200, String.class, ACCESS_TOKEN);
+        String response = this.restService.get(TEST_URL_200, String.class);
         Assert.assertEquals("200 OK", response);
     }
 
     @Test
     public void testGetOverride_GivenProperData_Expect200Response(){
         when(this.responseMock.bodyToMono(String.class)).thenReturn(Mono.just(OK_RESPONSE));
-        String response = this.restService.get(TEST_URL_200, String.class, ACCESS_TOKEN);
+        String response = this.restService.get(TEST_URL_200, String.class);
         Assert.assertEquals(OK_RESPONSE, response);
     }
 
     @Test(expected = ServiceException.class)
     public void testGet_Given5xxErrorFromService_ExpectServiceError(){
         when(this.responseMock.bodyToMono(ServiceException.class)).thenReturn(Mono.just(new ServiceException()));
-        this.restService.get(TEST_URL_503, String.class, ACCESS_TOKEN);
+        this.restService.get(TEST_URL_503, String.class);
     }
 
     @Test(expected = ServiceException.class)
     public void testGetOverride_Given5xxErrorFromService_ExpectServiceError(){
         when(this.responseMock.bodyToMono(ServiceException.class)).thenReturn(Mono.just(new ServiceException()));
-        this.restService.get(TEST_URL_503, String.class, ACCESS_TOKEN);
+        this.restService.get(TEST_URL_503, String.class);
     }
 
     @Test(expected = ServiceException.class)
     public void testGet_Given4xxErrorFromService_ExpectServiceError(){
         when(this.responseMock.bodyToMono(ServiceException.class)).thenReturn(Mono.just(new ServiceException()));
-        this.restService.get(TEST_URL_403, String.class, ACCESS_TOKEN);
+        this.restService.get(TEST_URL_403, String.class);
     }
 
     @Test(expected = ServiceException.class)
     public void testGetOverride_Given4xxErrorFromService_ExpectServiceError(){
         when(this.responseMock.bodyToMono(ServiceException.class)).thenReturn(Mono.just(new ServiceException()));
-        this.restService.get(TEST_URL_403, String.class, ACCESS_TOKEN);
+        this.restService.get(TEST_URL_403, String.class);
     }
 
 }

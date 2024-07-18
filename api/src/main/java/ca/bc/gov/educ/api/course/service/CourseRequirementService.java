@@ -70,7 +70,7 @@ public class CourseRequirementService {
      */
 
      @Retry(name = "generalgetcall")
-     public List<AllCourseRequirements> getAllCourseRequirementList(Integer pageNo, Integer pageSize,String accessToken) {
+     public List<AllCourseRequirements> getAllCourseRequirementList(Integer pageNo, Integer pageSize) {
         List<CourseRequirement> courseReqList  = new ArrayList<>();
         List<AllCourseRequirements> allCourseRequiremntList = new ArrayList<>();
         try {  
@@ -85,7 +85,7 @@ public class CourseRequirementService {
         		if(course != null) {
         			obj.setCourseName(course.getCourseName());
         		}
-                List<GradRuleDetails> ruleList = getRuleDetails(cR.getRuleCode().getCourseRequirementCode(), accessToken);
+                List<GradRuleDetails> ruleList = getRuleDetails(cR.getRuleCode().getCourseRequirementCode());
             	StringBuilder requirementProgram = getRequirementProgram(ruleList,obj);
             	
             	obj.setRequirementProgram(requirementProgram.toString());
@@ -182,7 +182,7 @@ public class CourseRequirementService {
 	}
 
     @Retry(name = "searchcoursecall")
-	public List<AllCourseRequirements> getCourseRequirementSearchList(String courseCode, String courseLevel, String rule,String accessToken) {
+	public List<AllCourseRequirements> getCourseRequirementSearchList(String courseCode, String courseLevel, String rule) {
 		CriteriaHelper criteria = new CriteriaHelper();
         getSearchCriteria("courseCode", courseCode, criteria);
         getSearchCriteria("courseLevel", courseLevel, criteria);
@@ -200,7 +200,7 @@ public class CourseRequirementService {
         		if(course != null) {
         			obj.setCourseName(course.getCourseName());
         		}
-                List<GradRuleDetails> ruleList = getRuleDetails(cR.getRuleCode().getCourseRequirementCode(), accessToken);
+                List<GradRuleDetails> ruleList = getRuleDetails(cR.getRuleCode().getCourseRequirementCode());
             	StringBuilder requirementProgram = getRequirementProgram(ruleList,obj);
             	obj.setTraxReqNumber(!ruleList.isEmpty()?ruleList.get(0).getTraxReqNumber():null);
             	obj.setRequirementProgram(requirementProgram.toString());
@@ -274,9 +274,8 @@ public class CourseRequirementService {
         }
     }
 
-    private List<GradRuleDetails> getRuleDetails(String ruleCode, String accessToken) {
-        List<Map> response = restService.get(String.format(constants.getRuleDetailProgramManagementApiUrl(), ruleCode),
-                List.class, accessToken);
+    private List<GradRuleDetails> getRuleDetails(String ruleCode) {
+        List<Map> response = restService.get(String.format(constants.getRuleDetailProgramManagementApiUrl(), ruleCode), List.class);
         return jsonTransformer.convertValue(response, new TypeReference<>(){});
     }
 

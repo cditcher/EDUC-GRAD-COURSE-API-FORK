@@ -11,7 +11,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.core.ParameterizedTypeReference;
@@ -68,11 +67,6 @@ public class CourseRequirementServiceTest {
     @MockBean
     public ClientRegistrationRepository clientRegistrationRepository;
 
-    @Qualifier("courseApiClient")
-    @MockBean
-    public WebClient courseApiClient;
-
-    @Qualifier("default")
     @MockBean
     public WebClient webClient;
 
@@ -119,9 +113,9 @@ public class CourseRequirementServiceTest {
         ParameterizedTypeReference<List<GradRuleDetails>> responseType = new ParameterizedTypeReference<List<GradRuleDetails>>() {
         };
 
-        when(restService.get(String.format(constants.getRuleDetailProgramManagementApiUrl(), courseRequirementEntity.getRuleCode().getCourseRequirementCode()), List.class, "accessToken")).thenReturn(Arrays.asList(ruleDetails));
+        when(restService.get(String.format(constants.getRuleDetailProgramManagementApiUrl(), courseRequirementEntity.getRuleCode().getCourseRequirementCode()), List.class)).thenReturn(Arrays.asList(ruleDetails));
 
-        var result = courseRequirementService.getAllCourseRequirementList(1,5, "accessToken");
+        var result = courseRequirementService.getAllCourseRequirementList(1,5);
         assertThat(result).isNotNull();
         assertThat(result).hasSize(1);
         AllCourseRequirements allCourseRequirements = result.get(0);
@@ -396,9 +390,9 @@ public class CourseRequirementServiceTest {
 
         when(courseRequirementRepository.findAll(any(Specification.class))).thenReturn(Arrays.asList(courseRequirementEntity));
         when(courseService.getCourseDetails("MAIN", "12")).thenReturn(course);
-        when(restService.get(String.format(constants.getRuleDetailProgramManagementApiUrl(), courseRequirementEntity.getRuleCode().getCourseRequirementCode()), List.class, "accessToken")).thenReturn(Arrays.asList(ruleDetails));
+        when(restService.get(String.format(constants.getRuleDetailProgramManagementApiUrl(), courseRequirementEntity.getRuleCode().getCourseRequirementCode()), List.class)).thenReturn(Arrays.asList(ruleDetails));
 
-        var result = courseRequirementService.getCourseRequirementSearchList("MAIN", "12", "RuleCd", "accessToken");
+        var result = courseRequirementService.getCourseRequirementSearchList("MAIN", "12", "RuleCd");
         assertThat(result).isNotNull();
         assertThat(result.size()).isEqualTo(1);
         AllCourseRequirements allCourseRequirements = result.get(0);
