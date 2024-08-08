@@ -47,7 +47,11 @@ public class StudentCourseController {
     @GetMapping(EducCourseApiConstants.GET_STUDENT_COURSES_BY_STUDENT_ID_MAPPING)
     @PreAuthorize(PermissionsConstants.READ_GRAD_COURSE)
     @Operation(summary = "Find All Student Courses by Student ID", description = "Get All Student Courses by Student ID", tags = {"Student Courses"})
-    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "OK"), @ApiResponse(responseCode = "204", description = "NO CONTENT")})
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "OK"),
+            @ApiResponse(responseCode = "204", description = "NO CONTENT"),
+            @ApiResponse(responseCode = "400", description = "BAD REQUEST"),
+            @ApiResponse(responseCode = "404", description = "NOT FOUND"),
+            @ApiResponse(responseCode = "422", description = "VALIDATION ERROR")})
     public ResponseEntity<List<StudentCourse>> getStudentCoursesByStudentID(
             @PathVariable UUID studentID, @RequestParam(value = "sortForUI", required = false, defaultValue = "false") boolean sortForUI) {
         validation.requiredField(studentID, "Student ID");

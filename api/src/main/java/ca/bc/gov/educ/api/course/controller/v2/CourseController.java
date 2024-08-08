@@ -27,8 +27,6 @@ import org.springframework.web.bind.annotation.*;
         security = {@SecurityRequirement(name = "OAUTH2", scopes = {"READ_GRAD_STUDENT_COURSE_DATA"})})
 public class CourseController {
 
-    private static final String BEARER = "Bearer ";
-
     CourseService courseService;
 
     GradValidation validation;
@@ -45,7 +43,8 @@ public class CourseController {
     @PreAuthorize(PermissionsConstants.READ_GRAD_COURSE)
     @Operation(summary = "Find a Course by Course ID",
             description = "Get a Course by Course ID", tags = { "Courses" })
-    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "OK")})
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "OK"),
+            @ApiResponse(responseCode = "404", description = "NOT FOUND")})
     public ResponseEntity<Course> getCourseDetails(@PathVariable String courseID) {
         log.info("#getCourseDetails : courseID={}", courseID);
         return response.GET(courseService.getCourseInfo(courseID));
@@ -55,7 +54,8 @@ public class CourseController {
     @PreAuthorize(PermissionsConstants.READ_GRAD_COURSE)
     @Operation(summary = "Find a Course by Course Code and Course Level",
             description = "Get a Course by Course Code and Course Level", tags = { "Courses" })
-    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "OK")})
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "OK"),
+            @ApiResponse(responseCode = "404", description = "NOT FOUND")})
     public ResponseEntity<Course> getCourseDetails(@PathVariable String courseCode, @PathVariable String courseLevel) {
         log.info("#getCourseDetails : courseCode={}, courseLevel={}", courseCode, courseLevel);
         return response.GET(courseService.getCourseInfo(courseCode, courseLevel));
