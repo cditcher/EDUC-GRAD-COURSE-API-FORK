@@ -59,6 +59,7 @@ public class StudentCourseController {
             validation.stopOnErrors();
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
+
         log.debug("#Get All Student Course by Student ID: {}", studentID);
         List<StudentCourse> studentCourseList = studentCourseService.getStudentCourses(studentID, sortForUI);
         if (studentCourseList.isEmpty()) {
@@ -69,14 +70,35 @@ public class StudentCourseController {
 
     @PostMapping
     @PreAuthorize(PermissionsConstants.UPDATE_GRAD_COURSE_RESTRICTION)
-    @Operation(summary = "Save a Student Course", description = "Save a Student Course", tags = { "Student Courses" })
+    @Operation(summary = "Create a Student Course", description = "Create a Student Course", tags = { "Student Courses" })
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "OK"),
+            @ApiResponse(responseCode = "400", description = "BAD REQUEST"),
+            @ApiResponse(responseCode = "422", description = "VALIDATION ERROR")
+    })
+    public ResponseEntity<ApiResponseModel<StudentCourse>> createStudentCourse(
+            @NotNull @Valid @RequestBody StudentCourse studentCourse) {
+        validation.requiredField(studentCourse.getStudentID(), "Student ID");
+        validation.requiredField(studentCourse.getCourseID(), "Course ID");
+        if (validation.hasErrors()) {
+            validation.stopOnErrors();
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        StudentCourse result = studentCourseService.saveStudentCourse(studentCourse);
+        return response.CREATED(result, StudentCourse.class);
+    }
+
+    @PutMapping
+    @PreAuthorize(PermissionsConstants.UPDATE_GRAD_COURSE_RESTRICTION)
+    @Operation(summary = "Update a Student Course", description = "Update a Student Course", tags = { "Student Courses" })
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "OK"),
             @ApiResponse(responseCode = "400", description = "BAD REQUEST"),
             @ApiResponse(responseCode = "404", description = "NOT FOUND"),
             @ApiResponse(responseCode = "422", description = "VALIDATION ERROR")
     })
-    public ResponseEntity<ApiResponseModel<StudentCourse>> saveStudentCourse(
+    public ResponseEntity<ApiResponseModel<StudentCourse>> updateStudentCourse(
             @NotNull @Valid @RequestBody StudentCourse studentCourse) {
+        validation.requiredField(studentCourse.getId(), "Student Course ID");
         validation.requiredField(studentCourse.getStudentID(), "Student ID");
         validation.requiredField(studentCourse.getCourseID(), "Course ID");
         if (validation.hasErrors()) {
@@ -102,6 +124,7 @@ public class StudentCourseController {
             validation.stopOnErrors();
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
+
         return response.DELETE(studentCourseService.deleteStudentCourse(studentCourseID));
     }
 

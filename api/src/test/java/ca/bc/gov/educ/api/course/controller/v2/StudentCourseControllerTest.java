@@ -60,7 +60,7 @@ public class StudentCourseControllerTest {
     }
 
     @Test
-    public void testSaveStudentCourse() {
+    public void testCreateStudentCourse() {
         UUID studentID = UUID.randomUUID();
 
         StudentCourse sc = new StudentCourse();
@@ -71,12 +71,12 @@ public class StudentCourseControllerTest {
         sc.setOriginalCredits(4);
 
         Mockito.when(studentCourseService.saveStudentCourse(sc)).thenReturn(sc);
-        studentCourseControllerV2.saveStudentCourse(sc);
+        studentCourseControllerV2.createStudentCourse(sc);
         Mockito.verify(studentCourseService).saveStudentCourse(sc);
     }
 
     @Test
-    public void testSaveStudentCourse_when_courseID_is_notProvided() {
+    public void testCreateStudentCourse_when_courseID_is_notProvided() {
         UUID studentID = UUID.randomUUID();
 
         StudentCourse sc = new StudentCourse();
@@ -86,7 +86,44 @@ public class StudentCourseControllerTest {
         sc.setOriginalCredits(4);
 
         Mockito.when(validation.hasErrors()).thenReturn(true);
-        var response = studentCourseControllerV2.saveStudentCourse(sc);
+
+        var response = studentCourseControllerV2.createStudentCourse(sc);
+        assertThat(response).isNotNull();
+        assertThat(response.getStatusCode()).isNotNull();
+        assertThat(response.getStatusCode().value()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+    }
+
+    @Test
+    public void testUpdateStudentCourse() {
+        UUID studentID = UUID.randomUUID();
+
+        StudentCourse sc = new StudentCourse();
+        sc.setId(UUID.randomUUID());
+        sc.setStudentID(studentID);
+        sc.setCourseID("1234567");
+        sc.setCourseCode("Test");
+        sc.setCourseLevel("12");
+        sc.setOriginalCredits(4);
+
+        Mockito.when(studentCourseService.saveStudentCourse(sc)).thenReturn(sc);
+        studentCourseControllerV2.createStudentCourse(sc);
+        Mockito.verify(studentCourseService).saveStudentCourse(sc);
+    }
+
+    @Test
+    public void testUpdateStudentCourse_when_studentCourseID_is_notProvided() {
+        UUID studentID = UUID.randomUUID();
+
+        StudentCourse sc = new StudentCourse();
+        sc.setStudentID(studentID);
+        sc.setCourseID("1234567");
+        sc.setCourseCode("Test");
+        sc.setCourseLevel("12");
+        sc.setOriginalCredits(4);
+
+        Mockito.when(validation.hasErrors()).thenReturn(true);
+
+        var response = studentCourseControllerV2.updateStudentCourse(sc);
         assertThat(response).isNotNull();
         assertThat(response.getStatusCode()).isNotNull();
         assertThat(response.getStatusCode().value()).isEqualTo(HttpStatus.BAD_REQUEST.value());
