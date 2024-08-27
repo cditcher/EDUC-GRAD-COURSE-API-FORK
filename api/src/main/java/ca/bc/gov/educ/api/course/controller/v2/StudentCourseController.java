@@ -51,7 +51,7 @@ public class StudentCourseController {
             @ApiResponse(responseCode = "204", description = "NO CONTENT"),
             @ApiResponse(responseCode = "400", description = "BAD REQUEST"),
             @ApiResponse(responseCode = "404", description = "NOT FOUND"),
-            @ApiResponse(responseCode = "422", description = "VALIDATION ERROR")})
+            @ApiResponse(responseCode = "422", description = "UNPROCESSABLE CONTENT")})
     public ResponseEntity<List<StudentCourse>> getStudentCoursesByStudentID(
             @PathVariable UUID studentID, @RequestParam(value = "sortForUI", required = false, defaultValue = "false") boolean sortForUI) {
         validation.requiredField(studentID, "Student ID");
@@ -73,7 +73,7 @@ public class StudentCourseController {
     @Operation(summary = "Create a Student Course", description = "Create a Student Course", tags = { "Student Courses" })
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "OK"),
             @ApiResponse(responseCode = "400", description = "BAD REQUEST"),
-            @ApiResponse(responseCode = "422", description = "VALIDATION ERROR")
+            @ApiResponse(responseCode = "422", description = "UNPROCESSABLE CONTENT")
     })
     public ResponseEntity<ApiResponseModel<StudentCourse>> createStudentCourse(
             @NotNull @Valid @RequestBody StudentCourse studentCourse) {
@@ -94,7 +94,7 @@ public class StudentCourseController {
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "OK"),
             @ApiResponse(responseCode = "400", description = "BAD REQUEST"),
             @ApiResponse(responseCode = "404", description = "NOT FOUND"),
-            @ApiResponse(responseCode = "422", description = "VALIDATION ERROR")
+            @ApiResponse(responseCode = "422", description = "UNPROCESSABLE CONTENT")
     })
     public ResponseEntity<ApiResponseModel<StudentCourse>> updateStudentCourse(
             @NotNull @Valid @RequestBody StudentCourse studentCourse) {
@@ -116,7 +116,7 @@ public class StudentCourseController {
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "No Content"),
             @ApiResponse(responseCode = "400", description = "BAD REQUEST"),
             @ApiResponse(responseCode = "404", description = "NOT FOUND"),
-            @ApiResponse(responseCode = "422", description = "VALIDATION ERROR")
+            @ApiResponse(responseCode = "422", description = "UNPROCESSABLE CONTENT")
     })
     public ResponseEntity<Void> deleteStudentCourse(@PathVariable UUID studentCourseID) {
         validation.requiredField(studentCourseID, "Student Course ID");

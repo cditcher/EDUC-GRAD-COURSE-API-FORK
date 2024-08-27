@@ -46,7 +46,7 @@ public class CourseController {
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "OK"),
             @ApiResponse(responseCode = "404", description = "NOT FOUND")})
     public ResponseEntity<Course> getCourseDetails(@PathVariable String courseID) {
-        log.info("#getCourseDetails : courseID={}", courseID);
+        log.debug("#getCourseDetails : courseID={}", courseID);
         return response.GET(courseService.getCourseInfo(courseID));
     }
 
@@ -57,7 +57,7 @@ public class CourseController {
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "OK"),
             @ApiResponse(responseCode = "404", description = "NOT FOUND")})
     public ResponseEntity<Course> getCourseDetails(@PathVariable String courseCode, @PathVariable String courseLevel) {
-        log.info("#getCourseDetails : courseCode={}, courseLevel={}", courseCode, courseLevel);
+        log.debug("#getCourseDetails : courseCode={}, courseLevel={}", courseCode, courseLevel);
         return response.GET(courseService.getCourseInfo(courseCode, courseLevel));
     }
 
