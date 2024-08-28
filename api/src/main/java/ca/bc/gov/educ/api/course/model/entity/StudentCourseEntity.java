@@ -22,7 +22,7 @@ public class StudentCourseEntity extends BaseEntity {
     @Column(name = "GRADUATION_STUDENT_RECORD_ID", nullable = false)
     private UUID studentID;
 
-    @Column(name = "COURSE_ID")
+    @Column(name = "COURSE_ID", nullable = false)
     private Integer courseID;
 
     @Column(name = "COURSE_SESSION", nullable = false)
