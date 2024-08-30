@@ -27,7 +27,7 @@ public class CourseAlgorithmService {
 
         // Student Courses
         List<TraxStudentCourse> traxStudentCours = traxStudentCourseService.getStudentCourseList(pen, sortForUI);
-        courseAlgorithmData.setTraxStudentCours(traxStudentCours);
+        courseAlgorithmData.setStudentCourses(traxStudentCours);
         if (!traxStudentCours.isEmpty()) {
             List<String> courseCodes = traxStudentCours.stream()
                     .map(TraxStudentCourse::getCourseCode)

@@ -84,7 +84,7 @@ public class CourseAlgorithmServiceTest {
 
         // Course Algorithm Data
         CourseAlgorithmData courseAlgorithmData = new CourseAlgorithmData();
-        courseAlgorithmData.setTraxStudentCours(Arrays.asList(traxStudentCourse));
+        courseAlgorithmData.setStudentCourses(Arrays.asList(traxStudentCourse));
         courseAlgorithmData.setCourseRequirements(Arrays.asList(courseRequirement));
         courseAlgorithmData.setCourseRestrictions(Arrays.asList(courseRestriction));
 
@@ -104,7 +104,7 @@ public class CourseAlgorithmServiceTest {
         var result = courseAlgorithmService.getCourseAlgorithmData(traxStudentCourse.getPen(), false);
 
         assertThat(result).isNotNull();
-        assertThat(result.getTraxStudentCours().isEmpty()).isFalse();
+        assertThat(result.getStudentCourses().isEmpty()).isFalse();
         assertThat(result.getCourseRequirements().isEmpty()).isFalse();
         assertThat(result.getCourseRestrictions().isEmpty()).isFalse();
     }
