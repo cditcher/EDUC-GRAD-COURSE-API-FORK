@@ -66,7 +66,7 @@ public class CourseAlgorithmControllerTest {
 
         // Course Algorithm Data
         CourseAlgorithmData courseAlgorithmData = new CourseAlgorithmData();
-        courseAlgorithmData.setTraxStudentCours(Arrays.asList(traxStudentCourse));
+        courseAlgorithmData.setStudentCourses(Arrays.asList(traxStudentCourse));
         courseAlgorithmData.setCourseRequirements(Arrays.asList(courseRequirement));
         courseAlgorithmData.setCourseRestrictions(Arrays.asList(courseRestriction));
 
