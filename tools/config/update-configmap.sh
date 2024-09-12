@@ -55,6 +55,7 @@ oc create -n "$GRAD_NAMESPACE"-"$envValue" configmap "$APP_NAME"-config-map \
   --from-literal=APP_LOG_LEVEL="$APP_LOG_LEVEL" \
   --from-literal=ENABLE_FLYWAY="true" \
   --from-literal=GRAD_PROGRAM_API="http://educ-grad-program-api.$GRAD_NAMESPACE-$envValue.svc.cluster.local:8080/" \
+  --from-literal=EDUC_COREG_API="http://coreg-api-master.e51986-$envValue.svc.cluster.local:8080/" \
   --from-literal=MAX_RETRY_ATTEMPTS="3" \
   --dry-run=client -o yaml | oc apply -f -
 
