@@ -1,0 +1,64 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: {{ .Values.appName }}
+  name: {{ .Values.appName }}
+spec:
+  replicas: {{ .Values.hpa.minReplicas }}
+  selector:
+    matchLabels:
+      app: {{ .Values.appName }}
+  strategy:
+    rollingUpdate:
+      maxUnavailable: 25%
+      maxSurge: 25%
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.appName }}
+    spec:
+      containers:
+        - image: {{ .Values.deployment.repository }}:{{ .Values.deployment.tag }}
+          imagePullPolicy: Always
+          readinessProbe:
+            tcpSocket:
+              port: 8080
+            initialDelaySeconds: 30
+            periodSeconds: 60
+            timeoutSeconds: 10
+            failureThreshold: 10
+            successThreshold: 1
+          livenessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8080
+            initialDelaySeconds: 120
+            periodSeconds: 60
+            timeoutSeconds: 10
+            failureThreshold: 10
+            successThreshold: 1
+          name: {{ .Values.appName }}
+          volumeMounts:
+            - name: log-storage
+              mountPath: /logs
+          ports:
+            - containerPort: {{ .Values.containerPort }}
+              protocol: TCP
+          envFrom:
+            - configMapRef:
+                name: educ-grad-api-config-map
+            - configMapRef:
+                name: educ-grad-course-api-config-map
+            - secretRef:
+                name: api-course-db-secret
+          resources:
+            requests:
+              cpu: {{ .Values.deployment.minCpu }}
+              memory: {{ .Values.deployment.minMem }}
+            limits:
+              cpu: {{ .Values.deployment.maxCpu }}
+              memory: {{ .Values.deployment.maxMem }}
+      volumes:
+        - name: log-storage
+          emptyDir: { }

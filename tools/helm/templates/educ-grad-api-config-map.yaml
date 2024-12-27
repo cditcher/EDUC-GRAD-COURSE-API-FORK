@@ -1,0 +1,30 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: educ-grad-api-config-map
+  labels:
+    template: grad-config-maps
+data:
+  CONNECTION_TIMEOUT: '30000'
+  MIN_IDLE: '2'
+  EDUC_SCHOOL_API: https://school-api-{{ .Values.gradeNamespace }}-{{ .Values.env }}.apps.silver.devops.gov.bc.ca/
+  SHOW_SQL_LOGS: 'false'
+  SPRING_SHOW_REQUEST_DETAILS: 'false'
+  MAX_LIFETIME: '1800000'
+  MAXIMUM_POOL_SIZE: '10'
+  TZ: America/Vancouver
+  MAX_URI_TAGS: '200'
+  COMMON_NAMESPACE: {{ .Values.commonNamespace }}-{{ .Values.env }}
+  ENABLE_SPLUNK_LOG_HELPER: 'false'
+  GRAD_NAMESPACE: {{ .Values.gradNamespace }}-{{ .Values.env }}
+  APP_LOG_LEVEL: INFO
+  SPRING_WEB_LOG_LEVEL: INFO
+  GRAD_BUSINESS_NAMESPACE: {{ .Values.gradBusinessNamespace }}-{{ .Values.env }}
+  RECORDS_STALE_IN_DAYS: '90'
+  TOKEN_ISSUER_URL: 'https://soam-dev.apps.silver.devops.gov.bc.ca/auth/realms/master'
+  EDUC_COREG_API: 'https://educ-coreg-api-{{ .Values.coregNamespace }}-{{ .Values.env }}.apps.silver.devops.gov.bc.ca/'
+  JACKSON_TZ: America/Vancouver
+  CRON_SCHEDULED_PURGE_OLD_RECORDS: 0 30 0 * * *
+  SPRING_BOOT_AUTOCONFIG_LOG_LEVEL: INFO
+  IDLE_TIMEOUT: '600000'
+  SPRING_SECURITY_LOG_LEVEL: INFO

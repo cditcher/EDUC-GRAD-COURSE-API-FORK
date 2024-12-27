@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: {{ .Values.appName }}
+  name: {{ .Values.appName }}
+spec:
+  {{- if eq "local" .Values.env }}
+  type: LoadBalancer
+  {{- end }}
+  ports:
+    - name: {{ .Values.containerPort }}-tcp
+      port: {{ .Values.containerPort }}
+      protocol: TCP
+  selector:
+    app: {{ .Values.appName }}

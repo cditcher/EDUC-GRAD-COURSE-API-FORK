@@ -1,0 +1,28 @@
+appName: educ-grad-course-api
+containerPort: 8080
+env: local
+gradNamespace: "supply a string"
+commonNamespace: "supply a string"
+coregNamespace: "supply a string"
+gradBusinessNamespace: "supply a string"
+
+deployment:
+  repository: ghcr.io/cditcher/educ-grad-course-api-fork
+  tag: latest
+  minCpu: 20m
+  maxCpu: 500m
+  minMem: 200Mi
+  maxMem: 1200Mi
+
+hpa:
+  minReplicas: 2
+  maxReplicas: 3
+
+secrets:
+  apiCourseDbSecret:
+    connectionString: "Supply a string"
+    password: "Supply a string"
+    userName: "Supply a string"
+  courseClientSecret:
+    courseClientName: "Supply a string"
+    courseClientSecret: "Supply a string"

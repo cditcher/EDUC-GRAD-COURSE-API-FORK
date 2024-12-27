@@ -1,0 +1,58 @@
+name: Deploy to Development with Helm
+
+env:
+  REPO_NAME: "educ-grad-course-api"
+  TAG: "latest"
+  IMAGE_REGISTRY: ghcr.io/${{ github.repository_owner }}
+  IMAGE_REGISTRY_USER: ${{ github.actor }}
+  IMAGE_REGISTRY_PASSWORD: ${{ github.token }}
+  DOCKER_ARTIFACTORY_REPO: "Supply a string"
+  DOCKER_ARTIFACTORY_USERNAME: "Supply a string"
+
+on:
+    workflow_dispatch:
+
+jobs:
+    deploy:
+        runs-on: ubuntu-latest
+
+        steps:
+          - name: Checkout code
+            uses: actions/checkout@v3
+
+          - name: Set up Helm
+            uses: azure/setup-helm@v1
+            with:
+              version: v3
+
+          - name: Login to Docker Hub
+            uses: docker/login-action@v2
+            with:
+              registry: ${{ vars.DOCKER_ARTIFACTORY_REPO }}
+              username: ${{ vars.DOCKER_ARTIFACTORY_USERNAME }}
+              password: ${{ secrets.DOCKER_ARTIFACTORY_ACCESS_TOKEN }}
+  
+          - name: Build from Dockerfile
+            id: build-image
+            uses: redhat-actions/buildah-build@v2
+            with:
+              image: ${{ env.REPO_NAME }}
+              tags: ${{ env.TAG }}
+              dockerfiles: |
+                ./Dockerfile
+  
+          # https://github.com/redhat-actions/push-to-registry#readme
+          - name: Push to registry
+            id: push-image
+            uses: redhat-actions/push-to-registry@v2
+            with:
+              image: ${{ steps.build-image.outputs.image }}
+              tags: ${{ steps.build-image.outputs.tags }}
+              registry: ${{ env.IMAGE_REGISTRY }}
+              username: ${{ env.IMAGE_REGISTRY_USER }}
+              password: ${{ env.IMAGE_REGISTRY_PASSWORD }}
+
+          - name: Deploy to Development
+            run: |
+              set -eux
+              echo "Deploying to Development"

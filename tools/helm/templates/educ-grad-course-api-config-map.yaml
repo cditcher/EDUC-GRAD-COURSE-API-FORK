@@ -1,0 +1,14 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: educ-grad-course-api-config-map
+data:
+  CONNECTION_TIMEOUT: '30000'
+  MIN_IDLE: '10'
+  MAX_LIFETIME: '420000'
+  MAXIMUM_POOL_SIZE: '10'
+  APP_LOG_LEVEL: DEBUG
+  GRAD_PROGRAM_API: 'https://educ-grad-program-api-{{ .Values.gradNamespace }}-{{ .Values.env }}.apps.silver.devops.gov.bc.ca/'
+  IDLE_TIMEOUT: '300000'
+  MAX_RETRY_ATTEMPTS: '3'
+  ENABLE_FLYWAY: 'true'
